@@ -1,4 +1,4 @@
-venv/
-.env
+/home/kimyeonjin/test/venv
+/home/kimyeonjin/test/.env
 __pycache__/
-*.pyc
+/home/kimyeonjin/test/pyvenv.cfg
