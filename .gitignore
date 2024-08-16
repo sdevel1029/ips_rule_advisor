@@ -2,4 +2,3 @@ venv/
 *.log
 .env
 __pycache__/
-pyvenv.cfg
