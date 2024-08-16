@@ -1,4 +1,5 @@
-/home/kimyeonjin/test/venv
-/home/kimyeonjin/test/.env
+venv/
+*.log
+.env
 __pycache__/
-/home/kimyeonjin/test/pyvenv.cfg
+pyvenv.cfg
