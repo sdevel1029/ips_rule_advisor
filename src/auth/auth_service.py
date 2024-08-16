@@ -1,7 +1,14 @@
 from supabase import Client
-from fastapi import HTTPException, Response, Request, Cookie
+from fastapi import HTTPException, Response, Request
 from fastapi.responses import RedirectResponse
-from typing import Optional
+from fastapi.responses import RedirectResponse,HTMLResponse
+from pydantic import BaseModel
+        
+
+class Login(BaseModel):
+    email: str
+    password: str
+
 
 def sign_up(client: Client, email: str, password: str):
     try:
@@ -9,7 +16,25 @@ def sign_up(client: Client, email: str, password: str):
         return {"status": "success"}
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
-
+    
+def read_root():
+    html_content = """
+    <!DOCTYPE html>
+    <html lang="en">
+    <body>
+        <script>
+        window.onload = function() {
+            var fragment = window.location.hash.substring(1); // '#' 제거
+            if (fragment) {
+                // 프래그먼트 값을 쿼리 매개변수로 변환하여 서버로 리다이렉트
+                window.location.href = '/auth/callback?' + fragment;
+            }
+        };
+        </script>
+    </body>
+    </html>
+    """
+    return HTMLResponse(content=html_content)
 
 def sign_in(client: Client, email: str, password: str, response: Response):
     try:
@@ -40,28 +65,22 @@ def sign_in_google(client: Client, response: Response):
         raise HTTPException(status_code=400, detail=str(e))
 
 
-def callback(client: Client, request: Request, response: Response):
+def callback(client: Client, request: Request,response:Response):
     try:
-        # Google OAuth 인증 완료 후 Supabase에서 전달한 인증 코드를 처리합니다.
-        code = request.query_params.get("code")
-        if not code:
-            raise HTTPException(status_code=400, detail="Missing code parameter")
-
-        # 인증 코드를 사용하여 세션 토큰을 교환합니다.
-        user = client.auth.api.exchange_code_for_session(code)
-        if user:
-            response.set_cookie(key="user", value=user.access_token)
-            return {"access_token": user.access_token}
-        else:
-            raise HTTPException(status_code=400, detail="Invalid code or failed to exchange code for session")
+        code = request.query_params.get("access_token")
+        rcode = request.query_params.get("refresh_token")
+        res=client.auth.set_session(code, rcode)
+        response.set_cookie(key="user", value=code)
+        return RedirectResponse(url="http://127.0.0.1:8000/docs")  #어디로 보낼지는 체크필요
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
 
-def profile(client: Client, request: Request, session_token: Optional[str] = Cookie(None)):
+
+def profile(client: Client,request:Request):
     try:
         # 쿠키에서 세션 토큰 가져오기
-        session_token_from_cookie = session_token or request.cookies.get("user")
+        session_token_from_cookie = request.cookies.get("user")
         if not session_token_from_cookie:
             raise HTTPException(status_code=401, detail="Not authenticated")
 
