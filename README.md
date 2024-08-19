@@ -29,36 +29,4 @@ localhost:8080/docs를 하시면 swagger에서 편하게 보실 수 있습니다
 `uvicorn src.main:app --reload`
 
 
-# project_root
-├── src
-│   ├── auth
-│   │   ├── __init__.py
-│   │   ├── auth_routes.py
-│   │   └── auth_service.py
-│   ├── database
-│   │   ├── __init__.py
-│   │   └── supabase_client.py
-│   ├── getinfo
-│   │   ├── getinfo_routes.py
-│   │   └── getinfo_service.py
-│   ├── openai
-│   │   ├── __init__.py
-│   │   ├── openai_routes.py
-│   │   └── openai_service.py
-│   ├── root
-│   │   └── root.py
-│   ├── static
-│   │   ├── css
-│   │   │   └── getinfo.css
-│   │   └── js
-│   │       └── getinfo.js
-│   ├── templates
-│   │   └── getinfo.html
-│   ├── __init__.py
-│   ├── config.py
-│   └── main.py
-├── venv/
-├── .gitignore
-├── README.md
-└── requirements.txt
 
