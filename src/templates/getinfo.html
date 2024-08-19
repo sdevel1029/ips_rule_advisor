@@ -1,62 +1,67 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Preview</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="../static/css/getinfo.css" />
-  </head>
-  <body>
-    <div class="container">
-      <div class="header">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CVE 정보 검색</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="../static/css/getinfo.css" />
+  <script src="../static/js/getinfo.js" defer></script> 
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="menu-item">
+        <svg
+          width="40"
+          height="40"
+          viewBox="0 0 40 40"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          class="w-10 h-10"
+          preserveAspectRatio="none"
+        >
+          <!-- SVG content here -->
+        </svg>
+      </div>
+      <div class="menu">
+        <div class="menu-item active">
+          <p>정보수집</p>
+        </div>
         <div class="menu-item">
-          <svg
-            width="40"
-            height="40"
-            viewBox="0 0 40 40"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            class="w-10 h-10"
-            preserveAspectRatio="none"
-          >
-            <!-- SVG content here -->
-          </svg>
+          <p>룰 테스트</p>
         </div>
-        <div class="menu">
-          <div class="menu-item active">
-            <p>정보수집</p>
-          </div>
-          <div class="menu-item">
-            <p>룰 테스트</p>
-          </div>
-          <div class="menu-item">
-            <p>마이페이지</p>
-          </div>
-        </div>
-        <div class="auth-buttons">
-          <div class="signup-button">
-            <p>회원가입</p>
-          </div>
-          <div class="login-button">
-            <p>로그인</p>
-          </div>
+        <div class="menu-item">
+          <p>마이페이지</p>
         </div>
       </div>
-      <div class="hero">
-        <div class="hero-content">
-          <p class="hero-title">CVE 정보 검색</p>
-          <p class="hero-subtitle">CVE 코드, 키워드 등...</p>
+      <div class="auth-buttons">
+        <div class="signup-button">
+          <p>회원가입</p>
         </div>
-        <div class="search-box">
-          <div class="search-input">
-            <p>CVE-2000-12345, log4j, etc...</p>
-          </div>
-          <div class="search-button">
-            <p>검색</p>
-          </div>
+        <div class="login-button">
+          <p>로그인</p>
         </div>
       </div>
     </div>
-  </body>
+    <div class="hero">
+      <div class="hero-content">
+        <p class="hero-title">CVE 정보 검색</p>
+        <p class="hero-subtitle">CVE 코드, 키워드 등...</p>
+      </div>
+      <form id="cve-form" class="search-box">
+        <div class="search-input">
+          <input
+            type="text"
+            id="cve_code"
+            placeholder="CVE-2000-12345, log4j, etc..."
+          />
+        </div>
+        <div class="search-button">
+          <button type="submit">검색</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
 </html>
