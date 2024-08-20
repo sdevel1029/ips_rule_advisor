@@ -1,41 +1,17 @@
 import re
 
-#전처리기능
-def normalize_cve_format(input_code):
-    code = input_code.strip().upper()
-
-    #이미 형식이 맞는경우
-    if code.startswith("CVE-"):
-        return code
-
-    if re.match(r'^CVE-\d{4}-\d+$', code):
-        return code
-    
-    code = re.sub(r"[\s-]", "", code)  #공백이나 -가 있으면 제거
-
-    #년도추출
-    year_match = re.match(r"(\d{2}|\d{4})", code)
-    if not year_match:
-        raise ValueError("Invalid CVE formate")
-
-    year = year_match.group(0)
-
-    # 나머지 부분 추출
-    num = code[len(year):]
-
-    # 2자리 년도 처리
-    if len(year) == 2:
-        year = "20" + year
-    return f"CVE-{year}-{num}"
-
-'''
-# 테스트
-test_inputs = [
-    "2021-44228", => o
-    "2021 44228", => 결과 : CVE-2020-2144228 
-    "21-44228", => o
-    "21 44228", => o
-    "cve-2021-44228", => o
-    "CVE-21-44228" => 결과 : CVE-21-44228
-]
-'''
+def normalize_cve_format(cve: str) -> str:
+    # 정규식으로 숫자만 추출
+    match = re.match(r"(?i)(?:CVE[\s-]*)?(\d{2}|\d{4})[\s-]*(\d{4,})", cve)
+    if match:
+        year, id_part = match.groups()
+        # 연도가 두 자릿수인 경우 처리
+        if len(year) == 2:
+            if year == "99":
+                year = "1999"
+            else:
+                year = "20" + year
+        return f"CVE-{year}-{id_part}"
+    else:
+        # 유효한 형식이 아닌 경우 None 반환
+        return None
