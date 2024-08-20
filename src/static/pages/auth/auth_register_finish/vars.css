@@ -1,0 +1,88 @@
+/* Figma Styles of your File */
+:root {
+  /* Colors */
+  /* Fonts */
+  --title-hero-font-family: Inter-Bold, sans-serif;
+  --title-hero-font-size: 72px;
+  --title-hero-line-height: 120%;
+  --title-hero-font-weight: 700;
+  --title-hero-font-style: normal;
+  --title-page-font-family: Inter-Bold, sans-serif;
+  --title-page-font-size: 48px;
+  --title-page-line-height: 120%;
+  --title-page-font-weight: 700;
+  --title-page-font-style: normal;
+  --subtitle-font-family: Inter-Regular, sans-serif;
+  --subtitle-font-size: 32px;
+  --subtitle-line-height: 120%;
+  --subtitle-font-weight: 400;
+  --subtitle-font-style: normal;
+  --heading-font-family: Inter-SemiBold, sans-serif;
+  --heading-font-size: 24px;
+  --heading-line-height: 120%;
+  --heading-font-weight: 600;
+  --heading-font-style: normal;
+  --subheading-font-family: Inter-Regular, sans-serif;
+  --subheading-font-size: 20px;
+  --subheading-line-height: 120%;
+  --subheading-font-weight: 400;
+  --subheading-font-style: normal;
+  --body-base-font-family: Inter-Regular, sans-serif;
+  --body-base-font-size: 16px;
+  --body-base-line-height: 140%;
+  --body-base-font-weight: 400;
+  --body-base-font-style: normal;
+  --body-strong-font-family: Inter-SemiBold, sans-serif;
+  --body-strong-font-size: 16px;
+  --body-strong-line-height: 140%;
+  --body-strong-font-weight: 600;
+  --body-strong-font-style: normal;
+  --body-emphasis-font-family: Inter-Italic, sans-serif;
+  --body-emphasis-font-size: 16px;
+  --body-emphasis-line-height: 140%;
+  --body-emphasis-font-weight: 400;
+  --body-emphasis-font-style: italic;
+  --body-link-font-family: Inter-Regular, sans-serif;
+  --body-link-font-size: 16px;
+  --body-link-line-height: 140%;
+  --body-link-font-weight: 400;
+  --body-link-font-style: normal;
+  --body-small-font-family: Inter-Regular, sans-serif;
+  --body-small-font-size: 14px;
+  --body-small-line-height: 140%;
+  --body-small-font-weight: 400;
+  --body-small-font-style: normal;
+  --body-small-strong-font-family: Inter-SemiBold, sans-serif;
+  --body-small-strong-font-size: 14px;
+  --body-small-strong-line-height: 140%;
+  --body-small-strong-font-weight: 600;
+  --body-small-strong-font-style: normal;
+  --body-verysmall-font-family: Inter-Regular, sans-serif;
+  --body-verysmall-font-size: 12px;
+  --body-verysmall-line-height: 140%;
+  --body-verysmall-font-weight: 400;
+  --body-verysmall-font-style: normal;
+  --input-font-family: Inter-Regular, sans-serif;
+  --input-font-size: 16px;
+  --input-line-height: 100%;
+  --input-font-weight: 400;
+  --input-font-style: normal;
+  --body-code-font-family: RobotoMono-Regular, sans-serif;
+  --body-code-font-size: 16px;
+  --body-code-line-height: 100%;
+  --body-code-font-weight: 400;
+  --body-code-font-style: normal;
+  --single-line-body-basesl-font-family: Inter-Regular, sans-serif;
+  --single-line-body-basesl-font-size: 16px;
+  --single-line-body-basesl-line-height: 100%;
+  --single-line-body-basesl-font-weight: 400;
+  --single-line-body-basesl-font-style: normal;
+  --single-line-body-base-small-strongsl-font-family: Inter-SemiBold, sans-serif;
+  --single-line-body-base-small-strongsl-font-size: 14px;
+  --single-line-body-base-small-strongsl-line-height: 100%;
+  --single-line-body-base-small-strongsl-font-weight: 600;
+  --single-line-body-base-small-strongsl-font-style: normal;
+
+  /* Effects */
+  --info-shadow-box-shadow: 0px 8px 4px 0px rgba(0, 0, 0, 0.25);
+}
