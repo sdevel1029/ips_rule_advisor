@@ -8,11 +8,9 @@ def normalize_cve_format(input_code):
     if code.startswith("CVE-"):
         return code
 
-        if re.match(r'^CVE-\d{4}-\d+$', code):
-            return code
-        else:
-            raise ValueError("Invalid CVE format")
-
+    if re.match(r'^CVE-\d{4}-\d+$', code):
+        return code
+    
     code = re.sub(r"[\s-]", "", code)  #공백이나 -가 있으면 제거
 
     #년도추출

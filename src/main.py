@@ -5,8 +5,7 @@ from src.openai.openai_routes import router as openai_router
 from src.root.root import router as root_router
 from src.getinfo.getinfo_routes import router as getinfo_router
 import uvicorn
-from src.getinfo.getinfo_service import nvd
-from src.getinfo.preprocessing import normalize_cve_format
+
 
 app = FastAPI()
 
