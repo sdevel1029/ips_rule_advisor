@@ -1,13 +1,8 @@
-from pydantic import BaseModel
-from src.getinfo.rpatools import nvd
+from src.getinfo.rpatools import info
 from src.getinfo.preprocessing import normalize_cve_format
 
 class InfoServiceError(Exception):
     pass
-
-class CVERequest(BaseModel):  # CVERequest 모델 추가
-    cve_code: str
-
 
 def get_info(cve_code: str):
     try:
@@ -15,7 +10,7 @@ def get_info(cve_code: str):
         normalized_code = normalize_cve_format(cve_code)
         
         # CVE 정보 가져오기
-        info_result = nvd(normalized_code)
+        info_result = info(normalized_code)
         
         # CVE 정보가 없는 경우 처리
         if not info_result:

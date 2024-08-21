@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CVE 정보</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        .section h2 {
+            color: #444;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>CVE 정보</h1>
+
+        <div class="section">
+            <h2>기본 정보</h2>
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <td>{{ info.nvd.id | default('정보 없음') }}</td>
+                </tr>
+                <tr>
+                    <th>설명</th>
+                    <td>{{ info.nvd.설명 | default('정보 없음') }}</td>
+                </tr>
+                <tr>
+                    <th>CVSS 3.x 점수</th>
+                    <td>{{ info.nvd.점수 | default('정보 없음') }}</td>
+                </tr>
+                <tr>
+                    <th>CVSS 3.x 메트릭</th>
+                    <td>{{ info.nvd.메트릭 | default('정보 없음') }}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>영향 받는 제품들 CPE</h2>
+            {% if info.nvd.제품들 %}
+                <table>
+                    <tr>
+                        <th>CPE</th>
+                        <th>버전 시작 (포함)</th>
+                        <th>버전 끝 (비포함)</th>
+                    </tr>
+                    {% for cpe_list in info.nvd.제품들 %}
+                        {% for cpe in cpe_list %}
+                            <tr>
+                                <td>{{ cpe.CPE | default('정보 없음') }}</td>
+                                <td>{{ cpe.포함 if cpe.포함 is not none else '-' }}</td>
+                                <td>{{ cpe.비포함 if cpe.비포함 is not none else '-' }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% endfor %}
+                </table>
+            {% else %}
+                <p>정보가 없습니다.</p>
+            {% endif %}
+        </div>
+
+        <div class="section">
+            <h2>참고자료</h2>
+            {% if info.nvd.참고자료 %}
+                <ul>
+                    {% for ref in info.nvd.참고자료 %}
+                        <li><a href="{{ ref.url }}" target="_blank">{{ ref.url }}</a></li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>정보가 없습니다.</p>
+            {% endif %}
+        </div>
+
+        <div class="section">
+            <h2>PoC</h2>
+            {% if info.nvd.poc %}
+                <ul>
+                    {% for poc in info.nvd.poc %}
+                        <li><a href="{{ poc.url }}" target="_blank">{{ poc.url }}</a> - {{ poc.tags | join(', ') | default('정보 없음') }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>정보가 없습니다.</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
