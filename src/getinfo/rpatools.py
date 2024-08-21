@@ -68,12 +68,12 @@ def nvd(code) :
                     # 리스트에 추가
                     tmp_list.append({
                         'CPE' : cpe_info,
-                        '이버전부터(포함)': version_start,
-                        '이버전까지(비포함)': version_end
+                        '포함': version_start,
+                        '비포함': version_end
                     })
         cpe_list.append(tmp_list)
 
-    output["영향 받는 제품들 CPE"] = cpe_list
+    output["제품들"] = cpe_list
 
     # poc, 참고자료
     # 참고자료 중에서 tag 에 Exploit 있는것들을 poc에 넣음

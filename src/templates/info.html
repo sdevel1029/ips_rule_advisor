@@ -72,19 +72,19 @@
 
         <div class="section">
             <h2>영향 받는 제품들 CPE</h2>
-            {% if info.nvd.영향_받는_제품들_CPE %}
+            {% if info.nvd.제품들 %}
                 <table>
                     <tr>
                         <th>CPE</th>
                         <th>버전 시작 (포함)</th>
                         <th>버전 끝 (비포함)</th>
                     </tr>
-                    {% for cpe_list in info.nvd.영향_받는_제품들_CPE %}
+                    {% for cpe_list in info.nvd.제품들 %}
                         {% for cpe in cpe_list %}
                             <tr>
                                 <td>{{ cpe.CPE | default('정보 없음') }}</td>
-                                <td>{{ cpe.이버전부터_포함 if cpe.이버전부터_포함 is not none else '-' }}</td>
-                                <td>{{ cpe.이버전까지_비포함 if cpe.이버전까지_비포함 is not none else '-' }}</td>
+                                <td>{{ cpe.포함 if cpe.포함 is not none else '-' }}</td>
+                                <td>{{ cpe.비포함 if cpe.비포함 is not none else '-' }}</td>
                             </tr>
                         {% endfor %}
                     {% endfor %}
