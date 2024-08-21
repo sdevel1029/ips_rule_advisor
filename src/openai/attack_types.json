@@ -1,0 +1,17 @@
+{
+    "SQL Injection": "An attack where malicious SQL statements are inserted into an entry field for execution. It can lead to unauthorized access or manipulation of the database.",
+    "Cross-Site Scripting (XSS)": "An attack where malicious scripts are injected into webpages viewed by other users. It can steal sensitive information or execute unintended actions in the user's context.",
+    "Cross-Site Request Forgery (CSRF)": "An attack where an attacker tricks a user into performing actions they did not intend to. This is done by exploiting the trust a web application has in the user's browser.",
+    "Buffer Overflow": "An attack where an attacker overflows a buffer to overwrite memory and execute arbitrary code. This can lead to crashes or the execution of malicious code.",
+    "Command Injection": "An attack where an attacker injects arbitrary commands into a program that executes system commands. It can lead to unauthorized command execution on the host system.",
+    "Directory Traversal": "An attack where an attacker gains access to files and directories stored outside the intended directory by manipulating file paths.",
+    "Broken Authentication": "An attack where vulnerabilities in authentication mechanisms are exploited to gain unauthorized access to systems or data.",
+    "Sensitive Data Exposure": "An attack where sensitive data, such as passwords or personal information, is exposed due to inadequate protection mechanisms.",
+    "Insecure Deserialization": "An attack where an attacker exploits insecure deserialization processes to execute malicious code or manipulate application behavior.",
+    "Misconfiguration": "An attack that exploits security misconfigurations in an application or system, such as default settings or exposed administrative interfaces.",
+    "Denial of Service (DoS)": "An attack aimed at disrupting the normal functioning of a targeted server, service, or network by overwhelming it with a flood of traffic or resource requests.",
+    "Social Engineering": "An attack that manipulates individuals into divulging confidential information or performing actions that compromise security, often through deception or psychological manipulation.",
+    "Phishing": "An attack where attackers impersonate legitimate entities to deceive individuals into providing sensitive information, such as login credentials or financial details.",
+    "Man-in-the-Middle (MitM)": "An attack where an attacker intercepts and potentially alters the communication between two parties without their knowledge.",
+    "Credential Stuffing": "An attack where attackers use automated tools to try large numbers of stolen username-password pairs to gain unauthorized access to user accounts."
+}

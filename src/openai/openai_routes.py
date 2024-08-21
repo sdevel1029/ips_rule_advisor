@@ -1,13 +1,13 @@
 # src/openai/openai_routes.py
 from fastapi import APIRouter, HTTPException
-from src.openai.openai_service import generate_text, GPTRequest
+from src.openai.openai_service import generate_text
 
 router = APIRouter()
 
 @router.post("/generate/")
-async def generate_text_route(request: GPTRequest):
+async def generate_text_route():
     try:
-        return generate_text(request)
+        return generate_text()
     except HTTPException as e:
         raise e 
     except Exception as e:
