@@ -205,7 +205,7 @@ async def test_func1():
 
             return output
     
-# 대기열에 등록하는 함수
+# 대기열에 등록하고 수행하는 함수
 async def test(user_id : str, cve : str, rule : str, envi : int, what_test : int, file_path_1 : str, file_path_2 : str):
     tmp_dict_1 = {"user_id" : user_id, "cve": cve, "rule": rule, "envi": envi, "what_test": what_test}
     tmp_dict_2 = {"file_path_1": file_path_1, "file_path_2": file_path_2}

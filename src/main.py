@@ -6,7 +6,7 @@ from src.root.root import router as root_router
 from src.getinfo.getinfo_routes import router as getinfo_router
 import uvicorn
 import asyncio
-import getinfo.rpatools as rpatools
+import src.getinfo.rpatools as rpatools
 
 app = FastAPI()
 
