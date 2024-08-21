@@ -1,4 +1,7 @@
-import requests
+import httpx
+import asyncio
+from ..database import supabase_client
+from src.getinfo.global_var import test_wait_list
 
 # 수집원 세팅
 # 형태 : 딕셔너리로 "사이트 이름" : "cve 코드를 제외한 베이스 url"
@@ -8,22 +11,40 @@ base_nvd = "https://services.nvd.nist.gov/rest/json/cves/2.0?cveId="
 base_url["nvd"] = base_nvd
 
 
-# 동작
-def read_api(code, site_name):
+supabase = supabase_client.get_supabase_client()
+
+
+### 함수들
+
+# 비동기 get 함수
+async def send_get_request(url):
+    async with httpx.AsyncClient() as client:
+        response = await client.get(url=url)
+    return response
+
+# 비동기 post 함수
+async def send_post_request(url, data, files):
+    async with httpx.AsyncClient() as client:
+        response = await client.post(url, data=data, files=files)
+    return response
+
+
+# site_name 에서 code 관련 정보 크롤링 해오는 함수
+async def read_api(code, site_name):
     try :
         url = base_url[site_name] + code
     except :
         return {}
 
-    res = requests.get(url=url)
-    res.close()
+    res = await send_get_request(url=url)
 
     return res.json()
 
-def nvd(code) :
+# nvd 정보수집
+async def nvd(code) :
     # 결과값 받기
     result = {}
-    result = read_api(code, "nvd")
+    result = await read_api(code, "nvd")
 
     # 예외 1 : 결과 없음
     if(result["totalResults"] == 0) :
@@ -95,46 +116,113 @@ def nvd(code) :
 
     return output
 
-def github_poc(code):
+# github_poc 정보수집
+async def github_poc(code):
     output = {}
 
     return output
 
-def snort_coummunity_rule(code):
+# snort_community_rule 정보수집
+async def snort_coummunity_rule(code):
     output = {}
 
     return output
 
-
-def info(code) :
+# 정보수집 메인 함수
+async def info(code) :
     # 결과값 받기
     output = {}
 
     # 수집원 nvd
-    res_nvd = nvd(code)
+    res_nvd = await nvd(code)
     output["nvd"] = res_nvd
 
     # 수집원 github poc 모음집
-    res_github_poc = github_poc(code)
+    res_github_poc = await github_poc(code)
     output["github_poc"] = res_github_poc
 
     # 수집원 snort community rule
-    res_snort_community_rule = snort_coummunity_rule(code)
+    res_snort_community_rule = await snort_coummunity_rule(code)
     output["snort_community_rule"] = res_snort_community_rule
 
     return output
 
-# 테스트
-test_server_url = ""
+############### 테스트 ###############
+######################################
+######################################
+######################################
 
-def test(id, rule, prog : int, file_1, file_2):
-    output = {}
-    data = {}
+# 대기열에 있는 것들을 가능한 테스트 서버에 매칭 시켜주는 함수
+async def do_remainning_test():
+    # db에서 아직 수행 안된것들 있었으면 대기열에 추가하기
+    # check_db = supabase.table("test_all").select("id").eq("done", False).execute()
+    # tmp_list = check_db.data
+    # for i in tmp_list:
+    #     test_wait_list.append(i["id"])
 
-    test_res = requests.post(url=test_server_url, data=data)
-    test_res.close()
+    while True:
+        await test_func1()
+        await asyncio.sleep(1)
+
+# 테스트 요청 보내는 함수
+async def test_func1():
+    # 대기열(=리스트)에 원소 존재하면
+    if test_wait_list:
+        able_server_list = supabase.table("test_server_status").select("id, server_url").eq("able", True).execute()
+        tmp_flag = able_server_list.data
+        
+        # 사용 가능한 서버 있으면
+        if tmp_flag :
+            # 대기열 리스트, 서버 able 수정
+            test_id = test_wait_list.pop(0)
+            server_id = tmp_flag[0]["id"]
+            supabase.table("test_server_status").update({"able" : False}).eq("id", server_id).execute()
+            test_server_url = tmp_flag[0]["server_url"]
+
+            # db에서 정보 들고오기
+            first_test_info = supabase.table("test_all").select("rule, envi, what_test, file_path_1, file_path_2").eq("id", test_id).execute()
+            data = first_test_info.data[0]
+            
+            file_paths = [data["file_path_1"], data["file_path_2"]]
+
+            del data["file_path_1"]
+            del data["file_path_2"]
+            
+            # server 에 요청하기
+            files = [("files", (file_path, open(file_path, "rb"))) for file_path in file_paths]
+            test_res = await send_post_request(url=test_server_url, data=data, files=files)
+            output = test_res.status_code
+
+            # 서버 다시 사용 가능으로 수정
+            supabase.table("test_server_status").update({"able" : True}).eq("id", server_id).execute()
+            
+            # 정상 수행 됐으면 test 결과 넣기
+            if output == 200:
+                supabase.table("test_all").update({"done" : True}).eq("id", test_id).execute()
+                ### 여기 추가해야됨
+            else : # 비정상이면 다시 대기열 맨 앞에 넣기
+                test_wait_list.insert(0, test_id)
+
+            return output
+    
+# 대기열에 등록하는 함수
+async def test(user_id : str, cve : str, rule : str, envi : int, what_test : int, file_path_1 : str, file_path_2 : str):
+    tmp_dict_1 = {"user_id" : user_id, "cve": cve, "rule": rule, "envi": envi, "what_test": what_test}
+    tmp_dict_2 = {"file_path_1": file_path_1, "file_path_2": file_path_2}
+    tmp_dict = {**tmp_dict_1, **tmp_dict_2}
+
+    # test 정보 테이블에 저장
+    tmp_data = supabase.table("test_all").insert(tmp_dict).execute()
+    id = tmp_data.data[0]["id"]
+    
+    # 대기열 리스트에 넣기
+    test_wait_list.append(id)
+
+    # 수행하기
+    await test_func1()
 
 
+    return id
 
-    return output
+
 
