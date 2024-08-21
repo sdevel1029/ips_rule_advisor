@@ -6,7 +6,6 @@
   <title>CVE 정보 검색</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="../static/css/getinfo.css" />
-  <script src="../static/js/getinfo.js" defer></script> 
 </head>
 <body>
   <div class="container">
@@ -49,12 +48,14 @@
         <p class="hero-title">CVE 정보 검색</p>
         <p class="hero-subtitle">CVE 코드, 키워드 등...</p>
       </div>
-      <form id="cve-form" class="search-box">
+      <form id="cve-form" class="search-box" action="/getinfo" method="get">
         <div class="search-input">
           <input
             type="text"
+            name="cve_code"
             id="cve_code"
             placeholder="CVE-2000-12345, log4j, etc..."
+            required
           />
         </div>
         <div class="search-button">
