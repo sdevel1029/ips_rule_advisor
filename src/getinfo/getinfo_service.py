@@ -4,13 +4,13 @@ from src.getinfo.preprocessing import normalize_cve_format
 class InfoServiceError(Exception):
     pass
 
-def get_info(cve_code: str):
+async def get_info(cve_code: str):
     try:
         # CVE 코드 정규화
         normalized_code = normalize_cve_format(cve_code)
         
         # CVE 정보 가져오기
-        info_result = info(normalized_code)
+        info_result = await info(normalized_code)
         
         # CVE 정보가 없는 경우 처리
         if not info_result:

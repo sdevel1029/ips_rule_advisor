@@ -8,7 +8,7 @@ router = APIRouter()
 templates = Jinja2Templates(directory="src/templates")
 
 @router.get("/getinfo", response_class=HTMLResponse)
-def get_info_page(request: Request, cve_code: str):
+async def get_info_page(request: Request, cve_code: str):
     cve_code = request.query_params.get("cve_code")
-    info_result = get_info(cve_code)
+    info_result = await get_info(cve_code)
     return templates.TemplateResponse("info.html", {"request": request, "info": info_result})
