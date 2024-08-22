@@ -1,62 +1,79 @@
 import json
-from openai import OpenAI
-from dotenv import load_dotenv
 import os
+from dotenv import load_dotenv
+import httpx
 
 # 환경변수를 불러오기
 load_dotenv()
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
-client = OpenAI(
-    api_key=os.getenv("OPENAI_API_KEY")
-)
 
-def load_attack_types(filename):
+def load_attack_types(filename: str):
     # 현재 스크립트 파일의 디렉토리 경로 가져오기
-    script_dir = os.path.dirname(os.path.abspath(__file__)) 
-
-    # JSON 파일 경로 생성 (openai_service.py 파일과 같은 디렉토리에 있다고 가정)
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    # JSON 파일 경로 생성
     file_path = os.path.join(script_dir, filename)
 
     with open(file_path, 'r') as file:
         return json.load(file)
 
-def classify_attack(description, attack_types):
+async def classify_attack(description: str, attack_types: dict) -> str:
     # 공격 유형 셋을 문자열로 변환
     attack_types_str = "\n".join([f"{key}: {value}" for key, value in attack_types.items()])
-    
-    # GPT API 요청
-    response = client.chat.completions.create(
-        model="gpt-4o-mini",  
-        messages=[
-            {
-                "role": "system",
-                "content": "You are a helpful assistant for classifying types of security attacks."
+
+    async with httpx.AsyncClient() as client:
+        response = await client.post(
+            'https://api.openai.com/v1/chat/completions',
+            headers={
+                'Authorization': f'Bearer {OPENAI_API_KEY}',
+                'Content-Type': 'application/json'
             },
-            {
-                "role": "user",
-                "content": f"다음 설명을 읽고, 공격 유형 셋 중 어느 것에 해당하는지 선택해 주세요:\n\n설명: {description}\n\n{attack_types_str}\n\n위 공격 유형 중 설명에 가장 잘 맞는 것을 선택해 주세요."
+            json={
+                'model': 'gpt-4',
+                'messages': [
+                    {"role": "system", "content": "You are a helpful assistant for classifying types of security attacks."},
+                    {"role": "user", "content": f"다음 설명을 읽고, 공격 유형 셋 중 어느 것에 해당하는지 선택해 주세요:\n\n설명: {description}\n\n{attack_types_str}\n\n위 공격 유형 중 설명에 가장 잘 맞는 것을 선택해 주세요."}
+                ],
+                'max_tokens': 200,
+                'temperature': 0.2
             }
-        ],
-        max_tokens=200,
-        temperature=0.2
-    )
-    
-    # 응답에서 메시지 내용 가져오기
-    return response.choices[0].message.content.strip()
+        )
+        return response.choices[0].message.content.strip()
+
+async def translate_to_korean(text: str) -> str:
+    async with httpx.AsyncClient() as client:
+        response = await client.post(
+            'https://api.openai.com/v1/chat/completions',
+            headers={
+                'Authorization': f'Bearer {OPENAI_API_KEY}',
+                'Content-Type': 'application/json'
+            },
+            json={
+                'model': 'gpt-4',
+                'messages': [
+                    {"role": "system", "content": "You are a helpful assistant for translating English to Korean."},
+                    {"role": "user", "content": f"Translate the following English text to Korean:\n\n{text}"}
+                ],
+                'max_tokens': 200,
+                'temperature': 0.3
+            }
+        )
+        response_data = response.json()
+        return response_data['choices'][0]['message']['content'].strip()
 
 def generate_text():
-   pass
-
-def main():
+    pass
+async def main():
     # 공격 유형 셋 로드
     attack_types = load_attack_types('attack_types.json')
-    
+
     # 설명 예제
     description = "A method used to execute arbitrary SQL code on a database."
-    
+
     # 공격 유형 분류
-    result = classify_attack(description, attack_types)
+    result = await classify_attack(description, attack_types)
     print(f"Classification result: {result}")
 
 if __name__ == "__main__":
-    main()
+    import asyncio
+    asyncio.run(main())

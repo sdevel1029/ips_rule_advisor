@@ -2,6 +2,7 @@
 from fastapi import APIRouter, HTTPException
 from src.openai.openai_service import generate_text
 
+
 router = APIRouter()
 
 @router.post("/generate/")
@@ -12,3 +13,5 @@ async def generate_text_route():
         raise e 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Unexpected error: {str(e)}")
+
+
