@@ -38,7 +38,8 @@ async def classify_attack(description: str, attack_types: dict) -> str:
                 'temperature': 0.2
             }
         )
-        return response.choices[0].message.content.strip()
+        response_data = response.json()
+        return response_data['choices'][0]['message']['content'].strip()
 
 async def translate_to_korean(text: str) -> str:
     async with httpx.AsyncClient() as client:
@@ -74,6 +75,20 @@ async def main():
     result = await classify_attack(description, attack_types)
     print(f"Classification result: {result}")
 
+
+async def test_translate_to_korean():
+    # 번역할 영어 문구
+    text = "This is a test to translate from English to Korean."
+    
+    # 번역 함수 호출
+    translated_text = await translate_to_korean(text)
+    
+    # 결과 출력
+    print(f"Original text: {text}")
+    print(f"Translated text: {translated_text}")
+
+    
 if __name__ == "__main__":
     import asyncio
     asyncio.run(main())
+    asyncio.run(test_translate_to_korean())
