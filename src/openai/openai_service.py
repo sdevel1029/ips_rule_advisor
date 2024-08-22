@@ -29,7 +29,7 @@ async def classify_attack(description: str, attack_types: dict) -> str:
                 'Content-Type': 'application/json'
             },
             json={
-                'model': 'gpt-4',
+                'model': 'gpt-4o-mini',
                 'messages': [
                     {"role": "system", "content": "You are a helpful assistant for classifying types of security attacks."},
                     {"role": "user", "content": f"다음 설명을 읽고, 공격 유형 셋 중 어느 것에 해당하는지 선택해 주세요:\n\n설명: {description}\n\n{attack_types_str}\n\n위 공격 유형 중 설명에 가장 잘 맞는 것을 선택해 주세요."}
@@ -50,7 +50,7 @@ async def translate_to_korean(text: str) -> str:
                 'Content-Type': 'application/json'
             },
             json={
-                'model': 'gpt-4',
+                'model': 'gpt-4o-mini',
                 'messages': [
                     {"role": "system", "content": "You are a helpful assistant for translating English to Korean."},
                     {"role": "user", "content": f"Translate the following English text to Korean:\n\n{text}"}
