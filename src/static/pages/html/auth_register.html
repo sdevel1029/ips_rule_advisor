@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../vars/vars.css">
+  <link rel="stylesheet" href="../styles/auth_register.css">
+  
+  
+  <style>
+   a,
+   button,
+   input,
+   select,
+   h1,
+   h2,
+   h3,
+   h4,
+   h5,
+   * {
+       box-sizing: border-box;
+       margin: 0;
+       padding: 0;
+       border: none;
+       text-decoration: none;
+       background: none;
+   
+       -webkit-font-smoothing: antialiased;
+   }
+   
+   menu, ol, ul {
+       list-style-type: none;
+       margin: 0;
+       padding: 0;
+   }
+   </style>
+  <title>IPS Rule Advisor</title>
+</head>
+<body>
+  <div class="layout-wrapper">
+    <div class="header">
+      <div class="header-logo">
+        <div class="logo">
+          <img class="hdd-fill" src="../vectors/logo-hdd-fill0.svg" />
+          <img class="shield-plus" src="../vectors/logo-shield-plus0.svg" />
+        </div>
+      </div>
+    </div>
+    <form class="content__register-form">
+      <div class="content-title">회원가입</div>
+      <div class="form-input">
+        <label class="label-input" for="">닉네임</label>
+        <input class="input-text" id="" name="" type="text" placeholder="4~16글자 이내 한글, 영문, 숫자"></input>
+      </div>
+      <div class="form-input"> 
+        <label class="label-input" for="">이메일 주소</label>
+        <input class="input-text" id="" name="" type="text" placeholder="example@email.com"></input>
+      </div>
+      <div class="form-input">
+        <label class="label-input" for="">비밀번호</label>
+        <input class="input-text" id="" name="" type="password" placeholder="영문 대/소문자, 숫자, 특수문자 포함, 8자 이상 ~ 20자 이하"></input>
+      </div>
+      <div class="form-input">
+        <label class="label-input" for="">비밀번호 확인</label>
+        <input class="input-text--error"></input>
+        <div class="text-description--error">입력한 비밀번호와 같지 않습니다.</div>
+      </div>
+      <button class="button-disabled text-button--disabled">계속</button>
+    </form>
+  </div>
+  
+</body>
+</html>
