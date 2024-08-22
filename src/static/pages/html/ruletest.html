@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../vars/vars.css">
+  <link rel="stylesheet" href="../styles/ruletest.css">
+  
+  
+  <style>
+   a,
+   button,
+   input,
+   select,
+   h1,
+   h2,
+   h3,
+   h4,
+   h5,
+   * {
+       box-sizing: border-box;
+       margin: 0;
+       padding: 0;
+       border: none;
+       text-decoration: none;
+       background: none;
+   
+       -webkit-font-smoothing: antialiased;
+   }
+   
+   menu, ol, ul {
+       list-style-type: none;
+       margin: 0;
+       padding: 0;
+   }
+   </style>
+  <title>IPS Rule Advisor</title>
+</head>
+<body>
+  <div class="layout-wrapper">
+    <header class="header">
+      <div class="header-logo">
+        <div class="logo">
+          <img class="hdd-fill" src="../vectors/logo-hdd-fill0.svg" />
+          <img class="shield-plus" src="../vectors/logo-shield-plus0.svg" />
+        </div>
+      </div>
+      <div class="header-nav">
+        <a class="nav-item item-text" href="">정보수집</a>
+        <a class="nav-item--active item-text" href="">룰 테스트</a>
+        <a class="nav-item item-text" href="">마이페이지</a>
+      </div>
+      <div class="header-auth">
+        <div class="auth-profile">
+          <div class="avatar-img">
+            <img class="shape" src="../images/avatar-0.png"/>
+          </div>
+          <div class="profile-name">
+            <div class="text-name">YSD 님</div>
+          </div>
+        </div>
+      </div>
+    </header>
+    <form class="card-rule-form">
+      <div class="card__title">IDS/IPS 룰 테스트</div>
+      <div class="form-input">
+        <label class="label-input" for="">CVE 코드</label>
+        <input class="input-text" id="" name="" type="text" placeholder="CVE 코드 입력"></input>
+      </div>
+      <div class="dropdown-field">
+        <label class="dropdown-label" for="">IPS</label> 
+        <select class="dropdown-select" name="" id="">
+          <option class="dropdown-item text-dropdown-item" value="Snort">Snort</option>
+          <option class="dropdown-item text-dropdown-item" value="Suricata">Suricata</option>
+        </select>
+      </div>
+      <div class="dropdown-field">
+        <label class="dropdown-label" for="">버전</label> 
+        <select class="dropdown-select" name="" id="">
+          <option class="dropdown-item text-dropdown-item" value="2.9.0">2.9.0</option>
+          <option class="dropdown-item text-dropdown-item" value="3.0.0">3.0.0</option>
+        </select>
+      </div>
+      <div class="card__row--center">
+        <div class="slider-field">
+          <div class="slider-label">총 테스트 패킷:</div>
+          <input class="slider" id="" name="" type="range" min="0" max="3000">
+          <div class="slider-rside">
+            <div class="text-value">1000</div>
+            <div class="text-description">~30초</div>
+          </div>
+        </div>
+        <div class="slider-field">
+          <div class="slider-label">공격 패킷 비율:</div>
+          <input class="slider" id="" name="" type="range" min="0" max="3000">
+          <div class="slider-rside"> 
+            <div class="text-value">30%</div>
+            <div class="text-description">3000 패킷</div>
+          </div>
+        </div>
+      </div>
+      <div class="card__row--left">
+        <div class="checkbox-field">
+          <input class="input-checkbox"  id="" name="" type="checkbox"></input>
+          <div class="checkbox-label">
+            <label class="label-checkbox">정확도 테스트</label>
+            <div class="text-description">(정탐, 과탐, 오탐 등)</div>
+          </div>
+        </div>
+        <div class="checkbox-field">
+            <input class="input-checkbox"  id="" name="" type="checkbox"></input>
+            <div class="checkbox-label">
+              <label class="label-checkbox">성능 테스트</label>
+              <div class="text-description">(지연시간, 로드율 등)</div>
+            </div>
+        </div>
+      </div>
+      <div class="card__row--right">
+        <div class="button-group">
+          <button class="button-neutral text-button--neutral">추가 룰셋 업로드</button>
+          <button class="button-neutral text-button--neutral">정상 테스트 패킷 업로드</button>
+          <button class="button-neutral text-button--neutral">공격 테스트 패킷 업로드</button>
+          <button class="button-primary text-button--primary">테스트</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+</body>
+</html>

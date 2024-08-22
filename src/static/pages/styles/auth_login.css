@@ -1,0 +1,334 @@
+.layout-wrapper,
+.layout-wrapper * {
+  box-sizing: border-box;
+}
+.layout-wrapper {
+  background: #ffffff;
+  padding: 0rem var(--space-margin-sidemargin, 22.5rem) 0rem
+    var(--space-margin-sidemargin, 22.5rem);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-margin-cmargin-s, 3rem);
+  align-items: center;
+  justify-content: flex-start;
+  position: relative;
+
+}
+.header {
+  background: var(--background-default-default, #ffffff);
+  border-style: solid;
+  border-color: var(--border-default-default, #d9d9d9);
+  border-width: 0rem 0rem 0.0625rem 0rem;
+  padding: 0rem 1.5rem 0rem 1.5rem;
+  display: flex;
+  flex-direction: row;
+  gap: 0rem;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  align-content: center;
+  align-self: stretch;
+  flex-shrink: 0;
+  height: 4.375rem;
+  position: relative;
+  overflow: hidden;
+}
+.header-logo {
+  display: flex;
+  flex-direction: row;
+  gap: 1.5rem;
+  align-items: center;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  position: relative;
+}
+.logo {
+  flex-shrink: 0;
+  width: var(--icon-large, 2.5rem);
+  height: var(--icon-large, 2.5rem);
+  position: relative;
+}
+.hdd-fill {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  right: 0%;
+  left: 0%;
+  bottom: 0%;
+  top: 0%;
+  overflow: visible;
+}
+.shield-plus {
+  width: 66.67%;
+  height: 66.67%;
+  position: absolute;
+  right: 16.67%;
+  left: 16.67%;
+  bottom: 33.33%;
+  top: 0%;
+  overflow: visible;
+}
+.content__login-form {
+  background: var(--background-default-default, #ffffff);
+  border-radius: var(--radius-200, 0.5rem);
+  border-style: solid;
+  border-color: var(--border-default-default, #d9d9d9);
+  border-width: 0.0625rem;
+  padding: var(--space-600, 1.5rem);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-600, 1.5rem);
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  width: 36.75rem;
+  min-width: 20rem;
+  position: relative;
+  box-shadow: var(
+    --info-shadow-box-shadow,
+    0rem 0.5rem 0.25rem 0rem rgba(0, 0, 0, 0.25)
+  );
+}
+.content-title {
+  color: #000000;
+  text-align: left;
+  font-family: var(--subtitle-font-family, "Inter-Regular", sans-serif);
+  font-size: var(--subtitle-font-size, 2rem);
+  line-height: var(--subtitle-line-height, 120%);
+  font-weight: var(--subtitle-font-weight, 400);
+  position: relative;
+}
+.form-input {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200, 0.5rem);
+  align-items: flex-start;
+  justify-content: flex-start;
+  align-self: stretch;
+  flex-shrink: 0;
+  position: relative;
+}
+.label-input {
+  color: var(--text-default-default, #1e1e1e);
+  text-align: left;
+  font-family: var(--body-base-font-family, "Inter-Regular", sans-serif);
+  font-size: var(--body-base-font-size, 1rem);
+  line-height: var(--body-base-line-height, 140%);
+  font-weight: var(--body-base-font-weight, 400);
+  position: relative;
+  align-self: stretch;
+}
+.input-text {
+  background: var(--background-default-default, #ffffff);
+  border-radius: var(--radius-200, 0.5rem);
+  border-style: solid;
+  border-color: var(--border-default-default, #d9d9d9);
+  border-width: 0.0625rem;
+  padding: var(--space-300, 0.75rem) var(--space-400, 1rem)
+    var(--space-300, 0.75rem) var(--space-400, 1rem);
+  display: flex;
+  flex-direction: row;
+  gap: 0rem;
+  align-items: center;
+  justify-content: flex-start;
+  align-self: stretch;
+  flex-shrink: 0;
+  min-width: 15rem;
+  position: relative;
+  overflow: hidden;
+}
+.form-row-01 {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  align-self: stretch;
+  flex-shrink: 0;
+  position: relative;
+}
+.checkbox-field {
+  display: flex;
+  flex-direction: row;
+  gap: var(--space-300, 0.75rem);
+  align-items: center;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  position: relative;
+}
+.input-checkbox {
+  background: var(--background-default-default, #ffffff);
+  border-radius: var(--radius-100, 0.25rem);
+  border-style: solid;
+  border-color: var(--border-brand-tertiary, #757575);
+  border-width: 0.0625rem;
+  display: flex;
+  flex-direction: row;
+  gap: 0.625rem;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 1rem;
+  height: 1rem;
+  position: relative;
+  overflow: hidden;
+}
+.label-checkbox {
+  color: var(--text-default-default, #1e1e1e);
+  text-align: left;
+  font-family: var(--body-base-font-family, "Inter-Regular", sans-serif);
+  font-size: var(--body-base-font-size, 1rem);
+  line-height: var(--body-base-line-height, 140%);
+  font-weight: var(--body-base-font-weight, 400);
+  position: relative;
+}
+.text-link {
+  display: flex;
+  flex-direction: row;
+  gap: 0rem;
+  align-items: flex-start;
+  justify-content: flex-end;
+  flex-shrink: 0;
+  position: relative;
+  color: var(--text-default-default, #1e1e1e);
+  text-align: left;
+  font-family: var(--body-link-font-family, "Inter-Regular", sans-serif);
+  font-size: var(--body-link-font-size, 1rem);
+  line-height: var(--body-link-line-height, 140%);
+  font-weight: var(--body-link-font-weight, 400);
+  text-decoration: underline;
+}
+
+.button-primary {
+  background: var(--background-brand-default, #2c2c2c);
+  border-radius: var(--radius-200, 0.5rem);
+  border-style: solid;
+  border-color: var(--border-brand-default, #2c2c2c);
+  border-width: 0.0625rem;
+  padding: var(--space-300, 0.75rem);
+  display: flex;
+  flex-direction: row;
+  gap: var(--space-200, 0.5rem);
+  align-items: center;
+  justify-content: center;
+  align-self: stretch;
+  flex-shrink: 0;
+  height: 3.375rem;
+  position: relative;
+  overflow: hidden;
+}
+.text-button--primary {
+  color: var(--text-brand-on-brand, #f5f5f5);
+  text-align: left;
+  font-family: var(--subheading-font-family, "Inter-Regular", sans-serif);
+  font-size: var(--subheading-font-size, 1.25rem);
+  line-height: var(--subheading-line-height, 120%);
+  font-weight: var(--subheading-font-weight, 400);
+  position: relative;
+}
+.button-neutral {
+  background: var(--background-neutral-tertiary, #e3e3e3);
+  border-radius: var(--radius-200, 0.5rem);
+  border-style: solid;
+  border-color: var(--border-neutral-secondary, #767676);
+  border-width: 0.0625rem;
+  padding: var(--space-300, 0.75rem);
+  display: flex;
+  flex-direction: row;
+  gap: var(--space-200, 0.5rem);
+  align-items: center;
+  justify-content: center;
+  align-self: stretch;
+  flex-shrink: 0;
+  height: 3.375rem;
+  position: relative;
+  overflow: hidden;
+}
+.text-button--neutral {
+  color: var(--text-default-default, #1e1e1e);
+  text-align: left;
+  font-family: var(--subheading-font-family, "Inter-Regular", sans-serif);
+  font-size: var(--subheading-font-size, 1.25rem);
+  line-height: var(--subheading-line-height, 120%);
+  font-weight: var(--subheading-font-weight, 400);
+  position: relative;
+}
+.form-row-02 {
+  padding: 0.625rem 0rem 0.625rem 0rem;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  align-self: stretch;
+  flex-shrink: 0;
+  position: relative;
+}
+.line-separate {
+  margin-top: -0.0625rem;
+  border-style: solid;
+  border-color: #cfdfe2;
+  border-width: 0.0625rem 0 0 0;
+  flex: 1;
+  height: 0rem;
+  position: relative;
+}
+.text-seperate {
+  color: #294957;
+  text-align: center;
+  font-family: "Roboto-Regular", sans-serif;
+  font-size: 1rem;
+  line-height: 100%;
+  letter-spacing: 0.01em;
+  font-weight: 400;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.button-login--google {
+  background: #ffffff;
+  border-radius: 0.625rem;
+  padding: 0.9375rem;
+  align-self: stretch;
+  flex-shrink: 0;
+  height: 3.375rem;
+  position: relative;
+  box-shadow: 0rem 0.125rem 0.1875rem 0rem rgba(0, 0, 0, 0.17),
+    0rem 0rem 0.1875rem 0rem rgba(0, 0, 0, 0.08);
+}
+.label-login--google {
+  background: #ffffff;
+  border-radius: 0.625rem;
+  padding: 0.9375rem;
+  display: flex;
+  flex-direction: row;
+  gap: 0.9375rem;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: calc(50% - 5.25rem);
+  top: calc(50% - 1.6875rem);
+}
+.logo-google {
+  background: #ffffff;
+  flex-shrink: 0;
+  width: 1.5rem;
+  height: 1.5rem;
+  position: relative;
+}
+.logo-googleg-48-dp {
+  height: auto;
+  position: absolute;
+  left: 0.03125rem;
+  top: 0.03125rem;
+  overflow: visible;
+}
+.text-button--google {
+  color: rgba(0, 0, 0, 0.54);
+  text-align: left;
+  font-family: var(--subheading-font-family, "Inter-Regular", sans-serif);
+  font-size: var(--subheading-font-size, 1.25rem);
+  line-height: var(--subheading-line-height, 120%);
+  font-weight: var(--subheading-font-weight, 400);
+  position: relative;
+}
