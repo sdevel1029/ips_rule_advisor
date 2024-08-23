@@ -1,3 +1,4 @@
+#src/main.py
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from src.auth.auth_routes import router as auth_router
@@ -8,7 +9,6 @@ import uvicorn
 import asyncio
 import src.getinfo.rpatools as rpatools
 from src.getinfo import rpatools
-from src.openai.openai_service import translate_to_korean
 
 app = FastAPI()
 
