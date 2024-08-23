@@ -1,3 +1,4 @@
+#src/openai/openai_service.py
 import json
 import os
 from dotenv import load_dotenv
@@ -17,7 +18,10 @@ def load_attack_types(filename: str):
     with open(file_path, 'r') as file:
         return json.load(file)
 
-async def classify_attack(description: str, attack_types: dict) -> str:
+async def classify_attack(description: str) -> str:
+    # 공격 유형을 JSON 파일에서 로드
+    attack_types = load_attack_types("attack_types.json")
+    
     # 공격 유형 셋을 문자열로 변환
     attack_types_str = "\n".join([f"{key}: {value}" for key, value in attack_types.items()])
 
@@ -40,7 +44,7 @@ async def classify_attack(description: str, attack_types: dict) -> str:
         )
         response_data = response.json()
         return response_data['choices'][0]['message']['content'].strip()
-
+    
 async def translate_to_korean(text: str) -> str:
     async with httpx.AsyncClient() as client:
         response = await client.post(
@@ -61,6 +65,52 @@ async def translate_to_korean(text: str) -> str:
         )
         response_data = response.json()
         return response_data['choices'][0]['message']['content'].strip()
+
+async def chat_with_gpt(chat_message: str) -> dict:
+    async with httpx.AsyncClient() as client:
+        response = await client.post(
+            'https://api.openai.com/v1/chat/completions',
+            headers={
+                'Authorization': f'Bearer {OPENAI_API_KEY}',
+                'Content-Type': 'application/json'
+            },
+            json={
+                'model': 'gpt-4o-mini',
+                'messages': [
+                    {"role": "system", "content": "You are a helpful assistant."},
+                    {"role": "user", "content": chat_message}
+                ],
+                'max_tokens': 300,
+                'temperature': 0.3
+            }
+        )
+        response_data = response.json()
+        reply = response_data['choices'][0]['message']['content'].strip()
+        return {"reply": reply}
+
+
+async def summarize_vector(vector:str)->str:
+    async with httpx.AsyncClient() as client:
+        response = await client.post(
+             'https://api.openai.com/v1/chat/completions',
+            headers={
+                'Authorization': f'Bearer {OPENAI_API_KEY}',
+                'Content-Type': 'application/json'
+            },
+            json={
+                'model': 'gpt-4o-mini',
+                'messages': [
+                    {"role": "system", "content": "You are a helpful assistant that explains CVSS vectors in Korean."},
+                    {"role": "user", "content": f"다음 CVSS 벡터를 한글로 요약해줘:\n\n{vector}"}
+                ],
+                'max_tokens': 200,
+                'temperature': 0.3
+            }
+        )
+        response_data = response.json()
+        return response_data['choices'][0]['message']['content'].strip()
+
+
 
 def generate_text():
     pass
@@ -86,7 +136,6 @@ async def test_translate_to_korean():
     # 결과 출력
     print(f"Original text: {text}")
     print(f"Translated text: {translated_text}")
-
     
 if __name__ == "__main__":
     import asyncio

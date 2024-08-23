@@ -1,7 +1,10 @@
+#src/getinfo/rpatools.py
 import httpx
 import asyncio
 from ..database import supabase_client
 from src.getinfo.global_var import test_wait_list
+from src.openai.openai_service import summarize_vector
+
 
 # 수집원 세팅
 # 형태 : 딕셔너리로 "사이트 이름" : "cve 코드를 제외한 베이스 url"
