@@ -17,7 +17,10 @@ def load_attack_types(filename: str):
     with open(file_path, 'r') as file:
         return json.load(file)
 
-async def classify_attack(description: str, attack_types: dict) -> str:
+async def classify_attack(description: str) -> str:
+    # 공격 유형을 JSON 파일에서 로드
+    attack_types = load_attack_types("attack_types.json")
+    
     # 공격 유형 셋을 문자열로 변환
     attack_types_str = "\n".join([f"{key}: {value}" for key, value in attack_types.items()])
 
@@ -40,7 +43,7 @@ async def classify_attack(description: str, attack_types: dict) -> str:
         )
         response_data = response.json()
         return response_data['choices'][0]['message']['content'].strip()
-
+    
 async def translate_to_korean(text: str) -> str:
     async with httpx.AsyncClient() as client:
         response = await client.post(
