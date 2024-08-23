@@ -1,3 +1,4 @@
+#src/openai/openai_service.py
 import json
 import os
 from dotenv import load_dotenv
@@ -86,7 +87,31 @@ async def chat_with_gpt(chat_message: str) -> dict:
         response_data = response.json()
         reply = response_data['choices'][0]['message']['content'].strip()
         return {"reply": reply}
-    
+
+
+async def summarize_vector(vector:str)->str:
+    async with httpx.AsyncClient() as client:
+        response = await client.post(
+             'https://api.openai.com/v1/chat/completions',
+            headers={
+                'Authorization': f'Bearer {OPENAI_API_KEY}',
+                'Content-Type': 'application/json'
+            },
+            json={
+                'model': 'gpt-4o-mini',
+                'messages': [
+                    {"role": "system", "content": "You are a helpful assistant that explains CVSS vectors in Korean."},
+                    {"role": "user", "content": f"다음 CVSS 벡터를 한글로 요약해줘:\n\n{vector}"}
+                ],
+                'max_tokens': 200,
+                'temperature': 0.3
+            }
+        )
+        response_data = response.json()
+        return response_data['choices'][0]['message']['content'].strip()
+
+
+
 def generate_text():
     pass
 async def main():

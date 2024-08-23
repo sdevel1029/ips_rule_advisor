@@ -1,7 +1,10 @@
+#src/getinfo/rpatools.py
 import httpx
 import asyncio
 from ..database import supabase_client
 from src.getinfo.global_var import test_wait_list
+from src.openai.openai_service import summarize_vector
+
 
 # 수집원 세팅
 # 형태 : 딕셔너리로 "사이트 이름" : "cve 코드를 제외한 베이스 url"
@@ -56,6 +59,7 @@ async def nvd(code) :
     output["설명"] = result["vulnerabilities"][0]["cve"]["descriptions"][0]["value"]
     output["점수"] = result["vulnerabilities"][0]["cve"]["metrics"]['cvssMetricV31'][0]["cvssData"]["baseScore"]
     output["메트릭"] = result["vulnerabilities"][0]["cve"]["metrics"]['cvssMetricV31'][0]["cvssData"]["vectorString"]
+    output["메트릭요약"] = await summarize_vector(output["메트릭"])
 
     # 제품, cpe
     cpe_list = []
