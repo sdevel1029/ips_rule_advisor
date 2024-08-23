@@ -65,6 +65,28 @@ async def translate_to_korean(text: str) -> str:
         response_data = response.json()
         return response_data['choices'][0]['message']['content'].strip()
 
+async def chat_with_gpt(chat_message: str) -> dict:
+    async with httpx.AsyncClient() as client:
+        response = await client.post(
+            'https://api.openai.com/v1/chat/completions',
+            headers={
+                'Authorization': f'Bearer {OPENAI_API_KEY}',
+                'Content-Type': 'application/json'
+            },
+            json={
+                'model': 'gpt-4o-mini',
+                'messages': [
+                    {"role": "system", "content": "You are a helpful assistant."},
+                    {"role": "user", "content": chat_message}
+                ],
+                'max_tokens': 300,
+                'temperature': 0.3
+            }
+        )
+        response_data = response.json()
+        reply = response_data['choices'][0]['message']['content'].strip()
+        return {"reply": reply}
+    
 def generate_text():
     pass
 async def main():
@@ -89,7 +111,6 @@ async def test_translate_to_korean():
     # 결과 출력
     print(f"Original text: {text}")
     print(f"Translated text: {translated_text}")
-
     
 if __name__ == "__main__":
     import asyncio
