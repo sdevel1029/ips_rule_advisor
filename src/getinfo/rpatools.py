@@ -59,7 +59,6 @@ async def nvd(code) :
     output["설명"] = result["vulnerabilities"][0]["cve"]["descriptions"][0]["value"]
     output["점수"] = result["vulnerabilities"][0]["cve"]["metrics"]['cvssMetricV31'][0]["cvssData"]["baseScore"]
     output["메트릭"] = result["vulnerabilities"][0]["cve"]["metrics"]['cvssMetricV31'][0]["cvssData"]["vectorString"]
-    output["메트릭요약"] = await summarize_vector(output["메트릭"])
 
     # 제품, cpe
     cpe_list = []
