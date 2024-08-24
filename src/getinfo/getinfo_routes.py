@@ -17,12 +17,11 @@ async def get_info_page(request: Request, cve_code: str):
         info_result['nvd']['설명'] = await translate_to_korean(info_result['nvd']['설명'])
     
     if '메트릭' in info_result.get('nvd',{}):
-        metrics_summary = info_result['nvd'].get('메트릭요약', '정보없음')
+        metrics_summary = await summarize_vector(info_result['nvd']['메트릭'])
 
     attack_type = await classify_attack(info_result['nvd']['설명'])
-    
 
-    
+
     return templates.TemplateResponse("info.html", {
         "request": request, 
         "info": info_result,
