@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/static/pages/vars/vars.css">
+  <link rel="stylesheet" href="/static/pages/styles/auth_login.css">
+  <style>
+    a,
+    button,
+    input,
+    select,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      border: none;
+      text-decoration: none;
+      background: none;
+
+      -webkit-font-smoothing: antialiased;
+    }
+
+    menu,
+    ol,
+    ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+  <title>IPS Rule Advisor</title>
+</head>
+
+<body>
+  <div class="layout-wrapper">
+    <header class="header">
+      <div class="header-logo">
+        <div class="logo">
+          <img class="hdd-fill" src="/static/pages/vectors/logo-hdd-fill0.svg" />
+          <img class="shield-plus" src="/static/pages/vectors/logo-shield-plus0.svg" />
+        </div>
+      </div>
+    </header>
+    <div class="content-title">로그인</div>
+    <div class="form-input">
+      <label class="label-input" for="email">이메일 주소</label>
+      <input class="input-text" id="email" type="text" placeholder="example@email.com">
+    </div>
+    <div class="form-input">
+      <label class="label-input" for="password">비밀번호</label>
+      <input class="input-text" id="password" type="password" placeholder="특수문자, 숫자, 영문 대소문자 구별, 최소 8글자 이상">
+    </div>
+    <div class="form-row-01">
+      <div class="checkbox-field">
+        <input class="input-checkbox" id="remember_me" type="checkbox">
+        <label class="label-checkbox" for="remember_me">자동 로그인</label>
+      </div>
+      <a href="#" class="text-link">비밀번호를 잊으셨나요?</a>
+    </div>
+    <button class="button-primary text-button--primary" onclick="login()">로그인</button>
+    <button class="button-neutral text-button--neutral" onclick="window.location.href='/register';">회원가입</button>
+    <div class="form-row-02">
+      <div class="line-separate"></div>
+      <div class="text-seperate">또는</div>
+      <div class="line-separate"></div>
+    </div>
+    <button class="button-login--google">
+      <label class="label-login--google" for="">
+        <div class="logo-google">
+          <img class="logo-googleg-48-dp" src="/static/pages/vectors/icon-googleg-48-dp0.svg" />
+        </div>
+        <div class="text-button--google" onclick="window.location.href='/auth/sign_in_google';">구글 로그인</div>
+      </label>
+    </button>
+  </div>
+
+  <script>
+    async function login() {
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        const response = await fetch("/auth/sign_in", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                email: email,
+              password:password})
+        });
+        if (!response.ok) {  // HTTP 상태 코드가 200-299가 아닌 경우
+                const errorData = await response.json();  // 서버로부터 받은 오류 메시지
+                alert("로그인 실패: ");
+                window.location.href = "/login";
+            } else {
+                alert("로그인 성공!");
+            }
+        
+    }
+    </script>

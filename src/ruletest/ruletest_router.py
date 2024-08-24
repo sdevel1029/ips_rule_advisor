@@ -1,4 +1,4 @@
-import RPATools
+'''import RPATools
 from fastapi import File, UploadFile,FastAPI,Request,Response
 from pydantic import BaseModel
 import os
@@ -7,7 +7,7 @@ from fastapi import APIRouter, Depends, Response, Request, HTTPException
 from fastapi.templating import Jinja2Templates
 
 router = APIRouter()
-templates = Jinja2Templates(directory="src/static/pages/html")
+templates = Jinja2Templates(directory="src/templates")
 
 
 class cve(BaseModel):
@@ -143,4 +143,4 @@ async def test(request:Request,response: Response,client=Depends(get_supabase_cl
 )
     response.set_cookie(key="previd", value=res.data[0]['previd'])
     return {"status": "success"}
-
+'''
