@@ -9,12 +9,15 @@ router = APIRouter()
 templates = Jinja2Templates(directory="src/templates")
 
 @router.post("/sign_up")
-def sign_up_route(login:Login,client=Depends(get_supabase_client)):
-    return sign_up(client=client, email=login.email, password=login.password)
+def sign_up_route(request: Request,registrer:Register,client=Depends(get_supabase_client)):
+    if registrer.password != registrer.confirm_password:
+        raise HTTPException(status_code=400, detail="Passwords do not match")
+    sign_up(client=client, email=registrer.email, password=registrer.password)
+    return templates.TemplateResponse("getinfo.html", {"request": request})
 
 @router.post("/sign_in")
 def sign_in_route(login:Login, response: Response, client=Depends(get_supabase_client)):
-    return sign_in(client, email=login.email, password=login.password, response=response)
+    return sign_in(client,email=login.email, password=login.password,response=response)
 
 @router.get("/sign_out")
 def sign_out_route(response: Response):
