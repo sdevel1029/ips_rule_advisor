@@ -3,8 +3,10 @@
 from fastapi import APIRouter, Depends, Response, Request, HTTPException
 from src.database.supabase_client import get_supabase_client
 from src.auth.auth_service import sign_up, sign_in, sign_out, sign_in_google, callback, profile ,Login,read_root
+from fastapi.templating import Jinja2Templates
 
 router = APIRouter()
+templates = Jinja2Templates(directory="src/templates")
 
 @router.post("/sign_up")
 def sign_up_route(login:Login,client=Depends(get_supabase_client)):
