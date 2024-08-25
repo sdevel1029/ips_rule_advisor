@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/static/pages/vars/vars.css">
+  <link rel="stylesheet" href="/static/pages/styles/auth_register.css">
+  
+  <style>
+   a,
+   button,
+   input,
+   select,
+   h1,
+   h2,
+   h3,
+   h4,
+   h5,
+   * {
+       box-sizing: border-box;
+       margin: 0;
+       padding: 0;
+       border: none;
+       text-decoration: none;
+       background: none;
+   
+       -webkit-font-smoothing: antialiased;
+   }
+   
+   menu, ol, ul {
+       list-style-type: none;
+       margin: 0;
+       padding: 0;
+   }
+   </style>
+  <title>IPS Rule Advisor</title>
+</head>
+<body>
+  <div class="layout-wrapper">
+    <div class="header">
+      <div class="header-logo">
+        <div class="logo">
+          <img class="hdd-fill" src="../static/pages/vectors/logo-hdd-fill0.svg" />
+          <img class="shield-plus" src="../static/pages/vectors/logo-shield-plus0.svg" />
+        </div>
+      </div>
+    </div>
+    <form id="registerForm">
+      <div class="content-title">회원가입</div>
+      <div class="form-input"> 
+        <label class="label-input" for="email">이메일 주소</label>
+        <input class="input-text" id="email" name="email" type="text" placeholder="example@email.com"></input>
+      </div>
+      <div class="form-input">
+        <label class="label-input" for="password">비밀번호</label>
+        <input class="input-text" id="password" name="password" type="password" placeholder="영문 대/소문자, 숫자, 특수문자 포함, 8자 이상 ~ 20자 이하"></input>
+      </div>
+      <div class="form-input">
+        <label class="label-input" for="confirm_password">비밀번호 확인</label>
+        <input class="input-text" id="confirm_password" name="confirm_password" type="password" placeholder="비밀번호를 다시 입력하세요"></input>
+        <div class="text-description--error" id="passwordError" style="display: none;">입력한 비밀번호와 같지 않습니다.</div>
+      </div>
+      <button type="submit" class="button-disabled text-button--disabled" id="submitButton">계속</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById("registerForm").addEventListener("submit", async function(event) {
+        event.preventDefault(); // 폼 기본 제출 막기
+
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        const confirmPassword = document.getElementById("confirm_password").value;
+        const passwordError = document.getElementById("passwordError");
+
+        // 비밀번호 확인
+        if (password !== confirmPassword) {
+            passwordError.style.display = "block";
+            return;
+        } else {
+            passwordError.style.display = "none";
+        }
+
+        try {
+            const response = await fetch("/auth/sign_up", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    email: email,
+                    password: password
+                })
+            });
+
+            if (response.ok) {
+                alert("회원가입이 성공적으로 완료되었습니다.");
+                window.location.href = "/login";
+            } else {
+                const result = await response.json();
+                alert("회원가입 실패: " );
+            }
+        } catch (error) {
+            alert("서버와의 통신 중 문제가 발생했습니다. 다시 시도해주세요.");
+        }
+    });
+  </script>
+</body>
+</html>

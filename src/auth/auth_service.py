@@ -5,7 +5,12 @@ from fastapi.responses import RedirectResponse,HTMLResponse
 from pydantic import BaseModel
         
 
-class Login(BaseModel):
+class Register(BaseModel):
+    email: str
+    password: str
+    confirm_password: str
+
+class SignInData(BaseModel):
     email: str
     password: str
 
@@ -36,7 +41,7 @@ def read_root():
     """
     return HTMLResponse(content=html_content)
 
-def sign_in(client: Client, email: str, password: str, response: Response):
+def sign_in(client: Client, email: str, password: str,response: Response):
     try:
         res = client.auth.sign_in_with_password({"email": email, "password": password})
         if res.user:
