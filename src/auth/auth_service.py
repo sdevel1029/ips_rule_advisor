@@ -45,9 +45,8 @@ def sign_in(client: Client, email: str, password: str,response: Response):
     try:
         res = client.auth.sign_in_with_password({"email": email, "password": password})
         if res.user:
-            response = RedirectResponse(url="http://127.0.0.1:8000/auth/profile")
             response.set_cookie(key="user", value=res.session.access_token)
-            return response
+            return {"status": "success"}
         else:
             raise HTTPException(status_code=400, detail="Invalid credentials")
     except Exception as e:
@@ -77,9 +76,7 @@ def callback(client: Client, request: Request,response:Response):
         rcode = request.query_params.get("refresh_token")
         response.set_cookie(key="user", value=code)
         client.auth.set_session(code, rcode)
-        response = RedirectResponse(url="http://127.0.0.1:8000/auth/profile")
-        response.set_cookie(key="user", value=code)
-        return response  #어디로 보낼지는 체크필요
+        return {"status": "success"}  #어디로 보낼지는 체크필요
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
