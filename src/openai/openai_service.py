@@ -36,9 +36,9 @@ async def classify_attack(description: str) -> str:
                 'model': 'gpt-4o-mini',
                 'messages': [
                     {"role": "system", "content": "You are a helpful assistant for classifying types of security attacks."},
-                    {"role": "user", "content": f"다음 설명을 읽고, 공격 유형 셋 중 어느 것에 해당하는지 선택해 주세요:\n\n설명: {description}\n\n{attack_types_str}\n\n위 공격 유형 중 설명에 가장 잘 맞는 것을 선택해 주세요."}
+                    {"role": "user", "content": f"다음 설명을 읽고, 아래 목록에서 가장 잘 맞는 공격 유형을 정확하게 하나만 선택해 주세요. 답변은 간단히 공격 유형의 이름만 적어 주세요.\n\n설명: {description}\n\n{attack_types_str}\n\n위 목록 중에서 해당하는 공격 유형의 이름을 하나만 적어 주세요."}
                 ],
-                'max_tokens': 200,
+                'max_tokens': 50,
                 'temperature': 0.2
             }
         )
