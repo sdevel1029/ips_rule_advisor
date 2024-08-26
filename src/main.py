@@ -16,9 +16,9 @@ app = FastAPI()
 
 # 프로그램 시작 시 동작하게 하기
 # 1초마다, 대기열에 있는 아직 수행 안된 테스트를, 현재 사용 가능한 테스트 서버에 보내기
-@app.on_event("startup")
-async def startup_event():
-    asyncio.create_task(rpatools.do_remainning_test())
+# @app.on_event("startup")
+# async def startup_event():
+#     asyncio.create_task(rpatools.do_remainning_test())
 
     
 
