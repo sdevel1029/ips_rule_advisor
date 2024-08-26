@@ -79,19 +79,19 @@
             </div>
           </div>
           <div class="table-row">
-            {% if info.nvd.제품들 %}
-              {% for cpe_list in info.nvd.제품들 %}
+          {% if info.nvd.제품들 %}
+            {% for cpe_list in info.nvd.제품들 %}
                 {% for cpe in cpe_list %}
-                  <div class="table-grid-03">
-                    <div class="table__cell-03 text-cell">{{ cpe.CPE | default('정보 없음') }}</div>
-                    <div class="table__cell-03 text-cell">{{ cpe.포함 if cpe.포함 is not none else '-' }}</div>
-                    <div class="table__cell-03 text-cell">{{ cpe.비포함 if cpe.비포함 is not none else '-' }}</div>
-                  </div>
+                    <div class="table-grid-03">
+                        <div class="table__cell-03 text-cell">{{ cpe.CPE | default('정보 없음') }}</div>
+                        <div class="table__cell-03 text-cell">{{ cpe.포함 if cpe.포함 is not none else '-' }}</div>
+                        <div class="table__cell-03 text-cell">{{ cpe.비포함 if cpe.비포함 is not none else '-' }}</div>
+                    </div>
                 {% endfor %}
-              {% endfor %}
-            {% else %}
-              <p>정보가 없습니다.</p>
-            {% endif %}
+            {% endfor %}
+        {% else %}
+            <p>정보가 없습니다.</p>
+        {% endif %}
           </div>
         </div>
       </div>
@@ -210,4 +210,5 @@
                 <li><a href="{{ poc.url }}" target="_blank">{{ poc.url }}</a> - {{ poc.tags | join(', ') | default('정보 없음') }}</li>
               {% endfor %}
             </ul>
+          {% endif %}
             <p>정보
