@@ -22,13 +22,13 @@ supabase = supabase_client.get_supabase_client()
 # 비동기 get 함수
 async def send_get_request(url):
     async with httpx.AsyncClient() as client:
-        response = await client.get(url=url)
+        response = await client.get(url=url, timeout=30)
     return response
 
 # 비동기 post 함수
 async def send_post_request(url, data, files):
     async with httpx.AsyncClient() as client:
-        response = await client.post(url, data=data, files=files)
+        response = await client.post(url, data=data, files=files, timeout=30)
     return response
 
 
@@ -188,19 +188,22 @@ async def test_func1():
             # server 에 요청하기
             files = [("files", (file_path, open(file_path, "rb"))) for file_path in file_paths]
             test_res = await send_post_request(url=test_server_url, data=data, files=files)
-            output = test_res.status_code
+            output = test_res.json()
 
             # 서버 다시 사용 가능으로 수정
             supabase.table("test_server_status").update({"able" : True}).eq("id", server_id).execute()
             
             # 정상 수행 됐으면 test 결과 넣기
-            if output == 200:
-                supabase.table("test_all").update({"done" : True}).eq("id", test_id).execute()
+            if test_res.status_code == 200:
+                supabase.table("test_all").update({"done" : True, "result_normal" : output["정상 패킷 결과"], "result_attack" : output["공격 패킷 결과"]}).eq("id", test_id).execute()
                 ### 여기 추가해야됨
             else : # 비정상이면 다시 대기열 맨 앞에 넣기
                 test_wait_list.insert(0, test_id)
 
+
             return output
+        return {"server" : "is full"}
+    return {"wait_list" : "is empty"}
     
 # 대기열에 등록하고 수행하는 함수
 async def test(user_id : str, cve : str, rule : str, envi : int, what_test : int, file_path_1 : str, file_path_2 : str):
@@ -216,8 +219,8 @@ async def test(user_id : str, cve : str, rule : str, envi : int, what_test : int
     test_wait_list.append(id)
 
     # 수행하기
-    await test_func1()
-
+    output = await test_func1()
+    output["test_id"] = id
 
     return id
 
