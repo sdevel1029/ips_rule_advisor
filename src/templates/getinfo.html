@@ -51,8 +51,12 @@
         <a class="nav-item item-text" href="./auth_login.html">마이페이지</a>
       </div>
       <div class="header-auth">
-        <button class="auth__button-register text-button--neutral">회원가입</button>
-        <button class="auth__button-login text-button--primary">로그인</button>
+        <form action="/register" method="get">
+          <button class="auth__button-register text-button--neutral">회원가입</button>
+        </form>
+        <form action="/login" method="get">
+          <button class="auth__button-login text-button--primary">로그인</button>
+        </form>
       </div>
     </header>
     <form class="content__search-form" id="cve-form" action="/getinfo" method="get">
