@@ -7,31 +7,94 @@
   <link rel="stylesheet" href="../static/vars/vars.css">
   <link rel="stylesheet" href="../static/styles/getinfo_result.css">
   <style>
-   a,
-   button,
-   input,
-   select,
-   h1,
-   h2,
-   h3,
-   h4,
-   h5,
-   * {
-       box-sizing: border-box;
-       margin: 0;
-       padding: 0;
-       border: none;
-       text-decoration: none;
-       background: none;
-       -webkit-font-smoothing: antialiased;
-   }
-   
-   menu, ol, ul {
-       list-style-type: none;
-       margin: 0;
-       padding: 0;
-   }
-   </style>
+    a,
+    button,
+    input,
+    select,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        border: none;
+        text-decoration: none;
+        background: none;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    menu,
+    ol,
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .chat-inputbox {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        background-color: #ffffff;
+        box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.1);
+        justify-content: space-between;
+    }
+
+    .chat-inputbox form {
+        display: flex;
+        align-items: center;
+        width: 100%;
+    }
+
+    .chat-inputbox input {
+        flex-grow: 1;
+        padding: 10px;
+        border-radius: 20px;
+        border: 1px solid #ccc;
+        outline: none;
+        margin-right: 10px;
+    }
+
+    .chat-inputbox button {
+        padding: 10px;
+        border-radius: 50%;
+        color: #fff;
+        cursor: pointer;
+        border: none;
+    }
+
+    .chat-inputbox button img {
+        width: 20px;
+    }
+
+    .chat-wrapper {
+        max-height: 400px;
+        overflow-y: auto;
+        padding: 10px;
+    }
+
+    .chat-message {
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 10px;
+        max-width: 70%;
+    }
+
+    .chat-message.user {
+        background-color: #e0f7fa;
+        margin-left: auto;
+        text-align: right;
+    }
+
+    .chat-message.gpt {
+        background-color: #70a50e;
+        margin-right: auto;
+        text-align: left;
+    }
+</style>
   <title>IPS Rule Advisor</title>
 </head>
 <body>
@@ -213,15 +276,7 @@
 
                     </div>
                     </div>
-                    <div class="message__footer">
-                      <div class="time-gpt">11:35 AM</div>
-                      <div class="icon-group">
-                        <img class="icon-message-botton" src="../static/vectors/icon-copy.svg" />
-                        <img class="icon-message-botton" src="../static/vectors/icon-thumbs-up.svg" />
-                        <img class="icon-message-botton" src="../static/vectors/icon-thumbs-down.svg" />
-                        <img class="icon-message-botton" src="../static/vectors/icon-refresh-cw.svg" />
-                      </div>
-                    </div>
+
                   </div>
                 </div>
               </div>
@@ -229,16 +284,6 @@
           </div>
           <div class="message-my">
             <div class="message-box-right">
-              <div class="bubble-message-my">
-                <div class="message-frame-my">
-                  <div class="text-message-my">
-                    이 취약점에 대한 POC 자세한 내용을 제공해 주시겠습니까?
-                  </div>
-                  <div class="message-footer">
-                    <div class="time-my">11:31 AM</div>
-                  </div>
-                </div>
-              </div>
               <div class="bubble-tip-my">
                 <img class="bubble-tip-my" src="../static/vectors/bubble-tip-my.svg"/>
                 <div class="bottom-curve-rectangle-my"></div>
@@ -363,4 +408,3 @@
 </body>
 </html>
         
-
