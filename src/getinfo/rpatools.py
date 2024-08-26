@@ -195,7 +195,7 @@ async def test_func1():
             
             # 정상 수행 됐으면 test 결과 넣기
             if test_res.status_code == 200:
-                supabase.table("test_all").update({"done" : True, "result_normal" : output["정상 패킷 결과", "result_attack" : "공격 패킷 결과"]}).eq("id", test_id).execute()
+                supabase.table("test_all").update({"done" : True, "result_normal" : output["정상 패킷 결과"], "result_attack" : output["공격 패킷 결과"]}).eq("id", test_id).execute()
                 ### 여기 추가해야됨
             else : # 비정상이면 다시 대기열 맨 앞에 넣기
                 test_wait_list.insert(0, test_id)
