@@ -64,7 +64,7 @@
         <div class="card__title">{{ info.nvd.id | default('정보 없음') }}</div>
         <div class="line-seperate"></div>
         <div class="card__text">게시일 : 2022-03-03 | 최종 수정일 : 2023-04-20</div>
-        <div class="card__text">{{ type | default('정보 없음') }}</div>
+        <div class="card__text">취약점 유형 : {{ type | default('정보 없음') }}</div>
         <div class="card__text">{{ info.nvd.설명 | default('정보 없음') }}</div>
       </div>
 
@@ -104,7 +104,7 @@
           <div class="tab-item--selected text-tab--selected">CVSS 3.x</div>        
         </div>
         <div class="card__text">
-          {{ info.nvd.메트릭 | default('정보 없음') }}
+          메트릭 : {{ info.nvd.메트릭 | default('정보 없음') }}
         </div>
         <div class="table">
           <div class="table-header">
@@ -121,7 +121,7 @@
           </div>
         </div>
         <div class="card__subtitle">메트릭 요약</div>
-        <div class="card__text">{{ info.nvd.메트릭요약 | default('정보 없음') }}</div>
+        <div class="card__text">{{ metrics_summary | default('정보 없음') }}</div>
       </div>
 
       <div class="card-rule">
@@ -141,6 +141,22 @@
             {{ type | default('정보 없음') }}
           </div>
         </div>
+        <div class="card__row">
+          <div class="card__subtitle">영향받는 제품</div>
+          <div class="dropdown-field">
+            <select class="dropdown-select" name="" id="">
+              <option class="dropdown-item text-dropdown-item" value="SQL Injection">abc</option>
+              <option class="dropdown-item text-dropdown-item" value="XSS">xyz</option>
+            </select>
+          </div>
+        </div>
+        <div class="card__rulebox">
+          <div class="text-rulebox">
+            alert http any any -&gt; 192.168.1.0/24 any (msg:&quot;Detect SQL
+            injection attempt&quot;; http.uri; content:&quot;SELECT&quot;;
+            sid:1000004; rev:1;)
+          </div>
+        </div>
       </div>
 
       <div class="card-gpt">
@@ -149,66 +165,202 @@
           <div class="icon-paperclip">
             <img class="paperclip" src="../static/vectors/icon-paperclip.svg" />
           </div>
-          <input type="text" id="user-input" class="chat-input" placeholder="메시지 to ChatGPT...">
-          <div class="icon-send">
-            <button type="submit" class="chat-send-button">전송</button>
-            <img class="send" src="../static/vectors/icon-send.svg" />
+          <form id="chat-form">
+            <input class="input-text" id="user-input" name="user-input" type="text" placeholder="메시지 to ChatGPT..." />
+            <div class="icon-send">
+              <button type="submit" class="chat-send-button">
+                <img class="send" src="../static/vectors/icon-send.svg" />
+              </button>
+            </div>
+          </form>
+        </div>
+        
+        <div class="chat-wrapper">
+          <div class="message-gpt">
+            <div class="message-box-left">
+              <div class="message-box__avatar">
+                <img class="chat-gpt" src="../static/vectors/icon-chat-gpt.svg" />
+              </div>
+              <div class="message-box__bubble">
+                <div class="bubble-tip-gpt">
+                  <img class="bubble-tip-gpt" src="../static/vectors/bubble-tip-gpt.svg" />
+                  <div class="bottom-curve-rectangle-gpt"></div>
+                  <img
+                    class="bottom-curve-vector-gpt"
+                    src="../static/vectors/bottom-curve-vector-gpt.svg"
+                  />
+                </div>
+                <div class="bubble-message-gpt">
+                  <div class="message-frame-gpt">
+                    <div class="message__title">
+                      <div class="text-message-name">ChatGPT</div>
+                    </div>
+                    <div class="message__body">
+                      <div class="text-message-gpt">
+                        <!-- Chat Section -->
+                          <div class="chat-container">
+                            <div class="chat-box" id="chat-box">
+                              <!-- 대화 내용이 여기에 표시됩니다. -->
+                            </div>
+                            <form id="chat-form">
+                              <div class="chat-inputbox">
+
+                              </div>
+                            </form>
+                          </div>
+
+                      </div>
+
+                    </div>
+                    </div>
+                    <div class="message__footer">
+                      <div class="time-gpt">11:35 AM</div>
+                      <div class="icon-group">
+                        <img class="icon-message-botton" src="../static/vectors/icon-copy.svg" />
+                        <img class="icon-message-botton" src="../static/vectors/icon-thumbs-up.svg" />
+                        <img class="icon-message-botton" src="../static/vectors/icon-thumbs-down.svg" />
+                        <img class="icon-message-botton" src="../static/vectors/icon-refresh-cw.svg" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="message-my">
+            <div class="message-box-right">
+              <div class="bubble-message-my">
+                <div class="message-frame-my">
+                  <div class="text-message-my">
+                    이 취약점에 대한 POC 자세한 내용을 제공해 주시겠습니까?
+                  </div>
+                  <div class="message-footer">
+                    <div class="time-my">11:31 AM</div>
+                  </div>
+                </div>
+              </div>
+              <div class="bubble-tip-my">
+                <img class="bubble-tip-my" src="../static/vectors/bubble-tip-my.svg"/>
+                <div class="bottom-curve-rectangle-my"></div>
+                <img
+                  class="bottom-curve-vector-my"
+                  src="../static/vectors/bottom-curve-vector-my.svg"
+                />
+              </div>
+            </div>
           </div>
         </div>
-        <script>
-          const chatBox = document.getElementById('chat-box');
-          const chatForm = document.getElementById('chat-form');
-          const userInput = document.getElementById('user-input');
-  
-          // 메시지를 채팅 박스에 추가하는 함수
-          function addMessage(content, sender) {
-              const message = document.createElement('div');
-              message.classList.add('chat-message');
-              if (sender === 'user') {
-                  message.classList.add('user');
-              }
-              message.textContent = content;
-              chatBox.appendChild(message);
-              chatBox.scrollTop = chatBox.scrollHeight;
-          }
-  
-          // 폼 제출 이벤트 핸들러
-          chatForm.addEventListener('submit', async function(event) {
-              event.preventDefault();
-              const userMessage = userInput.value;
-              if (userMessage.trim() === '') return;
-  
-              addMessage(userMessage, 'user');
-              userInput.value = '';
-  
-              try {
-                  // GPT와 대화를 위해 서버에 요청을 보냅니다.
-                  const response = await fetch('/openai/chat', {
-                      method: 'POST',
-                      headers: {
-                          'Content-Type': 'application/json',
-                      },
-                      body: JSON.stringify({ message: userMessage })  // 'message' 필드로 보내기
-                  });
-  
-                  const data = await response.json();
-                  addMessage(data.reply, 'gpt');
-  
-              } catch (error) {
-                  console.error('Error:', error);
-              }
-          });
-        </script>
       </div>
-
       <div class="card-poc">
-        <div class="section">
-          <h2>PoC</h2>
-          {% if info.nvd.poc %}
-            <ul>
-              {% for poc in info.nvd.poc %}
-                <li><a href="{{ poc.url }}" target="_blank">{{ poc.url }}</a> - {{ poc.tags | join(', ') | default('정보 없음') }}</li>
-              {% endfor %}
-            </ul>
-          {% endif %}
-            <p>정보
+        <div class="card__title">POC (Proof of Concept)</div>
+        <div class="line-seperate"></div>
+        <div class="card__text">POC 총 링크 수 : {{ info.nvd.poc|length }}</div>
+        <div class="table">
+            <div class="table-row">
+                <div class="table-grid-03">
+                    <div class="table__cell-03 text-cell">
+                        <div class="section">
+                            {% if info.nvd.poc %}
+                            <ul>
+                                {% for poc in info.nvd.poc %}
+                                <li><a href="{{ poc.url }}" target="_blank">{{ poc.url }}</a> - {{ poc.tags | join(', ') | default('정보 없음') }}</li>
+                                {% endfor %}
+                            </ul>
+                            {% else %}
+                            <p>정보가 없습니다.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card-ref">
+        <div class="card__title">참고자료</div>
+        <div class="line-separate"></div>
+        <div class="table">
+            <div class="table-header">
+                <div class="table-grid-03">
+                    <div class="table__cell-03 text-cell">링크</div>
+                    <div class="table__cell-03 text-cell">유형</div>
+                </div>
+            </div>
+            <div class="table-row">
+                <div class="table-grid-03">
+                    <div class="table__cell-03 text-link">
+                        {% if info.nvd.참고자료 %}
+                        <ul>
+                            {% for ref in info.nvd.참고자료 %}
+                            <li><a href="{{ ref.url }}" target="_blank">{{ ref.url }}</a></li>
+                            {% endfor %}
+                        </ul>
+                        {% else %}
+                        <p>정보가 없습니다.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="main-row">
+        <div class="button-group">
+            <button class="button-neutral text-button--neutral">뒤로</button>
+            <button class="button-primary text-button--primary">룰 테스트</button>
+        </div>
+    </div>
+    
+  
+
+  <script>
+    const chatBox = document.getElementById('chat-box');
+    const chatForm = document.getElementById('chat-form');
+    const userInput = document.getElementById('user-input');
+
+    // 메시지를 채팅 박스에 추가하는 함수
+    function addMessage(content, sender) {
+        const message = document.createElement('div');
+        message.classList.add('chat-message');
+        if (sender === 'user') {
+            message.classList.add('user');
+        }
+        else {
+          message.classList.add('gpt');
+        }
+        message.textContent = content;
+        chatBox.appendChild(message);
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    // 폼 제출 이벤트 핸들러
+    chatForm.addEventListener('submit', async function(event) {
+    event.preventDefault();
+    const userMessage = userInput.value;
+    if (userMessage.trim() === '') return;
+
+    addMessage(userMessage, 'user');
+    userInput.value = '';
+
+    try {
+        const response = await fetch('/openai/chat', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ message: userMessage })
+        });
+
+        const data = await response.json();
+        addMessage(data.reply, 'gpt');
+
+    } catch (error) {
+        console.error('Error:', error);
+        addMessage('chatGPT와 연결이 되지 않았습니다.', 'gpt');
+    }
+});
+</script>
+</body>
+</html>
+        
+
