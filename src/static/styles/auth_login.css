@@ -216,6 +216,9 @@
   position: relative;
   overflow: hidden;
 }
+.button-primary:hover{
+  background: var(--background-brand-hover, #1e1e1e);
+}
 .text-button--primary {
   color: var(--text-brand-on-brand, #f5f5f5);
   text-align: left;
@@ -242,6 +245,9 @@
   height: 3.375rem;
   position: relative;
   overflow: hidden;
+}
+.button-neutral:hover{
+  background: var(--background-neutral-tertiary-hover, #cdcdcd);
 }
 .text-button--neutral {
   color: var(--text-default-default, #1e1e1e);
