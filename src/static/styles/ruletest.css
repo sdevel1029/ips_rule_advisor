@@ -116,6 +116,9 @@
   flex-shrink: 0;
   position: relative;
 }
+.nav-item:hover {
+  background: var(--background-brand-tertiary, #f5f5f5);
+}
 .header-auth {
   border-radius: var(--radius-200, 0.5rem);
   padding: var(--space-200, 0.5rem) var(--space-300, 0.75rem)

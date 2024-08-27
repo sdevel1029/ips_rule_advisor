@@ -116,6 +116,9 @@
   flex-shrink: 0;
   position: relative;
 }
+.nav-item:hover {
+  background: var(--background-brand-tertiary, #f5f5f5);
+}
 .header-auth {
   display: flex;
   flex-direction: row;
@@ -141,6 +144,9 @@
   flex: 1;
   position: relative;
   overflow: hidden;
+}
+.auth__button-register:hover{
+  background: var(--background-neutral-tertiary-hover, #cdcdcd);
 }
 .text-button--neutral {
   color: var(--text-default-default, #1e1e1e);
@@ -170,6 +176,9 @@
   flex: 1;
   position: relative;
   overflow: hidden;
+}
+.auth__button-login:hover{
+  background: var(--background-brand-hover, #1e1e1e);
 }
 .text-button--primary {
   color: var(--text-brand-on-brand, #f5f5f5);
@@ -271,4 +280,7 @@
   flex-shrink: 0;
   position: relative;
   overflow: hidden;
+}
+.button-search:hover{
+  background: var(--background-brand-hover, #1e1e1e);
 }

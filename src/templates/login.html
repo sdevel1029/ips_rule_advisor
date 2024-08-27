@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,8 +5,8 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="/static/vars/vars.css">
-  <link rel="stylesheet" href="/static/styles/auth_login.css">
+  <link rel="stylesheet" href="../static/vars/vars.css">
+  <link rel="stylesheet" href="../static/styles/auth_login.css">
   <style>
     a,
     button,
@@ -50,39 +49,42 @@
         </div>
       </div>
     </header>
-    <div class="content-title">로그인</div>
-    <div class="form-input">
-      <label class="label-input" for="email">이메일 주소</label>
-      <input class="input-text" id="email" type="text" placeholder="example@email.com">
-      <div class="text-description--error" id="emailError" style="display: none; color: red;">유효하지 않은 이메일 형식입니다.</div>
-    </div>
-    <div class="form-input">
-      <label class="label-input" for="password">비밀번호</label>
-      <input class="input-text" id="password" type="password" placeholder="특수문자, 숫자, 영문 대소문자 구별, 최소 8글자 이상">
-      <div class="text-description--error" id="passwordError" style="display: none; color: red;">비밀번호는 최소 8자 이상이며, 영문 대/소문자, 숫자, 특수문자를 포함해야 합니다.</div>
-    </div>
-    <div class="form-row-01">
-      <div class="checkbox-field">
-        <input class="input-checkbox" id="remember_me" type="checkbox">
-        <label class="label-checkbox" for="remember_me">자동 로그인</label>
+    <div class="content__login-form">
+      <div class="content-title">로그인</div>
+      <div class="form-input">
+        <label class="label-input" for="email">이메일 주소</label>
+        <input class="input-text" id="email" type="text" placeholder="example@email.com">
+        <div class="text-description--error" id="emailError" style="display: none; color: red;">유효하지 않은 이메일 형식입니다.</div>
       </div>
-      <a href="#" class="text-link">비밀번호를 잊으셨나요?</a>
-    </div>
-    <button class="button-primary text-button--primary" onclick="validateAndLogin()">로그인</button>
-    <button class="button-neutral text-button--neutral" onclick="window.location.href='/register';">회원가입</button>
-    <div class="form-row-02">
-      <div class="line-separate"></div>
-      <div class="text-seperate">또는</div>
-      <div class="line-separate"></div>
-    </div>
-    <button class="button-login--google">
-      <label class="label-login--google" for="">
-        <div class="logo-google">
-          <img class="logo-googleg-48-dp" src="/static/vectors/icon-googleg-48-dp0.svg" />
+      <div class="form-input">
+        <label class="label-input" for="password">비밀번호</label>
+        <input class="input-text" id="password" type="password" placeholder="특수문자, 숫자, 영문 대소문자 구별, 최소 8글자 이상">
+        <div class="text-description--error" id="passwordError" style="display: none; color: red;">비밀번호는 최소 8자 이상이며, 영문
+          대/소문자, 숫자, 특수문자를 포함해야 합니다.</div>
+      </div>
+      <div class="form-row-01">
+        <div class="checkbox-field">
+          <input class="input-checkbox" id="remember_me" type="checkbox">
+          <label class="label-checkbox" for="remember_me">자동 로그인</label>
         </div>
-        <div class="text-button--google" onclick="window.location.href='/auth/sign_in_google';">구글 로그인</div>
-      </label>
-    </button>
+        <a href="#" class="text-link">비밀번호를 잊으셨나요?</a>
+      </div>
+      <button class="button-primary text-button--primary" onclick="validateAndLogin()">로그인</button>
+      <button class="button-neutral text-button--neutral" onclick="window.location.href='/register';">회원가입</button>
+      <div class="form-row-02">
+        <div class="line-separate"></div>
+        <div class="text-seperate">또는</div>
+        <div class="line-separate"></div>
+      </div>
+      <button class="button-login--google">
+        <label class="label-login--google" for="">
+          <div class="logo-google">
+            <img class="logo-googleg-48-dp" src="/static/vectors/icon-googleg-48-dp0.svg" />
+          </div>
+          <div class="text-button--google" onclick="window.location.href='/auth/sign_in_google';">구글 로그인</div>
+        </label>
+      </button>
+    </div>
   </div>
 
   <script>
