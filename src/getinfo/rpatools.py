@@ -59,6 +59,8 @@ async def nvd(code) :
     output["설명"] = result["vulnerabilities"][0]["cve"]["descriptions"][0]["value"]
     output["점수"] = result["vulnerabilities"][0]["cve"]["metrics"]['cvssMetricV31'][0]["cvssData"]["baseScore"]
     output["메트릭"] = result["vulnerabilities"][0]["cve"]["metrics"]['cvssMetricV31'][0]["cvssData"]["vectorString"]
+    output["exploitability점수"] = result["vulnerabilities"][0]["cve"]["metrics"]['cvssMetricV31'][0]["exploitabilityScore"]
+    output["impact점수"] = result["vulnerabilities"][0]["cve"]["metrics"]['cvssMetricV31'][0]["impactScore"]
 
     # 제품, cpe
     cpe_list = []
@@ -158,7 +160,7 @@ async def do_remainning_test():
     #     test_wait_list.append(i["id"])
 
     while True:
-        await test_func1()
+        # await test_func1()
         await asyncio.sleep(1)
 
 # 테스트 요청 보내는 함수
@@ -221,8 +223,8 @@ async def test(user_id : str, cve : str, rule : str, envi : int, what_test : int
     # 수행하기
     output = await test_func1()
     output["test_id"] = id
-
-    return id
+    
+    return output
 
 
 
