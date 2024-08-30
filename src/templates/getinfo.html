@@ -47,14 +47,14 @@
       </div>
       <div class="header-nav">
         <a class="nav-item--active item-text" href="">정보수집</a>
-        <a class="nav-item item-text" href="./login.html">룰 테스트</a>
+        <a class="nav-item item-text" href="/ruletest">룰 테스트</a>
         <!--<a class="nav-item item-text" href="">마이페이지</a> -->
       </div>
-      <div class="header-auth">
-        <form action="/register" method="get">
+      <div class="header-auth" id="auth-container">
+        <form action="/register" method="get" class="auth__form-register">
           <button class="auth__button-register text-button--neutral">회원가입</button>
         </form>
-        <form action="/login" method="get">
+        <form action="/login" method="get" class="auth__form-login">
           <button class="auth__button-login text-button--primary">로그인</button>
         </form>
       </div>
@@ -71,5 +71,42 @@
       </div>
     </form>
   </div>
+
+  <script>
+    function getCookie(name) {
+      let matches = document.cookie.match(new RegExp(
+        "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+      ));
+      return matches ? decodeURIComponent(matches[1]) : undefined;
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+      const userCookie = getCookie('user');
+      const authContainer = document.getElementById('auth-container');
+
+      if (userCookie) {
+        authContainer.innerHTML = `
+          <button class="auth__button-logout text-button--neutral" id="logout-button">로그아웃</button>
+        `;
+
+        const logoutButton = document.getElementById('logout-button');
+        logoutButton.addEventListener('click', function() {
+          fetch('/auth/sign_out', {
+            method: 'GET',
+          }).then(response => {
+            if (response.ok) {
+              window.location.href = '/';
+            } else {
+              alert('로그아웃에 실패했습니다.');
+            }
+          }).catch(error => {
+            console.error('Error:', error);
+            alert('로그아웃 중 문제가 발생했습니다.');
+          });
+        });
+      }
+    });
+  </script>
 </body>
 </html>
+
