@@ -1,11 +1,12 @@
 # src/auth/auth_routes.py
 # 다른 인증 관련 라우팅 함수들도 이 파일에 추가
-from fastapi import APIRouter, Depends, Response, Request, HTTPException,Form   
+from fastapi import APIRouter, Depends, Response, Request, HTTPException 
 from src.database.supabase_client import get_supabase_client
 from fastapi.responses import RedirectResponse
 from src.auth.auth_service import sign_up, sign_in, sign_out, sign_in_google, callback, profile,read_root
 from fastapi.templating import Jinja2Templates
 from json import JSONDecodeError
+
 
 router = APIRouter()
 templates = Jinja2Templates(directory="src/static/pages/html")
@@ -33,12 +34,11 @@ async def sign_in_route(
         data = await request.json()
     except JSONDecodeError:
         raise HTTPException(status_code=400, detail="Invalid JSON format")
-    print(data,"asdasd")
     email = data.get("email", "")
     password = data.get("password", "")
     
     # sign_in 함수 호출
-    result = sign_in(client=client, email=email, password=password, response=response)
+    result = sign_in(request=request,client=client, email=email, password=password, response=response)
     
     if not result:
         raise HTTPException(status_code=400, detail="Invalid credentials")
@@ -46,8 +46,9 @@ async def sign_in_route(
     return result
 
 @router.get("/sign_out")
-def sign_out_route(response: Response):
-    return sign_out(response)
+def sign_out_route(response: Response,request: Request,client=Depends(get_supabase_client)):
+    request.session.clear() 
+    return sign_out(client=client,response=response)
 
 @router.get("/sign_in_google")
 def sign_in_google_route(response: Response,client=Depends(get_supabase_client)):

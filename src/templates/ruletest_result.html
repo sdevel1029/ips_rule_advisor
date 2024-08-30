@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../static/vars/vars.css">
+  <link rel="stylesheet" href="../static/styles/ruletest_result.css">
+
+  <style>
+    a,
+    button,
+    input,
+    select,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      border: none;
+      text-decoration: none;
+      background: none;
+
+      -webkit-font-smoothing: antialiased;
+    }
+
+    menu,
+    ol,
+    ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+  <title>IPS Rule Advisor</title>
+</head>
+
+<body>
+  <div class="layout-wrapper">
+    <header class="header">
+      <div class="header-logo">
+        <div class="logo">
+          <img class="hdd-fill" src="../static/vectors/logo-hdd-fill0.svg" />
+          <img class="shield-plus" src="../static/vectors/logo-shield-plus0.svg" />
+        </div>
+      </div>
+      <div class="header-nav">
+        <a class="nav-item item-text" href= "/">정보수집</a>
+        <a class="nav-item--active item-text" href= "/ruletest">룰 테스트</a>
+        <a class="nav-item item-text" href="">마이페이지</a>
+      </div>
+      <div class="header-auth">
+        <div class="auth-profile">
+          <div class="avatar-img">
+            <img class="shape" src="../static/images/avatar-0.png" />
+          </div>
+          <div class="profile-name">
+            <div class="text-name">YSD 님</div>
+          </div>
+        </div>
+      </div>
+    </header>
+    <div class="main-container">
+      <div class="card-cve">
+        <div class="card__title" id="cve-id">CVE-Loading...</div>
+        <div class="line-seperate"></div>
+        <div class="card__text" id="publish-date">게시일: Loading...</div>
+        <div class="card__text" id="vuln-type">취약점 유형: Loading...</div>
+        <div class="card__text" id="description">Loading...</div>
+      </div>
+      <div class="card-rule-result">
+        <div class="card__title">테스트 결과</div>
+        <div class="line-seperate"></div>
+        <div class="card__subtitle">테스트 IPS 룰</div>
+        <div class="card__rulebox">
+          <div class="text-rulebox" id="test-rule">Loading...</div>
+        </div>
+        <div class="card__subtitle">테스트 환경</div>
+        <div class="table">
+          <div class="table-header">
+            <div class="table-grid-03">
+              <div class="table__cell-03 text-cell">테스트 환경</div>
+              <div class="table__cell-03 text-cell">총 테스트 패킷</div>
+              <div class="table__cell-03 text-cell">공격 패킷</div>
+              <div class="table__cell-03 text-cell">정상 패킷</div>
+            </div>
+          </div>
+          <div class="table-row">
+            <div class="table-grid-03">
+              <div class="table__cell-03 text-cell" id="test-environment">Loading...</div>
+              <div class="table__cell-03 text-cell" id="total-packets">Loading...</div>
+              <div class="table__cell-03 text-cell" id="attack-packets">Loading...</div>
+              <div class="table__cell-03 text-cell" id="normal-packets">Loading...</div>
+            </div>
+          </div>
+        </div>
+        <div class="card__subtitle">정확도 테스트 결과</div>
+        <div class="table">
+          <div class="table-header-hug">
+            <div class="table-grid-03">
+              <div class="table__cell-03 text-cell">정확도 비율</div>
+              <div class="table__cell-03 text-cell">오탐 패킷(률)<br />(False Positive)</div>
+              <div class="table__cell-03 text-cell">미탐 패킷(률)<br />(False Negative)</div>
+              <div class="table__cell-03 text-cell">정탐 패킷(률)<br />(True Positive)</div>
+              <div class="table__cell-03 text-cell">정탐 패킷(률)<br />(True Negative)</div>
+            </div>
+          </div>
+          <div class="table-row">
+            <div class="table-grid-03">
+              <div class="table__cell-03 text-cell" id="accuracy-rate">Loading...</div>
+              <div class="table__cell-03 text-cell" id="false-positive">Loading...</div>
+              <div class="table__cell-03 text-cell" id="false-negative">Loading...</div>
+              <div class="table__cell-03 text-cell" id="true-positive">Loading...</div>
+              <div class="table__cell-03 text-cell" id="true-negative">Loading...</div>
+            </div>
+          </div>
+        </div>
+        <div class="card__subtitle">성능 테스트 결과</div>
+        <div class="table">
+          <div class="table-header">
+            <div class="table-grid-03">
+              <div class="table__cell-03 text-cell">지연 시간</div>
+              <div class="table__cell-03 text-cell">CPU 사용량</div>
+              <div class="table__cell-03 text-cell">메모리 사용량</div>
+            </div>
+          </div>
+          <div class="table-row">
+            <div class="table-grid-03">
+              <div class="table__cell-03 text-cell" id="latency">Loading...</div>
+              <div class="table__cell-03 text-cell" id="cpu-usage">Loading...</div>
+              <div class="table__cell-03 text-cell" id="memory-usage">Loading...</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="main-row">
+        <div class="button-group">
+          <button class="button-start text-button--neutral" id = "rule-test-button">다시 테스트 하기</button>
+          <button class="button-end text-button--primary">최종 보고서 페이지로</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    
+    document.addEventListener('DOMContentLoaded', async () => {
+  try {
+    // URL에서 testid를 추출
+    const urlParams = new URLSearchParams(window.location.search);
+    const testid = urlParams.get('testid'); // URL 쿼리에서 testid 값을 가져옴
+
+    if (!testid) {
+      console.error('testid가 URL에 없습니다.');
+      return;
+    }
+
+    // 서버에서 데이터를 fetch
+    const response = await fetch('/rule/test/show', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ testid: testid }) // 필요한 testid를 여기에 넣음
+    });
+
+    const data = await response.json();
+
+    document.getElementById('rule-test-button').addEventListener('click', () => {
+      const cveId = data.cve
+      const envi = data.envi
+      if (cveId !== 'N/A') {
+        window.location.href = `/ruletest?cve=${encodeURIComponent(cveId)}&envi=${encodeURIComponent(envi)}`;
+      } else {
+        alert('CVE ID를 로드할 수 없습니다.');
+      }
+    });
+
+    // 데이터를 HTML에 렌더링
+    document.getElementById('cve-id').textContent = data.cve || 'N/A';
+    document.getElementById('publish-date').textContent = `게시일: ${data.created_at || 'N/A'}`;
+    document.getElementById('vuln-type').textContent = `취약점 유형: ${data.vuln_type || 'N/A'}`;
+    document.getElementById('description').textContent = data.description || 'N/A';
+    document.getElementById('test-rule').textContent = data.rule || 'N/A';
+    document.getElementById('test-environment').textContent = data.setting || 'N/A';
+    document.getElementById('total-packets').textContent = data.total || 'N/A';
+    document.getElementById('attack-packets').textContent = data.attacknum || 'N/A';
+    document.getElementById('normal-packets').textContent = data.normalnum || 'N/A';
+    document.getElementById('accuracy-rate').textContent = data.accuracyrate || 'N/A';
+    document.getElementById('false-positive').textContent = data.attackrate || 'N/A';
+    document.getElementById('false-negative').textContent = data.normalrate || 'N/A';
+    document.getElementById('true-positive').textContent = data.attacktrue || 'N/A';
+    document.getElementById('true-negative').textContent = data.normaltrue || 'N/A';
+    document.getElementById('latency').textContent = data.attacklatency || 'N/A';
+    document.getElementById('cpu-usage').textContent = data.cpu_usage || 'N/A';
+    document.getElementById('memory-usage').textContent = data.memory_usage || 'N/A';
+
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+});
+  </script>
+</body>
+
+</html>
+
