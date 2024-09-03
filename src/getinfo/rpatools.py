@@ -3,7 +3,6 @@ import httpx
 import asyncio
 from ..database import supabase_client
 from src.getinfo.global_var import test_wait_list
-from src.openai.openai_service import summarize_vector
 
 
 # 수집원 세팅

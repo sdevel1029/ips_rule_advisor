@@ -3,11 +3,19 @@ import json
 import os
 from dotenv import load_dotenv
 import httpx
+from src.getinfo.getinfo_service import get_info
 
 # 환경변수를 불러오기
 load_dotenv()
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
+cve_info_cache = {}
+
+async def load_and_cache_cve_info(cve_code: str):
+    if cve_code not in cve_info_cache:
+        cve_info = await get_info(cve_code)  
+        cve_info_cache[cve_code] = cve_info 
+    return cve_info_cache[cve_code]
 
 def load_attack_types(filename: str):
     # 현재 스크립트 파일의 디렉토리 경로 가져오기
@@ -66,7 +74,13 @@ async def translate_to_korean(text: str) -> str:
         response_data = response.json()
         return response_data['choices'][0]['message']['content'].strip()
 
-async def chat_with_gpt(chat_message: str) -> dict:
+async def chat_with_gpt(chat_message: str, cve_code: str = None) -> dict:
+    context_message = "You are an expert in cybersecurity, and you have access to CVE information. Use this information to help answer the user's questions."
+
+    if cve_code:
+        cve_info = await load_and_cache_cve_info(cve_code)
+        context_message += f"\n\nHere is the CVE information:\n{json.dumps(cve_info, ensure_ascii=False, indent=2)}"
+
     async with httpx.AsyncClient() as client:
         response = await client.post(
             'https://api.openai.com/v1/chat/completions',
@@ -77,10 +91,10 @@ async def chat_with_gpt(chat_message: str) -> dict:
             json={
                 'model': 'gpt-4o-mini',
                 'messages': [
-                    {"role": "system", "content": "You are a helpful assistant."},
+                    {"role": "system", "content": context_message},
                     {"role": "user", "content": chat_message}
                 ],
-                'max_tokens': 300,
+                'max_tokens': 500,
                 'temperature': 0.3
             }
         )
