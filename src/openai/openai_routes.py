@@ -2,7 +2,6 @@
 from fastapi import APIRouter, HTTPException, Request
 from src.openai.openai_service import generate_text, chat_with_gpt
 
-
 router = APIRouter()
 
 @router.post("/generate/")
@@ -19,5 +18,6 @@ async def generate_text_route():
 async def chat(request: Request):
     data = await request.json()
     chat_message = data.get("message", "")
-    reply = await chat_with_gpt(chat_message)
+    cve_code = data.get("cve_code", "")
+    reply = await chat_with_gpt(chat_message, cve_code)
     return reply

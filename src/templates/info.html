@@ -568,33 +568,36 @@
       chatWrapper.scrollTop = chatWrapper.scrollHeight;
     }
 
-    // 폼 제출 이벤트 핸들러
-    chatForm.addEventListener('submit', async function (event) {
-      event.preventDefault();
-      const userMessage = promptInput.value;
-      if (userMessage.trim() === '') return;
+// 폼 제출 이벤트 핸들러
+chatForm.addEventListener('submit', async function (event) {
+  event.preventDefault();
+  const userMessage = promptInput.value;
+  if (userMessage.trim() === '') return;
 
-      addMyMessage(userMessage);
-      promptInput.value = '';
+  // cve_code 값을 HTML 요소에서 가져오기
+  const cveTitleElement = document.querySelector('.card__title');
+  const cveCode = cveTitleElement ? cveTitleElement.textContent.trim() : '';
 
-      try {
-        const response = await fetch('/openai/chat', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ message: userMessage })
-        });
+  addMyMessage(userMessage);
+  promptInput.value = '';
 
-        const data = await response.json();
-        addGptMessage(data.reply);
-
-      } catch (error) {
-        console.error('Error:', error);
-        addMessage('chatGPT와 연결이 되지 않았습니다.', 'gpt');
-      }
+  try {
+    const response = await fetch('/openai/chat', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ message: userMessage, cve_code: cveCode })
     });
+
+    const data = await response.json();
+    addGptMessage(data.reply);
+
+  } catch (error) {
+    console.error('Error:', error);
+    addMessage('chatGPT와 연결이 되지 않았습니다.', 'gpt');
+  }
+});
   </script>
 </body>
-
 </html>
