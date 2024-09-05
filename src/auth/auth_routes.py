@@ -2,8 +2,7 @@
 # 다른 인증 관련 라우팅 함수들도 이 파일에 추가
 from fastapi import APIRouter, Depends, Response, Request, HTTPException 
 from src.database.supabase_client import get_supabase_client
-from fastapi.responses import RedirectResponse
-from src.auth.auth_service import sign_up, sign_in, sign_out, sign_in_google, callback, profile,read_root
+from src.auth.auth_service import sign_up, sign_in, sign_out, sign_in_google, callback, profile
 from fastapi.templating import Jinja2Templates
 from json import JSONDecodeError
 
@@ -38,7 +37,7 @@ async def sign_in_route(
     password = data.get("password", "")
     
     # sign_in 함수 호출
-    result = sign_in(request=request,client=client, email=email, password=password, response=response)
+    result = sign_in(client=client, email=email, password=password, response=response)
     
     if not result:
         raise HTTPException(status_code=400, detail="Invalid credentials")
@@ -47,7 +46,6 @@ async def sign_in_route(
 
 @router.get("/sign_out")
 def sign_out_route(response: Response,request: Request,client=Depends(get_supabase_client)):
-    request.session.clear() 
     return sign_out(client=client,response=response)
 
 @router.get("/sign_in_google")
@@ -59,13 +57,11 @@ def sign_in_google_route(response: Response,client=Depends(get_supabase_client))
 def callback_route(request: Request,response: Response,client=Depends(get_supabase_client)):
     return callback(client=client,request=request,response=response)
 
-@router.get("/get_google")
-def read_root_router():
-    return read_root()
-
 @router.get("/profile")
 def profile_route(request: Request,client=Depends(get_supabase_client)):
     return profile(request=request,client=client)
+
+
 
 
 
