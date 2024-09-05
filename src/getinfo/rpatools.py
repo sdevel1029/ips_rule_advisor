@@ -215,6 +215,7 @@ async def test(user_id : str, cve : str, rule : str, envi : int, what_test : int
     # test 정보 테이블에 저장
     tmp_data = supabase.table("test_all").insert(tmp_dict).execute()
     id = tmp_data.data[0]["id"]
+    created_time = tmp_data.data[0]['created_at']
     
     # 대기열 리스트에 넣기
     test_wait_list.append(id)
@@ -222,6 +223,7 @@ async def test(user_id : str, cve : str, rule : str, envi : int, what_test : int
     # 수행하기
     output = await test_func1()
     output["test_id"] = id
+    output['created_time'] = created_time
 
     return output
 
