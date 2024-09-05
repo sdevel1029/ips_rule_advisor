@@ -58,6 +58,8 @@ async def nvd(code) :
     output["설명"] = result["vulnerabilities"][0]["cve"]["descriptions"][0]["value"]
     output["점수"] = result["vulnerabilities"][0]["cve"]["metrics"]['cvssMetricV31'][0]["cvssData"]["baseScore"]
     output["메트릭"] = result["vulnerabilities"][0]["cve"]["metrics"]['cvssMetricV31'][0]["cvssData"]["vectorString"]
+    output["exploitability점수"] = result["vulnerabilities"][0]["cve"]["metrics"]['cvssMetricV31'][0]["exploitabilityScore"]
+    output["impact점수"] = result["vulnerabilities"][0]["cve"]["metrics"]['cvssMetricV31'][0]["impactScore"]
 
     # 제품, cpe
     cpe_list = []
@@ -157,7 +159,7 @@ async def do_remainning_test():
     #     test_wait_list.append(i["id"])
 
     while True:
-        await test_func1()
+        # await test_func1()
         await asyncio.sleep(1)
 
 # 테스트 요청 보내는 함수
@@ -213,6 +215,7 @@ async def test(user_id : str, cve : str, rule : str, envi : int, what_test : int
     # test 정보 테이블에 저장
     tmp_data = supabase.table("test_all").insert(tmp_dict).execute()
     id = tmp_data.data[0]["id"]
+    created_time = tmp_data.data[0]['created_at']
     
     # 대기열 리스트에 넣기
     test_wait_list.append(id)
@@ -220,8 +223,9 @@ async def test(user_id : str, cve : str, rule : str, envi : int, what_test : int
     # 수행하기
     output = await test_func1()
     output["test_id"] = id
+    output['created_time'] = created_time
 
-    return id
+    return output
 
 
 
