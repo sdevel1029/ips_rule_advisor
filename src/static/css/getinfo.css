@@ -129,7 +129,7 @@
   width: 11.125rem;
   position: relative;
 }
-.auth__button-register {
+.auth__button-neutral {
   background: var(--background-neutral-tertiary, #e3e3e3);
   border-radius: var(--radius-200, 0.5rem);
   border-style: solid;
@@ -145,7 +145,7 @@
   position: relative;
   overflow: hidden;
 }
-.auth__button-register:hover{
+.auth__button-neutral:hover{
   background: var(--background-neutral-tertiary-hover, #cdcdcd);
 }
 .text-button--neutral {
@@ -161,7 +161,7 @@
   font-weight: var(--single-line-body-basesl-font-weight, 400);
   position: relative;
 }
-.auth__button-login {
+.auth__button-primary {
   background: var(--background-brand-default, #2c2c2c);
   border-radius: var(--radius-200, 0.5rem);
   border-style: solid;
@@ -177,7 +177,7 @@
   position: relative;
   overflow: hidden;
 }
-.auth__button-login:hover{
+.auth__button-primary:hover{
   background: var(--background-brand-hover, #1e1e1e);
 }
 .text-button--primary {

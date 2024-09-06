@@ -1,5 +1,6 @@
 import re
 
+
 def normalize_cve_format(cve: str) -> str:
     # 정규식으로 숫자만 추출
     match = re.match(r"(?i)(?:CVE[\s-]*)?(\d{2}|\d{4})[\s-]*(\d{4,})", cve)

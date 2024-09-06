@@ -1,4 +1,4 @@
-#src/main.py
+# src/main.py
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from src.auth.auth_routes import router as auth_router
@@ -20,7 +20,7 @@ app = FastAPI()
 # @app.on_event("startup")
 # async def startup_event():
 #     asyncio.create_task(rpatools.do_remainning_test())
-    
+
 
 # Static files setup
 app.mount("/static", StaticFiles(directory="src/static"), name="static")
@@ -29,7 +29,7 @@ app.mount("/static", StaticFiles(directory="src/static"), name="static")
 app.include_router(auth_router, prefix="/auth")
 app.include_router(openai_router, prefix="/openai", tags=["openai"])
 app.include_router(ruletest_router, prefix="/rule")
-app.include_router(root_router)  
+app.include_router(root_router)
 app.include_router(getinfo_router)
 app.include_router(login_router)
 app.include_router(rule_router)

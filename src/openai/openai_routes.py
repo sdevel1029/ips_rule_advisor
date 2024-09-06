@@ -4,12 +4,13 @@ from src.openai.openai_service import generate_text, chat_with_gpt
 
 router = APIRouter()
 
+
 @router.post("/generate/")
 async def generate_text_route():
     try:
         return generate_text()
     except HTTPException as e:
-        raise e 
+        raise e
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Unexpected error: {str(e)}")
 
