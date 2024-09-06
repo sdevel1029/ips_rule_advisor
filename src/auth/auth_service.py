@@ -20,32 +20,12 @@ def sign_up(client: Client, email: str, password: str):
         return {"status": "success"}
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
-    
-def read_root():
-    html_content = """
-    <!DOCTYPE html>
-    <html lang="en">
-    <body>
-        <script>
-        window.onload = function() {
-            var fragment = window.location.hash.substring(1); // '#' 제거
-            if (fragment) {
-                // 프래그먼트 값을 쿼리 매개변수로 변환하여 서버로 리다이렉트
-                window.location.href = '/auth/callback?' + fragment;
-            }
-        };
-        </script>
-    </body>
-    </html>
-    """
-    return HTMLResponse(content=html_content)
 
-def sign_in(request:Request,client: Client, email: str, password: str,response: Response):
+def sign_in(client: Client, email: str, password: str,response: Response):
     try:
         res = client.auth.sign_in_with_password({"email": email, "password": password})
-        print(res)
         if res.user:
-            response.set_cookie(key="user", value=res.user.id)
+            response.set_cookie(key="user", value=res.session.access_token)
             return {"status": "success"}
         else:
             raise HTTPException(status_code=400, detail="Invalid credentials")
@@ -66,10 +46,7 @@ def sign_in_google(client: Client, response: Response):
     try:
         res = client.auth.sign_in_with_oauth(
         {
-            "provider": "google",
-            "options": {
-	            "redirect_to": "127.0.0.1:8000/callback"
-	        },
+            "provider": "google"
         }
     )
         return RedirectResponse(url=res.url)
@@ -81,9 +58,10 @@ def callback(client: Client, request: Request,response:Response):
     try:
         code = request.query_params.get("access_token")
         rcode = request.query_params.get("refresh_token")
+        response = RedirectResponse(url="/")
         response.set_cookie(key="user", value=code)
         client.auth.set_session(code, rcode)
-        return {"status": "success"}  #어디로 보낼지는 체크필요
+        return response  #어디로 보낼지는 체크필요
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 

@@ -73,6 +73,13 @@
   </div>
 
   <script>
+            window.onload = function() {
+            var fragment = window.location.hash.substring(1); // '#' 제거
+            if (fragment) {
+                // 프래그먼트 값을 쿼리 매개변수로 변환하여 서버로 리다이렉트
+                window.location.href = '/auth/callback?' + fragment;
+            }
+        };
     function getCookie(name) {
       let matches = document.cookie.match(new RegExp(
         "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
@@ -109,4 +116,3 @@
   </script>
 </body>
 </html>
-
