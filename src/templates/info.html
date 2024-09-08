@@ -386,7 +386,7 @@
   </div>
 
 
-  <script>
+<script>
     const chatWrapper = document.getElementById('chat-wrapper');
     const chatForm = document.getElementById('chat-form');
     const promptInput = document.getElementById('user-input');
@@ -568,13 +568,14 @@
       chatWrapper.scrollTop = chatWrapper.scrollHeight;
     }
 
+let sessionId = null;
+
 // 폼 제출 이벤트 핸들러
 chatForm.addEventListener('submit', async function (event) {
   event.preventDefault();
   const userMessage = promptInput.value;
   if (userMessage.trim() === '') return;
 
-  // cve_code 값을 HTML 요소에서 가져오기
   const cveTitleElement = document.querySelector('.card__title');
   const cveCode = cveTitleElement ? cveTitleElement.textContent.trim() : '';
 
@@ -587,17 +588,26 @@ chatForm.addEventListener('submit', async function (event) {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ message: userMessage, cve_code: cveCode })
+      body: JSON.stringify({ message: userMessage, cve_code: cveCode, session_id: sessionId })
     });
 
     const data = await response.json();
-    addGptMessage(data.reply);
+    addGptMessage(data.reply.reply);
+
+    // 응답에서 세션 ID를 가져오고 변수에 저장
+    if (data.session_id) {
+      sessionId = data.session_id;
+    } else {
+      console.warn('No session_id returned from server');
+    }
+
+    console.log('Server response:', data);
 
   } catch (error) {
     console.error('Error:', error);
     addMessage('chatGPT와 연결이 되지 않았습니다.', 'gpt');
   }
 });
-  </script>
+</script>
 </body>
 </html>
