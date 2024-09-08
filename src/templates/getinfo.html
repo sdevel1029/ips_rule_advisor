@@ -1,60 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="../static/css/vars.css">
   <link rel="stylesheet" href="../static/css/getinfo.css">
-  
+
   <style>
-   a,
-   button,
-   input,
-   select,
-   h1,
-   h2,
-   h3,
-   h4,
-   h5,
-   * {
-       box-sizing: border-box;
-       margin: 0;
-       padding: 0;
-       border: none;
-       text-decoration: none;
-       background: none;
-   
-       -webkit-font-smoothing: antialiased;
-   }
-   
-   menu, ol, ul {
-       list-style-type: none;
-       margin: 0;
-       padding: 0;
-   }
-   </style>
+    a,
+    button,
+    input,
+    select,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      border: none;
+      text-decoration: none;
+      background: none;
+
+      -webkit-font-smoothing: antialiased;
+    }
+
+    menu,
+    ol,
+    ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+  </style>
   <title>IPS Rule Advisor</title>
 </head>
+
 <body>
   <div class="layout-wrapper">
     <header class="header">
       <div class="header-logo">
-        <div class="logo">
+        <div class="logo" onclick="window.location.href='/';">
           <img class="hdd-fill" src="../static/vectors/logo-hdd-fill0.svg" />
           <img class="shield-plus" src="../static/vectors/logo-shield-plus0.svg" />
         </div>
       </div>
       <div class="header-nav">
-        <a class="nav-item--active item-text" href="">정보수집</a>
+        <a class="nav-item--active item-text" href="/">정보수집</a>
         <a class="nav-item item-text" href="/ruletest">룰 테스트</a>
         <!--<a class="nav-item item-text" href="">마이페이지</a> -->
       </div>
       <div class="header-auth" id="auth-container">
-        <form action="/register" method="get" class="auth__form-register">
+        <form action="/register" method="get" class="auth__form-neutral">
           <button class="auth__button-register text-button--neutral">회원가입</button>
         </form>
-        <form action="/login" method="get" class="auth__form-login">
+        <form action="/login" method="get" class="auth__form-primary">
           <button class="auth__button-login text-button--primary">로그인</button>
         </form>
       </div>
@@ -65,21 +69,21 @@
         <div class="search-form__subtitle">CVE 코드, 키워드 등...</div>
       </div>
       <div class="search-form__input-group">
-          <input class="search-form__input" id="cve_code" name="cve_code" type="text"
-            placeholder="CVE-2000-12345, log4j, etc..." required />
+        <input class="search-form__input" id="cve_code" name="cve_code" type="text"
+          placeholder="CVE-2000-12345, log4j, etc..." required />
         <button class="button-search text-button--primary" type="submit">검색</button>
       </div>
     </form>
   </div>
 
   <script>
-            window.onload = function() {
-            var fragment = window.location.hash.substring(1); // '#' 제거
-            if (fragment) {
-                // 프래그먼트 값을 쿼리 매개변수로 변환하여 서버로 리다이렉트
-                window.location.href = '/auth/callback?' + fragment;
-            }
-        };
+    window.onload = function () {
+      var fragment = window.location.hash.substring(1); // '#' 제거
+      if (fragment) {
+        // 프래그먼트 값을 쿼리 매개변수로 변환하여 서버로 리다이렉트
+        window.location.href = '/auth/callback?' + fragment;
+      }
+    };
     function getCookie(name) {
       let matches = document.cookie.match(new RegExp(
         "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
@@ -87,7 +91,7 @@
       return matches ? decodeURIComponent(matches[1]) : undefined;
     }
 
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function () {
       const userCookie = getCookie('user');
       const authContainer = document.getElementById('auth-container');
 
@@ -97,7 +101,7 @@
         `;
 
         const logoutButton = document.getElementById('logout-button');
-        logoutButton.addEventListener('click', function() {
+        logoutButton.addEventListener('click', function () {
           fetch('/auth/sign_out', {
             method: 'GET',
           }).then(response => {
@@ -115,4 +119,5 @@
     });
   </script>
 </body>
+
 </html>
