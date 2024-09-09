@@ -54,15 +54,3 @@ def get_cve_details(keyword):
             print(f"Warning: Row does not have 2 columns. Skipping: {row}")
     
     return results
-'''
-# 키워드로 CVE 검색 test
-keyword = "dirty cow"
-cve_details = get_cve_details(keyword)
-
-# 결과 출력
-if cve_details:
-    for cve_code, description in cve_details:
-        print(f"{cve_code}: {description}")
-else:
-    print("No results to display.")
-'''

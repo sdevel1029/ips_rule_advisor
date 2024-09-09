@@ -71,5 +71,3 @@ async def get_info_page(request: Request, cve_code: str = None):
 async def redirect_to_ruletest():
     return RedirectResponse(url="/ruletest")
 
-
-#메인페이지의 cve정보검색 div 밑에서 아코디언으로 get_cve_details(문자열로 검색한 결과) 보여주기(동건)

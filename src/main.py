@@ -10,7 +10,6 @@ from src.ruletest.ruletest_router import router as ruletest_router
 from src.rule.rule import router as rule_router
 import uvicorn
 import asyncio
-import src.getinfo.rpatools as rpatools
 from src.getinfo import rpatools
 
 app = FastAPI()
