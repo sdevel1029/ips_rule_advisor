@@ -272,3 +272,62 @@
   position: relative;
   overflow: hidden;
 }
+
+.accodion-container {
+  background: var(--background-default-default-hover, #f5f5f5);
+  border-radius: var(--radius-200, 0.5rem);
+  border-style: solid;
+  border-color: var(--border-default-default, #d9d9d9);
+  border-width: 0.0625rem;
+  padding: var(--padding-lg, 1rem);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200, 0.5rem);
+  align-items: flex-start;
+  justify-content: flex-start;
+  align-self: stretch;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.accordion-title {
+  display: flex;
+  flex-direction: row;
+  gap: var(--space-200, 0.5rem);
+  align-items: center;
+  justify-content: flex-start;
+  align-self: stretch;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.text-accodion-title {
+  color: var(--text-default-default, #1e1e1e);
+  text-align: left;
+  font-family: var(--body-strong-font-family, "Inter-SemiBold", sans-serif);
+  font-size: var(--body-strong-font-size, 1rem);
+  line-height: var(--body-strong-line-height, 140%);
+  font-weight: var(--body-strong-font-weight, 600);
+  position: relative;
+  flex: 1;
+}
+
+.btn-accodion {
+  flex-shrink: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  position: relative;
+  overflow: visible;
+}
+
+.accodion-content {
+  display: none;
+  /*flex*/
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: flex-start;
+  justify-content: flex-start;
+  align-self: stretch;
+  flex-shrink: 0;
+  position: relative;
+}

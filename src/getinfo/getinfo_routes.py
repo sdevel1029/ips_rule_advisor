@@ -45,15 +45,20 @@ async def get_info_page(request: Request, cve_code: str = None):
         
         # CVE가 아닌 다른 코드를 입력한 경우
         # ex)log4j, dirty cow 등등...
-        results = get_cve_details(cve_code)
-        if not results:
+        search_results = get_cve_details(cve_code)
+        if not search_results:
             return JSONResponse(content={"error": "No results found"}, status_code=404)
-
-        results_html = "<h1>Search Results</h1>"
-        for cve_code, description in results :
-            results_html += f"<p><strong>{cve_code}</strong> : {description}>/p>"
         
-        return HTMLResponse(content=results_html)
+        '''
+        search_result = "<h1>Search Results</h1>"
+        for cve_code, description in results :
+            search_result += f"<p><strong>{cve_code}</strong> : {description}>/p>"
+        '''
+        return templates.TemplateResponse("getinfo.html", {
+            "request" : request,
+            "search_results" : search_results
+        })
+        #return HTMLResponse(content=results_html)
     
 
     except InfoServiceError as e:

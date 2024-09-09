@@ -66,14 +66,14 @@
   <div class="layout-wrapper">
     <header class="header">
       <div class="header-logo">
-        <div class="logo">
+        <div class="logo" onclick="window.location.href='/';">
           <img class="hdd-fill" src="../static/vectors/logo-hdd-fill0.svg" />
           <img class="shield-plus" src="../static/vectors/logo-shield-plus0.svg" />
         </div>
       </div>
       <div class="header-nav">
-        <a class="nav-item--active item-text" href="">정보수집</a>
-        <a class="nav-item item-text" href="../static/pages/html/ruletest.html">룰 테스트</a>
+        <a class="nav-item--active item-text" href="/">정보수집</a>
+        <a class="nav-item item-text" href="/ruletest">룰 테스트</a>
         <!--<a class="nav-item item-text" href="">마이페이지</a> -->
       </div>
       <div class="header-auth">
@@ -131,7 +131,7 @@
           </div>
         </div>
       </div>
-      
+
       <div class="card-cvss">
         <div class="card__title">CVSS</div>
         <div class="line-seperate"></div>
@@ -378,15 +378,17 @@
       </div>
       <div class="main-row">
         <div class="button-group">
-          <button class="button-neutral text-button--neutral">뒤로</button>
-          <button class="button-primary text-button--primary">룰 테스트</button>
+          <button class="button-neutral text-button--neutral" onclick="window.history.back()">뒤로</button>
+          <button class="button-primary text-button--primary">정보검색결과 저장</button>
+          <button class="button-primary text-button--primary" onclick="window.location.href='/redirect-to-ruletest';">룰
+            테스트</button>
         </div>
       </div>
     </div>
   </div>
 
 
-<script>
+  <script>
     const chatWrapper = document.getElementById('chat-wrapper');
     const chatForm = document.getElementById('chat-form');
     const promptInput = document.getElementById('user-input');
@@ -568,46 +570,47 @@
       chatWrapper.scrollTop = chatWrapper.scrollHeight;
     }
 
-let sessionId = null;
+    let sessionId = null;
 
-// 폼 제출 이벤트 핸들러
-chatForm.addEventListener('submit', async function (event) {
-  event.preventDefault();
-  const userMessage = promptInput.value;
-  if (userMessage.trim() === '') return;
+    // 폼 제출 이벤트 핸들러
+    chatForm.addEventListener('submit', async function (event) {
+      event.preventDefault();
+      const userMessage = promptInput.value;
+      if (userMessage.trim() === '') return;
 
-  const cveTitleElement = document.querySelector('.card__title');
-  const cveCode = cveTitleElement ? cveTitleElement.textContent.trim() : '';
+      const cveTitleElement = document.querySelector('.card__title');
+      const cveCode = cveTitleElement ? cveTitleElement.textContent.trim() : '';
 
-  addMyMessage(userMessage);
-  promptInput.value = '';
+      addMyMessage(userMessage);
+      promptInput.value = '';
 
-  try {
-    const response = await fetch('/openai/chat', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ message: userMessage, cve_code: cveCode, session_id: sessionId })
+      try {
+        const response = await fetch('/openai/chat', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ message: userMessage, cve_code: cveCode, session_id: sessionId })
+        });
+
+        const data = await response.json();
+        addGptMessage(data.reply.reply);
+
+        // 응답에서 세션 ID를 가져오고 변수에 저장
+        if (data.session_id) {
+          sessionId = data.session_id;
+        } else {
+          console.warn('No session_id returned from server');
+        }
+
+        console.log('Server response:', data);
+
+      } catch (error) {
+        console.error('Error:', error);
+        addMessage('chatGPT와 연결이 되지 않았습니다.', 'gpt');
+      }
     });
-
-    const data = await response.json();
-    addGptMessage(data.reply.reply);
-
-    // 응답에서 세션 ID를 가져오고 변수에 저장
-    if (data.session_id) {
-      sessionId = data.session_id;
-    } else {
-      console.warn('No session_id returned from server');
-    }
-
-    console.log('Server response:', data);
-
-  } catch (error) {
-    console.error('Error:', error);
-    addMessage('chatGPT와 연결이 되지 않았습니다.', 'gpt');
-  }
-});
-</script>
+  </script>
 </body>
+
 </html>
