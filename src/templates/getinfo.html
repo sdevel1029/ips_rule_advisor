@@ -37,6 +37,30 @@
       padding: 0;
     }
   </style>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const accordionTitles = document.querySelectorAll('.accordion-title');
+
+      accordionTitles.forEach(title => {
+        title.addEventListener('click', function () {
+          const accordionContainer = this.parentElement;
+          const accordionContent = accordionContainer.querySelector('.accodion-content');
+          const accordionButton = this.querySelector('.btn-accodion');
+
+          // 아코디언이 열려 있으면 닫고, 닫혀 있으면 열기
+          if (accordionContainer.classList.contains('active')) {
+            accordionContainer.classList.remove('active');
+            accordionContent.style.display = 'none';
+            accordionButton.src = '../static/vectors/btn-accodion-down.svg'; // 닫기 아이콘으로 변경
+          } else {
+            accordionContainer.classList.add('active');
+            accordionContent.style.display = 'flex';
+            accordionButton.src = '../static/vectors/btn-accodion-up.svg'; // 열기 아이콘으로 변경
+          }
+        });
+      });
+    });
+  </script>
   <title>IPS Rule Advisor</title>
 </head>
 
@@ -74,6 +98,20 @@
         <button class="button-search text-button--primary" type="submit">검색</button>
       </div>
     </form>
+    {% if search_results %}
+    <div class="accodion-container">
+      <div class="accordion-title">
+        <div class="text-accodion-title">Search Result</div>
+        <img class="btn-accodion" src="../static/vectors/btn-accodion-down.svg" />
+      </div>
+      <div class="accodion-content">
+        {% for list in search_results %}
+          <strong>{{ list[0] }}</strong>
+          {{ list[1] }}
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
   </div>
 
   <script>
