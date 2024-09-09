@@ -379,7 +379,7 @@
       <div class="main-row">
         <div class="button-group">
           <button class="button-neutral text-button--neutral" onclick="window.history.back()">뒤로</button>
-          <button class="button-primary text-button--primary">정보검색결과 저장</button>
+          <button class="button-primary text-button--primary" onclick="saveVulnerability()">정보검색결과 저장</button>
           <button class="button-primary text-button--primary" onclick="window.location.href='/redirect-to-ruletest';">룰
             테스트</button>
         </div>
@@ -610,7 +610,47 @@
         addMessage('chatGPT와 연결이 되지 않았습니다.', 'gpt');
       }
     });
-  </script>
-</body>
 
+
+    async function saveVulnerability() {
+    const vulnerabilityData = {
+        vuln_type: "Example Type",
+        description: "Example Description",
+        cpe: { "example": "data" },
+        metric: "Example Metric",
+        score: 5.0,
+        influence_score: 3.2,
+        exploit_score: 4.1,
+        metric_sum_exploit: { "example": "data" },
+        metric_sum_influence: { "example": "data" },
+        related_rules_type: { "example": "data" },
+        related_rules_product: { "example": "data" },
+        poc: { "example": "data" },
+        reference: { "example": "data" },
+        cve: "CVE-XXXX-XXXX"
+    };
+
+    try {
+        const response = await fetch("/vulnerabilities", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(vulnerabilityData)
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            alert("저장 성공: " + result.message);
+        } else {
+            const error = await response.text();  // 응답을 JSON으로 파싱하기 전에 텍스트로 출력
+            alert("저장 실패: " + error);
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        alert("저장 중 오류 발생");
+    }
+}
+</script>
+</body>
 </html>

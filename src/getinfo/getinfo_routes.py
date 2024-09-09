@@ -10,6 +10,7 @@ from src.openai.openai_service import (
 )
 from starlette.responses import RedirectResponse
 from src.getinfo.strsearch import get_cve_details
+from src.database.info_save import *
 
 router = APIRouter()
 templates = Jinja2Templates(directory="src/templates")
@@ -73,3 +74,14 @@ async def redirect_to_ruletest():
 
 
 #메인페이지의 cve정보검색 div 밑에서 아코디언으로 get_cve_details(문자열로 검색한 결과) 보여주기(동건)
+
+@router.post("/vulnerabilities")
+async def create_vulnerability(vulnerability: VulnerabilityCreate):
+    vulnerability_data = vulnerability.model_dump()
+    response = supabase.table("info").insert(vulnerability_data).execute()
+    
+    # 오류 처리를 위한 수정된 코드
+    if "error" in response:
+        raise HTTPException(status_code=400, detail=response["error"]["message"])
+    
+    return {"message": "Vulnerability created successfully!"}
