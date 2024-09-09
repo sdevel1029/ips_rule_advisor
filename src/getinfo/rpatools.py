@@ -59,18 +59,10 @@ async def nvd(code):
     output = {}
     output["id"] = result["vulnerabilities"][0]["cve"]["id"]
     output["설명"] = result["vulnerabilities"][0]["cve"]["descriptions"][0]["value"]
-    output["점수"] = result["vulnerabilities"][0]["cve"]["metrics"]["cvssMetricV31"][0][
-        "cvssData"
-    ]["baseScore"]
-    output["메트릭"] = result["vulnerabilities"][0]["cve"]["metrics"]["cvssMetricV31"][
-        0
-    ]["cvssData"]["vectorString"]
-    output["exploitability점수"] = result["vulnerabilities"][0]["cve"]["metrics"][
-        "cvssMetricV31"
-    ][0]["exploitabilityScore"]
-    output["impact점수"] = result["vulnerabilities"][0]["cve"]["metrics"][
-        "cvssMetricV31"
-    ][0]["impactScore"]
+    output["점수"] = result["vulnerabilities"][0]["cve"]["metrics"]["cvssMetricV31"][0]["cvssData"]["baseScore"]
+    output["메트릭"] = result["vulnerabilities"][0]["cve"]["metrics"]["cvssMetricV31"][0]["cvssData"]["vectorString"]
+    output["exploitability점수"] = result["vulnerabilities"][0]["cve"]["metrics"]["cvssMetricV31"][0]["exploitabilityScore"]
+    output["impact점수"] = result["vulnerabilities"][0]["cve"]["metrics"]["cvssMetricV31"][0]["impactScore"]
 
     # 제품, cpe
     cpe_list = []
