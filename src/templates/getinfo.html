@@ -12,16 +12,7 @@
 -->
 
   <style>
-    a,
-    button,
-    input,
-    select,
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    * {
+    a,button,input,select,h1,h2,h3,h4,h5,* {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
@@ -39,7 +30,36 @@
       margin: 0;
       padding: 0;
     }
+
+    .accordion-container {
+      margin: 1em 0;
+    }
+
+    .accordion-title {
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      background-color: #f0f0f0;
+      border: 1px solid #ddd;
+    }
+
+    .accordion-content {
+      display: none; 
+      padding: 10px;
+      background-color: #fafafa;
+      border: 1px solid #ddd;
+      border-top: none;
+    }
+
+    .active .accordion-content {
+      display: block;
+    }
+
   </style>
+
+
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       const accordionTitles = document.querySelectorAll('.accordion-title');
@@ -107,15 +127,18 @@
         <div class="text-accodion-title">Search Result</div>
         <img class="btn-accodion" src="../static/vectors/btn-accodion-down.svg" />
       </div>
-      <div class="accodion-content">
-        {% for list in search_results %}
-        <strong>{{ list[0] }}</strong>
-        {{ list[1] }}
-        {% endfor %}
-      </div>
-    </div>
-    {% endif %}
-  </div>
+      <div class="accordion-content">
+              {% for result in search_results %}
+              <div class="result-item">
+                <strong>CVE 코드: {{ result.cve_code }}</strong><br>
+                설명: {{ result.description }}<br><br>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+          {% endif %}
+        </div>
+
 
   <script>
     window.onload = function () {
