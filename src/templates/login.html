@@ -6,7 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="../static/vars/vars.css">
+  <link rel="stylesheet" href="../static/styles/styles.css">
+  <!--
   <link rel="stylesheet" href="../static/styles/auth_login.css">
+-->
+
   <style>
     a,
     button,
@@ -69,8 +73,8 @@
         </div>
         <a href="#" class="text-link">비밀번호를 잊으셨나요?</a>
       </div>
-      <button class="button-primary text-button--primary" onclick="validateAndLogin()">로그인</button>
-      <button class="button-neutral text-button--neutral" onclick="window.location.href='/register';">회원가입</button>
+      <button class="button-login text-button--primary" onclick="validateAndLogin()">로그인</button>
+      <button class="button-register text-button--neutral" onclick="window.location.href='/register';">회원가입</button>
       <div class="form-row-02">
         <div class="line-separate"></div>
         <div class="text-seperate">또는</div>
