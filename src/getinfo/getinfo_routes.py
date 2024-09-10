@@ -11,6 +11,7 @@ from src.openai.openai_service import (
 from starlette.responses import RedirectResponse
 from src.getinfo.strsearch import get_cve_details
 from src.database.info_save import *
+from datetime import date
 
 router = APIRouter()
 templates = Jinja2Templates(directory="src/templates")
