@@ -23,8 +23,7 @@ class VulnerabilityCreate(BaseModel):
     score: float = None
     influence_score: float = None
     exploit_score: float = None
-    metric_sum_exploit: dict = None
-    metric_sum_influence: dict = None
+    metrics_summary: str
     related_rules_type: dict = None
     related_rules_product: dict = None
     poc: dict = None
