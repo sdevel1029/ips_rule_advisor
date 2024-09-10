@@ -95,7 +95,10 @@
       <div class="card-cve">
         <div class="card__title" id="cve-id">{{ info.nvd.id | default('정보 없음') }}</div>
         <div class="line-seperate"></div>
-        <div class="card__text">게시일 : {{ info.nvd.수정시간 | default('정보 없음') }} | 최종 수정일 : {{ current_date }}</div>
+        <div class="card__text" id="dates">
+          게시일 : <span id="posting-date">{{ info.nvd.수정시간 | default('정보 없음') }}</span> |
+          최종 수정일 : <span id="last-modified-date">{{ current_date }}</span>
+        </div>
         <div class="card__text" id="vuln-type">취약점 유형 : {{ type | default('정보 없음') }}</div>
         <div class="card__text" id="description">{{ info.nvd.설명 | default('정보 없음') }}</div>
       </div>
@@ -613,7 +616,7 @@
 
       } catch (error) {
         console.error('Error:', error);
-        addMessage('chatGPT와 연결이 되지 않았습니다.', 'gpt');
+        addGptMessage('chatGPT와 연결이 되지 않았습니다.', 'gpt');
       }
     });
 
@@ -647,6 +650,11 @@ async function saveInfo() {
     });
     const referenceData = refDataArray.length > 0 ? { references: refDataArray } : {};
 
+    const postingDateElement = document.getElementById('posting-date');
+    const lastModifiedDateElement = document.getElementById('last-modified-date');
+
+    const postingDateText = postingDateElement.textContent.trim();
+    const lastModifiedDateText = lastModifiedDateElement.textContent.trim();
 
     const vulnerabilityData = {
         vuln_type: vulnType,
@@ -661,7 +669,9 @@ async function saveInfo() {
         related_rules_product: { "example": "data" },
         poc: pocData,
         reference: referenceData,
-        cve: cveId
+        cve: cveId,
+        cve_posting_date: postingDateText,
+        last_modified_date: lastModifiedDateText
     };
 
     try {
