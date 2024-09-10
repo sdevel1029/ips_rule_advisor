@@ -629,21 +629,21 @@ async function saveInfo() {
     const metrics = document.getElementById('metrics').innerText.replace('메트릭 : ', '').trim();
     const metricsSummary = document.getElementById('metrics_summary').innerText.trim();
 
-    const cpeElements = document.querySelectorAll('.table-row .table__cell-03.text-cell:nth-child(1)');
+    const cpeElements = document.querySelectorAll('.table-row .table__cell.text-cell:nth-child(1)');
     const cpeValues = Array.from(cpeElements).map(cpeElement => cpeElement.innerText.trim());
     const cpeData = cpeValues.length > 0 ? { CPE_List: cpeValues } : {};  
 
-    const pocElements = document.querySelectorAll('.table-row .table__cell-01.text-link');
+    const pocElements = document.querySelectorAll('.card-poc .table-row .table__cell.text-link');
     const pocLinks = Array.from(pocElements).map(pocElement => pocElement.href.trim());
     const pocData = pocLinks.length > 0 ? { urls: pocLinks } : {};  
 
-    const refElements = document.querySelectorAll('.table-row .table__cell-03.text-link');
-    const refDataArray = Array.from(refElements).map((refElement, index) => {
-    const url = refElement.href.trim();
-  
-    const typeElement = refElement.parentElement.querySelector('.table__cell-03#reftag');
-    const type = typeElement ? typeElement.innerText.trim() : '정보 없음';
-    return { url: url, type: type };
+    const refElements = document.querySelectorAll('.card-ref .table-row');
+    const refDataArray = Array.from(refElements).map(row => {
+        const urlElement = row.querySelector('.table__cell.text-link');
+        const typeElement = row.querySelector('.table__cell#reftag');
+        const url = urlElement ? urlElement.href.trim() : '정보 없음';
+        const type = typeElement ? typeElement.innerText.trim() : '정보 없음';
+        return { url: url, type: type };
     });
     const referenceData = refDataArray.length > 0 ? { references: refDataArray } : {};
 
