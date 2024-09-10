@@ -239,6 +239,18 @@
         }
       }
     });
+
+    document.addEventListener('DOMContentLoaded', function () {
+    const queryCVE = getCVEFromQuery();
+    if (queryCVE) {
+      document.getElementById("cve").value = queryCVE;
+    }
+    });
+
+    function getCVEFromQuery() {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get('cve');
+    }
   </script>
 </body>
 

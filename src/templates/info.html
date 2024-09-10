@@ -389,8 +389,9 @@
         <div class="button-group">
           <button class="button-neutral text-button--neutral" onclick="window.history.back()">뒤로</button>
           <button class="button-primary text-button--primary" onclick="saveInfo()">정보검색결과 저장</button>
-          <button class="button-primary text-button--primary" onclick="window.location.href='/redirect-to-ruletest';">룰
-            테스트</button>
+          <button class="button-primary text-button--primary" onclick="redirectToRuleTestWithCVE('{{ info.nvd.id }}')">
+          룰 테스트
+        </button>
         </div>
       </div>
     </div>
@@ -695,6 +696,10 @@ async function saveInfo() {
         alert("저장 중 오류 발생");
       }
     }
+
+    function redirectToRuleTestWithCVE(cveCode) {
+    window.location.href = `/ruletest?cve=${encodeURIComponent(cveCode)}`;
+  }
   </script>
 </body>
 
