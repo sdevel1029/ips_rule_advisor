@@ -5,8 +5,11 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="../static/css/vars.css">
+  <link rel="stylesheet" href="../static/vars/vars.css">
+  <link rel="stylesheet" href="../static/styles/styles.css">
+  <!--
   <link rel="stylesheet" href="../static/css/getinfo.css">
+-->
 
   <style>
     a,
@@ -80,10 +83,10 @@
       </div>
       <div class="header-auth" id="auth-container">
         <form action="/register" method="get" class="auth__form-neutral">
-          <button class="auth__button-register text-button--neutral">회원가입</button>
+          <button class="button-neutral text-button--neutral">회원가입</button>
         </form>
         <form action="/login" method="get" class="auth__form-primary">
-          <button class="auth__button-login text-button--primary">로그인</button>
+          <button class="button-primary text-button--primary">로그인</button>
         </form>
       </div>
     </header>
@@ -95,7 +98,7 @@
       <div class="search-form__input-group">
         <input class="search-form__input" id="cve_code" name="cve_code" type="text"
           placeholder="CVE-2000-12345, log4j, etc..." required />
-        <button class="button-search text-button--primary" type="submit">검색</button>
+        <button class="button-primary text-button--primary" type="submit">검색</button>
       </div>
     </form>
     {% if search_results %}
@@ -106,8 +109,8 @@
       </div>
       <div class="accodion-content">
         {% for list in search_results %}
-          <strong>{{ list[0] }}</strong>
-          {{ list[1] }}
+        <strong>{{ list[0] }}</strong>
+        {{ list[1] }}
         {% endfor %}
       </div>
     </div>
