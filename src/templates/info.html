@@ -93,11 +93,11 @@
     </header>
     <div class="main-container">
       <div class="card-cve">
-        <div class="card__title">{{ info.nvd.id | default('정보 없음') }}</div>
+        <div class="card__title" id="cve-id">{{ info.nvd.id | default('정보 없음') }}</div>
         <div class="line-seperate"></div>
         <div class="card__text">게시일 : 2022-03-03 | 최종 수정일 : 2023-04-20</div>
-        <div class="card__text">취약점 유형 : {{ type | default('정보 없음') }}</div>
-        <div class="card__text">{{ info.nvd.설명 | default('정보 없음') }}</div>
+        <div class="card__text" id="vuln-type">취약점 유형 : {{ type | default('정보 없음') }}</div>
+        <div class="card__text" id="description">{{ info.nvd.설명 | default('정보 없음') }}</div>
       </div>
 
       <div class="card-cpe">
@@ -143,7 +143,7 @@
           <div class="tab-item--unselected text-tab--unselected">CVSS 2.0</div>
           <div class="tab-item--selected text-tab--selected">CVSS 3.x</div>
         </div>
-        <div class="card__text">
+        <div class="card__text" id="metrics">
           메트릭 : {{ info.nvd.메트릭 | default('정보 없음') }}
         </div>
         <div class="table">
@@ -156,14 +156,14 @@
           </div>
           <div class="table-row">
             <div class="table-grid">
-              <div class="table__cell text-cell">{{ info.nvd.점수 | default('정보 없음') }}</div>
-              <div class="table__cell text-cell">{{ info.nvd.exploitability점수 | default('정보 없음') }}</div>
-              <div class="table__cell text-cell">{{ info.nvd.impact점수 | default('정보 없음') }}</div>
+              <div class="table__cell text-cell" id="score">{{ info.nvd.점수 | default('정보 없음') }}</div>
+              <div class="table__cell text-cell" id="exploit_score">{{ info.nvd.exploitability점수 | default('정보 없음') }}</div>
+              <div class="table__cell text-cell" id="influence_score">{{ info.nvd.impact점수 | default('정보 없음') }}</div>
             </div>
           </div>
         </div>
         <div class="card__subtitle">메트릭 요약</div>
-        <div class="card__text">{{ metrics_summary | default('정보 없음') }}</div>
+        <div class="card__text" id="metrics_summary">{{ metrics_summary | default('정보 없음') }}</div>
         <div class="accodion-container">
           <div class="accordion-title">
             <div class="text-accodion-title">악용 가능성 매트릭 (임시 텍스트)</div>
@@ -373,7 +373,7 @@
               <div class="table-row">
                 <div class="table-grid">
                   <a class="table__cell text-link" href="{{ ref.url }}">{{ ref.url | default('정보 없음') }}</a>
-                  <div class="table__cell text-cell">{{ ref.tags | join(', ') | default('정보 없음') }}</div>
+                  <div class="table__cell text-cell" id="reftag">{{ ref.tags | join(', ') | default('정보 없음') }}</div>
                 </div>
               </div>
               {% endfor %}
@@ -385,7 +385,7 @@
       <div class="main-row">
         <div class="button-group">
           <button class="button-neutral text-button--neutral" onclick="window.history.back()">뒤로</button>
-          <button class="button-primary text-button--primary" onclick="saveVulnerability()">정보검색결과 저장</button>
+          <button class="button-primary text-button--primary" onclick="saveInfo()">정보검색결과 저장</button>
           <button class="button-primary text-button--primary" onclick="window.location.href='/redirect-to-ruletest';">룰
             테스트</button>
         </div>
@@ -618,31 +618,59 @@
     });
 
 
-    async function saveVulnerability() {
-      const vulnerabilityData = {
-        vuln_type: "Example Type",
-        description: "Example Description",
-        cpe: { "example": "data" },
-        metric: "Example Metric",
-        score: 5.0,
-        influence_score: 3.2,
-        exploit_score: 4.1,
-        metric_sum_exploit: { "example": "data" },
-        metric_sum_influence: { "example": "data" },
+async function saveInfo() {
+
+    const cveId = document.getElementById('cve-id').innerText.trim();
+    const vulnType = document.getElementById('vuln-type').innerText.replace('취약점 유형 : ', '').trim();
+    const description = document.getElementById('description').innerText.trim();
+    const score = document.getElementById('score').innerText.trim();
+    const exploitScore = document.getElementById('exploit_score').innerText.trim();
+    const influenceScore = document.getElementById('influence_score').innerText.trim();
+    const metrics = document.getElementById('metrics').innerText.replace('메트릭 : ', '').trim();
+    const metricsSummary = document.getElementById('metrics_summary').innerText.trim();
+
+    const cpeElements = document.querySelectorAll('.table-row .table__cell-03.text-cell:nth-child(1)');
+    const cpeValues = Array.from(cpeElements).map(cpeElement => cpeElement.innerText.trim());
+    const cpeData = cpeValues.length > 0 ? { CPE_List: cpeValues } : {};  
+
+    const pocElements = document.querySelectorAll('.table-row .table__cell-01.text-link');
+    const pocLinks = Array.from(pocElements).map(pocElement => pocElement.href.trim());
+    const pocData = pocLinks.length > 0 ? { urls: pocLinks } : {};  
+
+    const refElements = document.querySelectorAll('.table-row .table__cell-03.text-link');
+    const refDataArray = Array.from(refElements).map((refElement, index) => {
+    const url = refElement.href.trim();
+  
+    const typeElement = refElement.parentElement.querySelector('.table__cell-03#reftag');
+    const type = typeElement ? typeElement.innerText.trim() : '정보 없음';
+    return { url: url, type: type };
+    });
+    const referenceData = refDataArray.length > 0 ? { references: refDataArray } : {};
+
+
+    const vulnerabilityData = {
+        vuln_type: vulnType,
+        description: description,
+        cpe: cpeData,
+        metric: metrics,
+        score: score,
+        influence_score: influenceScore,
+        exploit_score: exploitScore,
+        metrics_summary: metricsSummary,
         related_rules_type: { "example": "data" },
         related_rules_product: { "example": "data" },
-        poc: { "example": "data" },
-        reference: { "example": "data" },
-        cve: "CVE-XXXX-XXXX"
-      };
+        poc: pocData,
+        reference: referenceData,
+        cve: cveId
+    };
 
-      try {
-        const response = await fetch("/vulnerabilities", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(vulnerabilityData)
+    try {
+        const response = await fetch("/saveinfo", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(vulnerabilityData)
         });
 
         if (response.ok) {
