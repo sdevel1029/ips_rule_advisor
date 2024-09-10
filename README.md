@@ -28,15 +28,3 @@ localhost:8080/docs를 하시면 swagger에서 편하게 보실 수 있습니다
 서버 실행
 `uvicorn src.main:app --reload`
 
-# WSL :
-`python3 -m venv venv` 
-
-모듈 설치
-`pip install -r requirements.txt`
-
-서버 실행
-`uvicorn src.main:app --reload`
-
-
-
-

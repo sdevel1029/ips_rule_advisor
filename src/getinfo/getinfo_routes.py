@@ -7,6 +7,8 @@ from src.openai.openai_service import (
     translate_to_korean,
     classify_attack,
     summarize_vector,
+    translate_bulk_to_korean
+
 )
 from starlette.responses import RedirectResponse
 from src.getinfo.strsearch import get_cve_details
@@ -57,18 +59,13 @@ async def get_info_page(request: Request, cve_code: str = None):
         if not search_results:
             return JSONResponse(content={"error": "No results found"}, status_code=404)
         
-        '''
-        search_result = "<h1>Search Results</h1>"
-        for cve_code, description in results :
-            search_result += f"<p><strong>{cve_code}</strong> : {description}>/p>"
-        '''
+        # 번역된 결과 받기
+        translated_results = await translate_bulk_to_korean(search_results)
+        
         return templates.TemplateResponse("getinfo.html", {
             "request" : request,
-            "search_results" : search_results
+            "search_results" : translated_results
         })
-        #return HTMLResponse(content=results_html)
-    
-
     except InfoServiceError as e:
         return templates.TemplateResponse(
             "error.html", {"request": request, "error": str(e)}

@@ -93,6 +93,45 @@ async def summarize_vector(vector: str) -> str:
         return response_data['choices'][0]['message']['content'].strip()
 
 
+###문자열검색결과 한글번역###
+async def translate_bulk_to_korean(search_results):
+    # CVE 코드와 설명을 하나의 문자열로 만듦
+    results_str = "\n".join([f"CVE 코드: {cve_code}\n설명: {description}" for cve_code, description in search_results])
+
+    async with httpx.AsyncClient(timeout=30.0) as client:  # 타임아웃을 30초로 설정
+        response = await client.post(
+            'https://api.openai.com/v1/chat/completions',
+            headers={
+                'Authorization': f'Bearer {OPENAI_API_KEY}',
+                'Content-Type': 'application/json'
+            },
+            json={
+                'model': 'gpt-4o-mini',
+                'messages': [
+                    {"role": "system", "content": "You are a helpful assistant for translating English to Korean and preserving structure."},
+                    {"role": "user", "content": f"다음 CVE 코드와 설명을 한글로 번역해 주세요:\n\n{results_str}"}
+                ],
+                'max_tokens': 2000,
+                'temperature': 0.3
+            }
+        )
+        response_data = response.json()
+        translated_text = response_data['choices'][0]['message']['content'].strip()
+
+        # 번역된 결과를 다시 CVE 코드와 설명으로 나눔
+        translated_results = []
+        for item in translated_text.split("\n\n"):
+            if "CVE 코드:" in item and "설명:" in item:
+                cve_code = item.split("CVE 코드:")[1].split("\n")[0].strip()
+                description = item.split("설명:")[1].strip()
+                translated_results.append({
+                    "cve_code": cve_code,
+                    "description": description
+                })
+
+    return translated_results
+
+
 
 
 
