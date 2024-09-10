@@ -11,6 +11,7 @@ from src.openai.openai_service import (
 from starlette.responses import RedirectResponse
 from src.getinfo.strsearch import get_cve_details
 from src.database.info_save import *
+from datetime import datetime
 
 router = APIRouter()
 templates = Jinja2Templates(directory="src/templates")
@@ -28,6 +29,10 @@ async def get_info_page(request: Request, cve_code: str = None):
         if cve_code.startswith("CVE-")or cve_code.startswith("cve-"):
             info_result = await get_info(cve_code)
 
+            #취약점 정보의 게시일과 현재 보고서의 생성시간 추가
+            info_result['nvd']['수정시간'] = info_result['nvd']['수정시간'].split('T')[0]
+            current_date = datetime.now().strftime("%Y-%m-%d")
+
             if "설명" in info_result.get("nvd", {}):
                 info_result["nvd"]["설명"] = await translate_to_korean(info_result["nvd"]["설명"])
             metrics_summary = None
@@ -37,11 +42,13 @@ async def get_info_page(request: Request, cve_code: str = None):
 
             attack_type = await classify_attack(info_result["nvd"]["설명"])
 
+
             return templates.TemplateResponse("info.html",{
                 "request": request,
                 "info": info_result,
                 "type": attack_type,
-                "metrics_summary": metrics_summary
+                "metrics_summary": metrics_summary,
+                "current_date": current_date
                 })
         
         # CVE가 아닌 다른 코드를 입력한 경우
