@@ -75,7 +75,7 @@ async def redirect_to_ruletest():
 
 #메인페이지의 cve정보검색 div 밑에서 아코디언으로 get_cve_details(문자열로 검색한 결과) 보여주기(동건)
 
-@router.post("/vulnerabilities")
+@router.post("/saveinfo")
 async def create_vulnerability(vulnerability: VulnerabilityCreate):
     vulnerability_data = vulnerability.model_dump()
     response = supabase.table("info").insert(vulnerability_data).execute()
@@ -84,4 +84,4 @@ async def create_vulnerability(vulnerability: VulnerabilityCreate):
     if "error" in response:
         raise HTTPException(status_code=400, detail=response["error"]["message"])
     
-    return {"message": "Vulnerability created successfully!"}
+    return {"message": "취약점 정보 수집 성공!"}
