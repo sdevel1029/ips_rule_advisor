@@ -58,6 +58,7 @@ async def nvd(code):
     # 최종 output
     output = {}
     output["id"] = result["vulnerabilities"][0]["cve"]["id"]
+    output["수정시간"] = result["vulnerabilities"][0]["cve"]["lastModified"]
     output["설명"] = result["vulnerabilities"][0]["cve"]["descriptions"][0]["value"]
     output["점수"] = result["vulnerabilities"][0]["cve"]["metrics"]["cvssMetricV31"][0]["cvssData"]["baseScore"]
     output["메트릭"] = result["vulnerabilities"][0]["cve"]["metrics"]["cvssMetricV31"][0]["cvssData"]["vectorString"]
