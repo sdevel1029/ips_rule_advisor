@@ -95,7 +95,7 @@
       <div class="card-cve">
         <div class="card__title" id="cve-id">{{ info.nvd.id | default('정보 없음') }}</div>
         <div class="line-seperate"></div>
-        <div class="card__text">게시일 : 2022-03-03 | 최종 수정일 : 2023-04-20</div>
+        <div class="card__text">게시일 : {{ info.nvd.수정시간 | default('정보 없음') }} | 최종 수정일 : {{ current_date }}</div>
         <div class="card__text" id="vuln-type">취약점 유형 : {{ type | default('정보 없음') }}</div>
         <div class="card__text" id="description">{{ info.nvd.설명 | default('정보 없음') }}</div>
       </div>
