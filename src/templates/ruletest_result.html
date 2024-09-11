@@ -6,10 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="../static/vars/vars.css">
-  <link rel="stylesheet" href="../static/styles/styles.css">
-  <!--
   <link rel="stylesheet" href="../static/styles/ruletest_result.css">
--->
 
   <style>
     a,
@@ -46,7 +43,7 @@
   <div class="layout-wrapper">
     <header class="header">
       <div class="header-logo">
-        <div class="logo" onclick="window.location.href='/';">
+        <div class="logo">
           <img class="hdd-fill" src="../static/vectors/logo-hdd-fill0.svg" />
           <img class="shield-plus" src="../static/vectors/logo-shield-plus0.svg" />
         </div>
@@ -54,7 +51,7 @@
       <div class="header-nav">
         <a class="nav-item item-text" href="/">정보수집</a>
         <a class="nav-item--active item-text" href="/ruletest">룰 테스트</a>
-        <!-- <a class="nav-item item-text" href="">마이페이지</a> -->
+        <a class="nav-item item-text" href="">마이페이지</a>
       </div>
       <div class="header-auth">
         <div class="auth-profile">
@@ -72,8 +69,8 @@
         <div class="card__title" id="cve-id">{{ test_result.cve }}</div>
         <div class="line-seperate"></div>
         <div class="card__text" id="publish-date">게시일: {{ test_result.created_at }}</div>
-        <div class="card__text" id="vuln-type">취약점 유형: Loading...</div>
-        <div class="card__text" id="description">Loading...</div>
+        <div class="card__text" id="vuln-type">취약점 유형: {{ test_result.type }}</div>
+        <div class="card__text" id="description">{{ test_result.description }}</div>
       </div>
       <div class="card-rule-result">
         <div class="card__title">테스트 결과</div>
@@ -85,66 +82,67 @@
         <div class="card__subtitle">테스트 환경</div>
         <div class="table">
           <div class="table-header">
-            <div class="table-grid">
-              <div class="table__cell text-cell">테스트 환경</div>
-              <div class="table__cell text-cell">총 테스트 패킷</div>
-              <div class="table__cell text-cell">공격 패킷</div>
-              <div class="table__cell text-cell">정상 패킷</div>
+            <div class="table-grid-03">
+              <div class="table__cell-03 text-cell">테스트 환경</div>
+              <div class="table__cell-03 text-cell">총 테스트 패킷</div>
+              <div class="table__cell-03 text-cell">공격 패킷</div>
+              <div class="table__cell-03 text-cell">정상 패킷</div>
             </div>
           </div>
           <div class="table-row">
-            <div class="table-grid">
-              <div class="table__cell text-cell" id="test-environment">{{ test_result.setting }}</div>
-              <div class="table__cell text-cell" id="total-packets">{{ test_result.total }}</div>
-              <div class="table__cell text-cell" id="attack-packets">{{ test_result.attacknum }}</div>
-              <div class="table__cell text-cell" id="normal-packets">{{ test_result.normalnum }}</div>
+            <div class="table-grid-03">
+              <div class="table__cell-03 text-cell" id="test-environment">{{ test_result.setting }}</div>
+              <div class="table__cell-03 text-cell" id="total-packets">{{ test_result.total }}</div>
+              <div class="table__cell-03 text-cell" id="attack-packets">{{ test_result.attacknum }}</div>
+              <div class="table__cell-03 text-cell" id="normal-packets">{{ test_result.normalnum }}</div>
             </div>
           </div>
         </div>
         <div class="card__subtitle">정확도 테스트 결과</div>
         <div class="table">
-          <div class="table-header">
-            <div class="table-grid">
-              <div class="table__cell text-cell">정확도 비율</div>
-              <div class="table__cell text-cell">오탐 패킷(률)<br />(False Positive)</div>
-              <div class="table__cell text-cell">미탐 패킷(률)<br />(False Negative)</div>
-              <div class="table__cell text-cell">정탐 패킷(률)<br />(True Positive)</div>
-              <div class="table__cell text-cell">정탐 패킷(률)<br />(True Negative)</div>
+          <div class="table-header-hug">
+            <div class="table-grid-03">
+              <div class="table__cell-03 text-cell">정확도 비율</div>
+              <div class="table__cell-03 text-cell">오탐 패킷(률)<br />(False Positive)</div>
+              <div class="table__cell-03 text-cell">미탐 패킷(률)<br />(False Negative)</div>
+              <div class="table__cell-03 text-cell">정탐 패킷(률)<br />(True Positive)</div>
+              <div class="table__cell-03 text-cell">정탐 패킷(률)<br />(True Negative)</div>
             </div>
           </div>
           <div class="table-row">
-            <div class="table-grid">
-              <div class="table__cell text-cell" id="accuracy-rate">{{ test_result.accuracyrate }}</div>
-              <div class="table__cell text-cell" id="false-positive">{{ test_result.attackrate }}</div>
-              <div class="table__cell text-cell" id="false-negative">{{ test_result.normalrate }}</div>
-              <div class="table__cell text-cell" id="true-positive">{{ test_result.attacktrue }}</div>
-              <div class="table__cell text-cell" id="true-negative">{{ test_result.normaltrue }}</div>
+            <div class="table-grid-03">
+              <div class="table__cell-03 text-cell" id="accuracy-rate">{{ test_result.accuracyrate }}</div>
+              <div class="table__cell-03 text-cell" id="false-positive">{{ test_result.attackrate }}</div>
+              <div class="table__cell-03 text-cell" id="false-negative">{{ test_result.normalrate }}</div>
+              <div class="table__cell-03 text-cell" id="true-positive">{{ test_result.attacktrue }}</div>
+              <div class="table__cell-03 text-cell" id="true-negative">{{ test_result.normaltrue }}</div>
             </div>
           </div>
         </div>
         <div class="card__subtitle">성능 테스트 결과</div>
         <div class="table">
           <div class="table-header">
-            <div class="table-grid">
-              <div class="table__cell text-cell">패킷 유형</div>
-              <div class="table__cell text-cell">지연 시간</div>
-              <div class="table__cell text-cell">CPU 사용량</div>
-              <div class="table__cell text-cell">메모리 사용량</div>
+            <div class="table-grid-03">
+              <div class="table__cell-03 text-cell">패킷 유형</div>
+              <div class="table__cell-03 text-cell">지연 시간</div>
+              <div class="table__cell-03 text-cell">CPU 사용량</div>
+              <div class="table__cell-03 text-cell">메모리 사용량</div>
             </div>
           </div>
           <div class="table-row">
-            <div class="table-grid">
-              <div class="table__cell text-cell" id="normallatency">{{ test_result.normallatency }}</div>
-              <div class="table__cell text-cell" id="cpu-usage">{{ test_result.normalcpu_usage }}</div>
-              <div class="table__cell text-cell" id="memory-usage">{{ test_result.normalmemory_usage }}</div>
+            <div class="table-grid-03">
+              <div class="table__cell-03 text-cell" id="category">정상 패킷</div>
+              <div class="table__cell-03 text-cell" id="normallatency">{{ test_result.normallatency }}</div>
+              <div class="table__cell-03 text-cell" id="cpu-usage">{{ test_result.normalcpu_usage }}</div>
+              <div class="table__cell-03 text-cell" id="memory-usage">{{ test_result.normalmemory_usage }}</div>
             </div>
           </div>
           <div class="table-row">
-            <div class="table-grid">
-              <div class="table__cell text-cell" id="category">공격 패킷</div>
-              <div class="table__cell text-cell" id="attacklatency">{{ test_result.attacklatency }}</div>
-              <div class="table__cell text-cell" id="cpu-usage">{{ test_result.attackcpu_usage }}</div>
-              <div class="table__cell text-cell" id="memory-usage">{{ test_result.attackmemory_usage }}</div>
+            <div class="table-grid-03">
+              <div class="table__cell-03 text-cell" id="category">공격 패킷</div>
+              <div class="table__cell-03 text-cell" id="attacklatency">{{ test_result.attacklatency }}</div>
+              <div class="table__cell-03 text-cell" id="cpu-usage">{{ test_result.attackcpu_usage }}</div>
+              <div class="table__cell-03 text-cell" id="memory-usage">{{ test_result.attackmemory_usage }}</div>
             </div>
           </div>
         </div>
