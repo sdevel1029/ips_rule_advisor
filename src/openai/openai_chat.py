@@ -49,7 +49,7 @@ async def chat_with_gpt(chat_message: str, session_id: str, cve_code: str = None
     # 사용자 메시지를 세션 내역에 추가
     session_history.append({"role": "user", "content": chat_message})
     
-    async with httpx.AsyncClient() as client:
+    async with httpx.AsyncClient(timeout=30.0) as client:
         response = await client.post(
             'https://api.openai.com/v1/chat/completions',
             headers={
@@ -59,7 +59,7 @@ async def chat_with_gpt(chat_message: str, session_id: str, cve_code: str = None
             json={
                 'model': 'gpt-4o-mini',
                 'messages': [{"role": "system", "content": context_message}] + session_history,
-                'max_tokens': 500,
+                'max_tokens': 2000,
                 'temperature': 0.3
             }
         )
