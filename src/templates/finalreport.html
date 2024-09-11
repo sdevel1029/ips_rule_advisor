@@ -35,6 +35,30 @@
        padding: 0;
    }
    </style>
+     <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const accordionTitles = document.querySelectorAll('.accordion-title');
+  
+        accordionTitles.forEach(title => {
+          title.addEventListener('click', function () {
+            const accordionContainer = this.parentElement;
+            const accordionContent = accordionContainer.querySelector('.accodion-content');
+            const accordionButton = this.querySelector('.btn-accodion');
+  
+            // 아코디언이 열려 있으면 닫고, 닫혀 있으면 열기
+            if (accordionContainer.classList.contains('active')) {
+              accordionContainer.classList.remove('active');
+              accordionContent.style.display = 'none';
+              accordionButton.src = '../static/vectors/btn-accodion-down.svg'; // 닫기 아이콘으로 변경
+            } else {
+              accordionContainer.classList.add('active');
+              accordionContent.style.display = 'flex';
+              accordionButton.src = '../static/vectors/btn-accodion-up.svg'; // 열기 아이콘으로 변경
+            }
+          });
+        });
+      });
+    </script>
   <title>IPS Rule Advisor</title>
 </head>
 <body>
@@ -191,7 +215,7 @@
             </div>
             <div class="text-accodion-content-subtitle">정확도 테스트 결과</div>
             <div class="table">
-              <div class="table-header-hug">
+              <div class="table-header">
                 <div class="table-grid">
                   <div class="table__cell text-cell">정확도 비율</div>
                   <div class="table__cell text-cell">오탐 패킷(률)<br/>(False Positive)</div>
