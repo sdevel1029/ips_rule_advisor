@@ -20,7 +20,7 @@ async def ruletest(request: Request,testid:str, client=Depends(get_supabase_clie
     ans = {}
     ans["cve"] = content['cve']
     ans["rule"] = content['rule']
-    ans["user"] = content['user_id']
+    ans["user_id"] = content['user_id']
     ans["created_at"] = datetime.fromisoformat(content['created_at']).date().isoformat()
     if content['envi'] == 0:
         ans["setting"] = "snort2"
