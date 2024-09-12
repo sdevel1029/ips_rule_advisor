@@ -14,15 +14,15 @@
   <div class="layout-wrapper">
     <header class="header">
       <div class="header-logo">
-        <div class="logo" onclick="window.location.href='/';">
-          <img class="hdd-fill" src="../static/vectors/logo-hdd-fill0.svg" />
-          <img class="shield-plus" src="../static/vectors/logo-shield-plus0.svg" />
-        </div>
+        <button class="logo" onclick="window.location.href='/';">
+          <img class="hdd-fill" src="../static/vectors/logo-hdd-fill0.svg" alt="hdd-icon" />
+          <img class="shield-plus" src="../static/vectors/logo-shield-plus0.svg" alt="shield-icon" />
+        </button>
       </div>
       <div class="header-nav">
         <a class="nav-item--active item-text" href="/">정보수집</a>
         <a class="nav-item item-text" href="/ruletest">룰 테스트</a>
-        <!--<a class="nav-item item-text" href="">마이페이지</a> -->
+        <!-- <a class="nav-item item-text" href="">마이페이지</a> -->
       </div>
       <div class="header-auth">
         <div class="auth-profile">
@@ -44,7 +44,7 @@
           최종 수정일 : <span id="last-modified-date">{{ current_date }}</span>
         </div>
         <div class="card__text" id="vuln-type">취약점 유형 : {{ type | default('정보 없음') }}
-          <div class="tooltip">{{ type_description | default('정보없음')}}</div>
+          <div class="tooltip-text">{{ type_description | default('정보없음')}}</div>
         </div>
         <div class="card__text" id="description">{{ info.nvd.설명 | default('정보 없음') }}</div>
       </div>
@@ -120,6 +120,18 @@
             <img class="btn-accordion" src="../static/vectors/btn-accordion-down.svg" />
           </div>
           <div class="accordion-content">
+            {% for key, value in info.nvd.악용가능성메트릭.items() %}
+            <div class="textbox-metric">
+              <div class="textbox__row">
+                <div class="text-key">{{ key }}</div>
+                <div class="text-value">{{ value | default('정보 없음') }}</div>
+              </div>
+              <div class="textbox__description">{{ key }}가 {{ value }} 합니다.</div>
+            </div>
+            {% endfor %}
+          </div>
+          <!-- 
+          <div class="accordion-content">
             <div class="textbox-metric">
               <div class="textbox__row">
                 <div class="text-key">공격 벡터</div>
@@ -157,7 +169,7 @@
               </div>
             </div>
             <div class="textbox-metric">
-              <div class="textbox__row">
+              <div class="textbox__row"> 
                 <div class="text-key">범위</div>
                 <div class="text-value">{{ info.nvd.메트릭세부.범위  | default('정보 없음') }}</div>
               </div>
@@ -166,12 +178,25 @@
               </div>
             </div>
           </div>
+          -->
         </div>
         <div class="accordion-container">
           <div class="accordion-title">
             <div class="text-accordion-title">영향 매트릭</div>
             <img class="btn-accordion" src="../static/vectors/btn-accordion-down.svg" />
           </div>
+          <div class="accordion-content">
+            {% for key, value in info.nvd.영향메트릭.items() %}
+            <div class="textbox-metric">
+              <div class="textbox__row">
+                <div class="text-key">{{ key }}</div>
+                <div class="text-value">{{ value | default('정보 없음') }}</div>
+              </div>
+              <div class="textbox__description">{{ key }}가 {{ value }} 합니다.</div>
+            </div>
+            {% endfor %}
+          </div>
+          <!--
           <div class="accordion-content">
             <div class="textbox-metric">
               <div class="textbox__row">
@@ -200,152 +225,152 @@
                 이 취약점은 가용성에 {{ info.nvd.메트릭세부.가용성| default('정보 없음') }} 영향을 미칩니다.
               </div>
             </div>
-
-            </div>
           </div>
-        </div>
-      </div>
-
-      <div class="card-rule">
-        <div class="card__title">연관 IPS Rule</div>
-        <div class="line-seperate"></div>
-        <div class="card__row">
-          <div class="card__subtitle">공격 유형</div>
-          <div class="dropdown-field">
-            <select class="dropdown-select" name="" id="">
-              <option class="dropdown-item text-dropdown-item" value="SQL Injection">SQL Injection</option>
-              <option class="dropdown-item text-dropdown-item" value="XSS">XSS</option>
-            </select>
-          </div>
-        </div>
-        <div class="card__rulebox">
-          <div class="text-rulebox">
-            {{ type | default('정보 없음') }}
-          </div>
-        </div>
-        <div class="card__row">
-          <div class="card__subtitle">영향받는 제품</div>
-          <div class="dropdown-field">
-            <select class="dropdown-select" name="" id="">
-              <option class="dropdown-item text-dropdown-item" value="SQL Injection">abc</option>
-              <option class="dropdown-item text-dropdown-item" value="XSS">xyz</option>
-            </select>
-          </div>
-        </div>
-        <div class="card__rulebox">
-          <div class="text-rulebox">
-            alert http any any -&gt; 192.168.1.0/24 any (msg:&quot;Detect SQL
-            injection attempt&quot;; http.uri; content:&quot;SELECT&quot;;
-            sid:1000004; rev:1;)
-          </div>
-        </div>
-      </div>
-
-      <div class="card-gpt">
-        <div class="card__title">ChatGPT 프롬프트</div>
-        <form class="chat-form" id="chat-form">
-          <div class="icon-paperclip">
-            <img class="paperclip" src="../static/vectors/icon-paperclip.svg" />
-          </div>
-          <input class="input-chat" id="user-input" name="user-input" type="text" placeholder="메시지 to ChatGPT..." />
-          <button type="submit" class="icon-send">
-            <img class="send" src="../static/vectors/icon-send.svg" />
-          </button>
-        </form>
-        <div class="chat-wrapper" id="chat-wrapper">
-          <!-- 채팅 표시 공간 -->
-        </div>
-      </div>
-
-      <div class="card-poc">
-        <div class="card__title">POC (Proof of Concept)</div>
-        <div class="line-seperate"></div>
-        <div class="card__text">POC 총 링크 수 : {{ info.nvd.poc|length }}</div>
-        <div class="accordion-container">
-          <div class="accordion-title">
-            <div class="text-accordion-title">POC 링크 목록</div>
-            <img class="btn-accordion" src="../static/vectors/btn-accordion-down.svg" />
-          </div>
-          <div class="accordion-content">
-            <div class="table">
-              <div class="table-header">
-                <div class="table-grid">
-                  <div class="table__cell text-cell">링크</div>
-                </div>
-              </div>
-              {% if info.nvd.poc %}
-              {% for poc in info.nvd.poc %}
-              <div class="table-row">
-                <div class="table-grid">
-                  <a class="table__cell text-link" href="{{ poc.url }}">{{ poc.url | default('정보 없음') }}</a>
-                </div>
-              </div>
-              {% endfor %}
-              {% endif %}
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="card-ref">
-        <div class="card__title">참고자료</div>
-        <div class="line-seperate"></div>
-        <div class="accordion-container">
-          <div class="accordion-title">
-            <div class="text-accordion-title">참고자료 링크 목록</div>
-            <img class="btn-accordion" src="../static/vectors/btn-accordion-down.svg" />
-          </div>
-          <div class="accordion-content">
-            <div class="table">
-              <div class="table-header">
-                <div class="table-grid">
-                  <div class="table__cell text-cell">링크</div>
-                  <div class="table__cell text-cell">유형</div>
-                </div>
-              </div>
-              {% if info.nvd.참고자료 %}
-              {% for ref in info.nvd.참고자료 %}
-              <div class="table-row">
-                <div class="table-grid">
-                  <a class="table__cell text-link" href="{{ ref.url }}">{{ ref.url | default('정보 없음') }}</a>
-                  <div class="table__cell text-cell" id="reftag">{{ ref.tags | join(', ') | default('정보 없음') }}</div>
-                </div>
-              </div>
-              {% endfor %}
-              {% endif %}
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="main-row">
-        <div class="button-group">
-          <button class="button-neutral text-button--neutral" onclick="window.history.back()">뒤로</button>
-          <button class="button-primary text-button--primary" onclick="saveInfo()">정보검색결과 저장</button>
-          <button class="button-primary text-button--primary" onclick="redirectToRuleTestWithCVE('{{ info.nvd.id }}')">
-            룰 테스트
-          </button>
+        -->
         </div>
       </div>
     </div>
+
+    <div class="card-rule">
+      <div class="card__title">연관 IPS Rule</div>
+      <div class="line-seperate"></div>
+      <div class="card__row">
+        <div class="card__subtitle">공격 유형</div>
+        <div class="dropdown-field">
+          <select class="dropdown-select" name="" id="">
+            <option class="dropdown-item text-dropdown-item" value="SQL Injection">SQL Injection</option>
+            <option class="dropdown-item text-dropdown-item" value="XSS">XSS</option>
+          </select>
+        </div>
+      </div>
+      <div class="card__rulebox">
+        <div class="text-rulebox">
+          {{ type | default('정보 없음') }}
+        </div>
+      </div>
+      <div class="card__row">
+        <div class="card__subtitle">영향받는 제품</div>
+        <div class="dropdown-field">
+          <select class="dropdown-select" name="" id="">
+            <option class="dropdown-item text-dropdown-item" value="SQL Injection">abc</option>
+            <option class="dropdown-item text-dropdown-item" value="XSS">xyz</option>
+          </select>
+        </div>
+      </div>
+      <div class="card__rulebox">
+        <div class="text-rulebox">
+          alert http any any -&gt; 192.168.1.0/24 any (msg:&quot;Detect SQL
+          injection attempt&quot;; http.uri; content:&quot;SELECT&quot;;
+          sid:1000004; rev:1;)
+        </div>
+      </div>
+    </div>
+
+    <div class="card-gpt">
+      <div class="card__title">ChatGPT 프롬프트</div>
+      <form class="chat-form" id="chat-form">
+        <div class="icon-paperclip">
+          <img class="paperclip" src="../static/vectors/icon-paperclip.svg" />
+        </div>
+        <input class="input-chat" id="user-input" name="user-input" type="text" placeholder="메시지 to ChatGPT..." />
+        <button type="submit" class="icon-send">
+          <img class="send" src="../static/vectors/icon-send.svg" />
+        </button>
+      </form>
+      <div class="chat-wrapper" id="chat-wrapper">
+        <!-- 채팅 표시 공간 -->
+      </div>
+    </div>
+
+    <div class="card-poc">
+      <div class="card__title">POC (Proof of Concept)</div>
+      <div class="line-seperate"></div>
+      <div class="card__text">POC 총 링크 수 : {{ info.nvd.poc|length }}</div>
+      <div class="accordion-container">
+        <div class="accordion-title">
+          <div class="text-accordion-title">POC 링크 목록</div>
+          <img class="btn-accordion" src="../static/vectors/btn-accordion-down.svg" />
+        </div>
+        <div class="accordion-content">
+          <div class="table">
+            <div class="table-header">
+              <div class="table-grid">
+                <div class="table__cell text-cell">링크</div>
+              </div>
+            </div>
+            {% if info.nvd.poc %}
+            {% for poc in info.nvd.poc %}
+            <div class="table-row">
+              <div class="table-grid">
+                <a class="table__cell text-link" href="{{ poc.url }}">{{ poc.url | default('정보 없음') }}</a>
+              </div>
+            </div>
+            {% endfor %}
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-ref">
+      <div class="card__title">참고자료</div>
+      <div class="line-seperate"></div>
+      <div class="accordion-container">
+        <div class="accordion-title">
+          <div class="text-accordion-title">참고자료 링크 목록</div>
+          <img class="btn-accordion" src="../static/vectors/btn-accordion-down.svg" />
+        </div>
+        <div class="accordion-content">
+          <div class="table">
+            <div class="table-header">
+              <div class="table-grid">
+                <div class="table__cell text-cell">링크</div>
+                <div class="table__cell text-cell">유형</div>
+              </div>
+            </div>
+            {% if info.nvd.참고자료 %}
+            {% for ref in info.nvd.참고자료 %}
+            <div class="table-row">
+              <div class="table-grid">
+                <a class="table__cell text-link" href="{{ ref.url }}">{{ ref.url | default('정보 없음') }}</a>
+                <div class="table__cell text-cell" id="reftag">{{ ref.tags | join(', ') | default('정보 없음') }}</div>
+              </div>
+            </div>
+            {% endfor %}
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="main-row">
+      <div class="button-group">
+        <button class="button-neutral text-button--neutral" onclick="window.history.back()">뒤로</button>
+        <button class="button-primary text-button--primary" onclick="saveInfo()">정보검색결과 저장</button>
+        <button class="button-primary text-button--primary" onclick="redirectToRuleTestWithCVE('{{ info.nvd.id }}')">
+          룰 테스트
+        </button>
+      </div>
+    </div>
+  </div>
   </div>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-    // 아코디언 기능
-    const accordionTitles = document.querySelectorAll('.accordion-title');
-    accordionTitles.forEach(title => {
-      title.addEventListener('click', function () {
-        const accordionContainer = this.parentElement;
-        const accordionContent = accordionContainer.querySelector('.accordion-content');
-        const accordionButton = this.querySelector('.btn-accordion');
+      // 아코디언 기능
+      const accordionTitles = document.querySelectorAll('.accordion-title');
+      accordionTitles.forEach(title => {
+        title.addEventListener('click', function () {
+          const accordionContainer = this.parentElement;
+          const accordionContent = accordionContainer.querySelector('.accordion-content');
+          const accordionButton = this.querySelector('.btn-accordion');
 
-        accordionContainer.classList.toggle('active');
-        accordionContent.style.display = accordionContainer.classList.contains('active') ? 'flex' : 'none';
-        accordionButton.src = accordionContainer.classList.contains('active')
-          ? '../static/vectors/btn-accordion-up.svg'
-          : '../static/vectors/btn-accordion-down.svg';
+          accordionContainer.classList.toggle('active');
+          accordionContent.style.display = accordionContainer.classList.contains('active') ? 'flex' : 'none';
+          accordionButton.src = accordionContainer.classList.contains('active')
+            ? '../static/vectors/btn-accordion-up.svg'
+            : '../static/vectors/btn-accordion-down.svg';
+        });
       });
     });
-  });
-  // 채팅 폼
+    // 채팅 폼
     const chatWrapper = document.getElementById('chat-wrapper');
     const chatForm = document.getElementById('chat-form');
     const promptInput = document.getElementById('user-input');

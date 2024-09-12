@@ -55,29 +55,77 @@ async def nvd(code):
     # 예외 1 : 결과 없음
     if result["totalResults"] == 0:
         return {}
- 
+
     # 최종 output
     output = {}
     output["id"] = result["vulnerabilities"][0]["cve"]["id"]
     output["수정시간"] = result["vulnerabilities"][0]["cve"]["lastModified"]
     output["설명"] = result["vulnerabilities"][0]["cve"]["descriptions"][0]["value"]
-    output["점수"] = result["vulnerabilities"][0]["cve"]["metrics"]["cvssMetricV31"][0]["cvssData"]["baseScore"]
-    output["메트릭"] = result["vulnerabilities"][0]["cve"]["metrics"]["cvssMetricV31"][0]["cvssData"]["vectorString"]
+    output["점수"] = result["vulnerabilities"][0]["cve"]["metrics"]["cvssMetricV31"][0][
+        "cvssData"
+    ]["baseScore"]
+    output["메트릭"] = result["vulnerabilities"][0]["cve"]["metrics"]["cvssMetricV31"][
+        0
+    ]["cvssData"]["vectorString"]
     # 메트릭 세부 만들기 시작
     tmp_for_detail = {}
-    tmp_for_detail["공격벡터"] = result["vulnerabilities"][0]["cve"]["metrics"]["cvssMetricV31"][0]["cvssData"]["attackVector"]
-    tmp_for_detail["공격복잡성"] = result["vulnerabilities"][0]["cve"]["metrics"]["cvssMetricV31"][0]["cvssData"]["attackComplexity"]
-    tmp_for_detail["필요한권한"] = result["vulnerabilities"][0]["cve"]["metrics"]["cvssMetricV31"][0]["cvssData"]["privilegesRequired"]
-    tmp_for_detail["사용자상호작용"] = result["vulnerabilities"][0]["cve"]["metrics"]["cvssMetricV31"][0]["cvssData"]["userInteraction"]
-    tmp_for_detail["범위"] = result["vulnerabilities"][0]["cve"]["metrics"]["cvssMetricV31"][0]["cvssData"]["scope"]
-    tmp_for_detail["기밀성"] = result["vulnerabilities"][0]["cve"]["metrics"]["cvssMetricV31"][0]["cvssData"]["confidentialityImpact"]
-    tmp_for_detail["무결성"] = result["vulnerabilities"][0]["cve"]["metrics"]["cvssMetricV31"][0]["cvssData"]["integrityImpact"]
-    tmp_for_detail["가용성"] = result["vulnerabilities"][0]["cve"]["metrics"]["cvssMetricV31"][0]["cvssData"]["availabilityImpact"]
+    tmp_for_detail["공격벡터"] = result["vulnerabilities"][0]["cve"]["metrics"][
+        "cvssMetricV31"
+    ][0]["cvssData"]["attackVector"]
+    tmp_for_detail["공격복잡성"] = result["vulnerabilities"][0]["cve"]["metrics"][
+        "cvssMetricV31"
+    ][0]["cvssData"]["attackComplexity"]
+    tmp_for_detail["필요한권한"] = result["vulnerabilities"][0]["cve"]["metrics"][
+        "cvssMetricV31"
+    ][0]["cvssData"]["privilegesRequired"]
+    tmp_for_detail["사용자상호작용"] = result["vulnerabilities"][0]["cve"]["metrics"][
+        "cvssMetricV31"
+    ][0]["cvssData"]["userInteraction"]
+    tmp_for_detail["범위"] = result["vulnerabilities"][0]["cve"]["metrics"][
+        "cvssMetricV31"
+    ][0]["cvssData"]["scope"]
+    tmp_for_detail["기밀성"] = result["vulnerabilities"][0]["cve"]["metrics"][
+        "cvssMetricV31"
+    ][0]["cvssData"]["confidentialityImpact"]
+    tmp_for_detail["무결성"] = result["vulnerabilities"][0]["cve"]["metrics"][
+        "cvssMetricV31"
+    ][0]["cvssData"]["integrityImpact"]
+    tmp_for_detail["가용성"] = result["vulnerabilities"][0]["cve"]["metrics"][
+        "cvssMetricV31"
+    ][0]["cvssData"]["availabilityImpact"]
+
     # 끝
     output["메트릭세부"] = tmp_for_detail
-    output["exploitability점수"] = result["vulnerabilities"][0]["cve"]["metrics"]["cvssMetricV31"][0]["exploitabilityScore"]
-    output["impact점수"] = result["vulnerabilities"][0]["cve"]["metrics"]["cvssMetricV31"][0]["impactScore"]
+    output["exploitability점수"] = result["vulnerabilities"][0]["cve"]["metrics"][
+        "cvssMetricV31"
+    ][0]["exploitabilityScore"]
+    output["impact점수"] = result["vulnerabilities"][0]["cve"]["metrics"][
+        "cvssMetricV31"
+    ][0]["impactScore"]
 
+    ###############################################################
+    # 메트릭 v3.1 - 동건
+    cvssMetric_v31 = result["vulnerabilities"][0]["cve"]["metrics"]["cvssMetricV31"][0][
+        "cvssData"
+    ]
+
+    # metrics_exploitability: 'attackVector'부터 'scope'까지
+    keys_exploitability = [
+        "attackVector",
+        "attackComplexity",
+        "privilegesRequired",
+        "userInteraction",
+        "scope",
+    ]
+    metrics_exploitability = {key: cvssMetric_v31[key] for key in keys_exploitability}
+
+    # metrics_impact: 'confidentialityImpact'부터 'availabilityImpact'까지
+    keys_impact = ["confidentialityImpact", "integrityImpact", "availabilityImpact"]
+    metrics_impact = {key: cvssMetric_v31[key] for key in keys_impact}
+
+    output["악용가능성메트릭"] = metrics_exploitability
+    output["영향메트릭"] = metrics_impact
+    ###############################################################
     # 제품, cpe
     cpe_list = []
 
@@ -143,15 +191,15 @@ async def snort_coummunity_rule(code):
     result_list = []
 
     # rule 탐색할 폴더 경로, 탐색할 cve 코드 숫자부분
-    folder_path = './src/getinfo/rule_files/snort_rule'
+    folder_path = "./src/getinfo/rule_files/snort_rule"
     keyword = code[4:]
 
     # 폴더 안 모든 .rules 파일 읽으며 탐색 후 저장
     for root, dirs, files in os.walk(folder_path):
         for file in files:
-            if file.endswith('.rules'):
+            if file.endswith(".rules"):
                 file_path = os.path.join(root, file)
-                with open(file_path, 'r', encoding='utf-8') as f:
+                with open(file_path, "r", encoding="utf-8") as f:
                     content = f.read()
                     content = content.split("\n")
                     for i in content:
@@ -161,31 +209,33 @@ async def snort_coummunity_rule(code):
     output["rules"] = result_list
     return output
 
+
 # emerging_rule 정보수집
 async def emerging_rule_download():
     tmp_url = "https://rules.emergingthreatspro.com/open/snort-2.9.0/emerging-all.rules"
     res = await send_get_request(url=tmp_url)
     data = res.text
 
-    ttmp_fd = open("./src/getinfo/rule_files/emerging-all.rules.txt", 'w')
+    ttmp_fd = open("./src/getinfo/rule_files/emerging-all.rules.txt", "w")
     ttmp_fd.write(data)
     ttmp_fd.close()
-    
+
     return data
+
 
 async def emerging_rule(code):
     output = {}
     # rule 파일 읽기
     try:
-        tmp_fd = open("./src/getinfo/rule_files/emerging-all.rules.txt", 'r')
+        tmp_fd = open("./src/getinfo/rule_files/emerging-all.rules.txt", "r")
         data = tmp_fd.read()
         tmp_fd.close()
-    except: # 없으면 다운로드
+    except:  # 없으면 다운로드
         data = await emerging_rule_download()
 
     # 데이터 처리
     data = data.split("\n")
-    
+
     search_key = code[4:]
     result_list = []
     for i in data:
@@ -195,6 +245,7 @@ async def emerging_rule(code):
     output["rules"] = result_list
 
     return output
+
 
 # 정보수집 메인 함수
 async def info(code):
@@ -218,8 +269,6 @@ async def info(code):
     output["emerging_rule"] = res_emerging_rule
 
     return output
-
-
 
 
 ############### 테스트 ###############
