@@ -31,3 +31,4 @@ class VulnerabilityCreate(BaseModel):
     cve: str = None
     last_modified_date: str = None  
     cve_posting_date: str = None 
+    user_id: str = None
