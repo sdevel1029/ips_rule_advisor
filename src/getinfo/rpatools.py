@@ -62,6 +62,18 @@ async def nvd(code):
     output["설명"] = result["vulnerabilities"][0]["cve"]["descriptions"][0]["value"]
     output["점수"] = result["vulnerabilities"][0]["cve"]["metrics"]["cvssMetricV31"][0]["cvssData"]["baseScore"]
     output["메트릭"] = result["vulnerabilities"][0]["cve"]["metrics"]["cvssMetricV31"][0]["cvssData"]["vectorString"]
+    # 메트릭 세부 만들기 시작
+    tmp_for_detail = {}
+    tmp_for_detail["공격벡터"] = result["vulnerabilities"][0]["cve"]["metrics"]["cvssMetricV31"][0]["cvssData"]["attackVector"]
+    tmp_for_detail["공격복잡성"] = result["vulnerabilities"][0]["cve"]["metrics"]["cvssMetricV31"][0]["cvssData"]["attackComplexity"]
+    tmp_for_detail["필요한권한"] = result["vulnerabilities"][0]["cve"]["metrics"]["cvssMetricV31"][0]["cvssData"]["privilegesRequired"]
+    tmp_for_detail["사용자상호작용"] = result["vulnerabilities"][0]["cve"]["metrics"]["cvssMetricV31"][0]["cvssData"]["userInteraction"]
+    tmp_for_detail["범위"] = result["vulnerabilities"][0]["cve"]["metrics"]["cvssMetricV31"][0]["cvssData"]["scope"]
+    tmp_for_detail["기밀성"] = result["vulnerabilities"][0]["cve"]["metrics"]["cvssMetricV31"][0]["cvssData"]["confidentialityImpact"]
+    tmp_for_detail["무결성"] = result["vulnerabilities"][0]["cve"]["metrics"]["cvssMetricV31"][0]["cvssData"]["integrityImpact"]
+    tmp_for_detail["가용성"] = result["vulnerabilities"][0]["cve"]["metrics"]["cvssMetricV31"][0]["cvssData"]["availabilityImpact"]
+    # 끝
+    output["메트릭세부"] = tmp_for_detail
     output["exploitability점수"] = result["vulnerabilities"][0]["cve"]["metrics"]["cvssMetricV31"][0]["exploitabilityScore"]
     output["impact점수"] = result["vulnerabilities"][0]["cve"]["metrics"]["cvssMetricV31"][0]["impactScore"]
 
@@ -130,6 +142,40 @@ async def snort_coummunity_rule(code):
 
     return output
 
+# emerging_rule 정보수집
+async def emerging_rule_download():
+    tmp_url = "https://rules.emergingthreatspro.com/open/snort-2.9.0/emerging-all.rules"
+    res = await send_get_request(url=tmp_url)
+    data = res.text
+
+    ttmp_fd = open("./src/getinfo/rule_files/emerging-all.rules.txt", 'w')
+    ttmp_fd.write(data)
+    ttmp_fd.close()
+    
+    return data
+
+async def emerging_rule(code):
+    output = {}
+    # rule 파일 읽기
+    try:
+        tmp_fd = open("./src/getinfo/rule_files/emerging-all.rules.txt", 'r')
+        data = tmp_fd.read()
+        tmp_fd.close()
+    except: # 없으면 다운로드
+        data = await emerging_rule_download()
+
+    # 데이터 처리
+    data = data.split("\n")
+    
+    search_key = code[4:]
+    result_list = []
+    for i in data:
+        if search_key in i:
+            result_list.append(i)
+
+    output["rules"] = result_list
+
+    return output
 
 # 정보수집 메인 함수
 async def info(code):
@@ -148,7 +194,13 @@ async def info(code):
     res_snort_community_rule = await snort_coummunity_rule(code)
     output["snort_community_rule"] = res_snort_community_rule
 
+    # 수집원 emerging_rule
+    res_emerging_rule = await emerging_rule(code)
+    output["emerging_rule"] = res_emerging_rule
+
     return output
+
+
 
 
 ############### 테스트 ###############
