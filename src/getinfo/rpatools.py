@@ -55,7 +55,7 @@ async def nvd(code):
     # 예외 1 : 결과 없음
     if result["totalResults"] == 0:
         return {}
-
+ 
     # 최종 output
     output = {}
     output["id"] = result["vulnerabilities"][0]["cve"]["id"]

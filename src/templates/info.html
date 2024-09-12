@@ -43,7 +43,9 @@
           게시일 : <span id="posting-date">{{ info.nvd.수정시간 | default('정보 없음') }}</span> |
           최종 수정일 : <span id="last-modified-date">{{ current_date }}</span>
         </div>
-        <div class="card__text" id="vuln-type">취약점 유형 : {{ type | default('정보 없음') }}</div>
+        <div class="card__text" id="vuln-type">취약점 유형 : {{ type | default('정보 없음') }}
+          <div class="tooltip">{{ type_description | default('정보없음')}}</div>
+        </div>
         <div class="card__text" id="description">{{ info.nvd.설명 | default('정보 없음') }}</div>
       </div>
 

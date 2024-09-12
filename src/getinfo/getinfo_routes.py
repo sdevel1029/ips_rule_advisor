@@ -1,4 +1,5 @@
 # src/getinfo/getinfo_routes.py
+import json
 from fastapi import APIRouter, Request
 from src.getinfo.getinfo_service import get_info, InfoServiceError
 from fastapi.responses import HTMLResponse, JSONResponse
@@ -19,6 +20,8 @@ from src.auth.auth_service import profile
 router = APIRouter()
 templates = Jinja2Templates(directory="src/templates")
 
+with open('src/openai/attack_types.json', 'r')as file:
+    attack_types = json.load(file)
 
 @router.get("/getinfo", response_class=HTMLResponse)
 async def get_info_page(request: Request, cve_code: str = None):
@@ -44,13 +47,14 @@ async def get_info_page(request: Request, cve_code: str = None):
        
 
             attack_type = await classify_attack(info_result["nvd"]["설명"])
-
-            print(info_result)
+            attack_description = attack_types.get(attack_type, "정보없음")
+           
 
             return templates.TemplateResponse("info.html",{
                 "request": request,
                 "info": info_result,
                 "type": attack_type,
+                "type_description" : attack_description,
                 "metrics_summary": metrics_summary,
                 "current_date": current_date
                 })
