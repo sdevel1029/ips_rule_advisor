@@ -1,6 +1,7 @@
 # src/getinfo/rpatools.py
 import httpx
 import asyncio
+import os
 from ..database import supabase_client
 from src.getinfo.global_var import test_wait_list
 
@@ -139,7 +140,25 @@ async def github_poc(code):
 # snort_community_rule 정보수집
 async def snort_coummunity_rule(code):
     output = {}
+    result_list = []
 
+    # rule 탐색할 폴더 경로, 탐색할 cve 코드 숫자부분
+    folder_path = './src/getinfo/rule_files/snort_rule'
+    keyword = code[4:]
+
+    # 폴더 안 모든 .rules 파일 읽으며 탐색 후 저장
+    for root, dirs, files in os.walk(folder_path):
+        for file in files:
+            if file.endswith('.rules'):
+                file_path = os.path.join(root, file)
+                with open(file_path, 'r', encoding='utf-8') as f:
+                    content = f.read()
+                    content = content.split("\n")
+                    for i in content:
+                        if keyword in i:
+                            result_list.append(i)
+
+    output["rules"] = result_list
     return output
 
 # emerging_rule 정보수집
