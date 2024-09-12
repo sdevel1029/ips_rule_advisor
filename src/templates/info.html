@@ -7,62 +7,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="../static/vars/vars.css">
   <link rel="stylesheet" href="../static/styles/styles.css">
-  <!--
-  <link rel="stylesheet" href="../static/styles/getinfo_result.css">
--->
-
-  <style>
-    a,
-    button,
-    input,
-    select,
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      border: none;
-      text-decoration: none;
-      background: none;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    menu,
-    ol,
-    ul {
-      list-style-type: none;
-      margin: 0;
-      padding: 0;
-    }
-  </style>
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const accordionTitles = document.querySelectorAll('.accordion-title');
-
-      accordionTitles.forEach(title => {
-        title.addEventListener('click', function () {
-          const accordionContainer = this.parentElement;
-          const accordionContent = accordionContainer.querySelector('.accodion-content');
-          const accordionButton = this.querySelector('.btn-accodion');
-
-          // 아코디언이 열려 있으면 닫고, 닫혀 있으면 열기
-          if (accordionContainer.classList.contains('active')) {
-            accordionContainer.classList.remove('active');
-            accordionContent.style.display = 'none';
-            accordionButton.src = '../static/vectors/btn-accodion-down.svg'; // 닫기 아이콘으로 변경
-          } else {
-            accordionContainer.classList.add('active');
-            accordionContent.style.display = 'flex';
-            accordionButton.src = '../static/vectors/btn-accodion-up.svg'; // 열기 아이콘으로 변경
-          }
-        });
-      });
-    });
-  </script>
   <title>IPS Rule Advisor</title>
 </head>
 
@@ -105,12 +49,12 @@
 
       <div class="card-cpe">
         <div class="card__title">영향받는 제품</div>
-        <div class="accodion-container">
+        <div class="accordion-container">
           <div class="accordion-title">
-            <div class="text-accodion-title">CPE 목록</div>
-            <img class="btn-accodion" src="../static/vectors/btn-accodion-down.svg" />
+            <div class="text-accordion-title">CPE 목록</div>
+            <img class="btn-accordion" src="../static/vectors/btn-accordion-down.svg" />
           </div>
-          <div class="accodion-content">
+          <div class="accordion-content">
             <div class="table">
               <div class="table-header">
                 <div class="table-grid">
@@ -160,19 +104,20 @@
           <div class="table-row">
             <div class="table-grid">
               <div class="table__cell text-cell" id="score">{{ info.nvd.점수 | default('정보 없음') }}</div>
-              <div class="table__cell text-cell" id="exploit_score">{{ info.nvd.exploitability점수 | default('정보 없음') }}</div>
+              <div class="table__cell text-cell" id="exploit_score">{{ info.nvd.exploitability점수 | default('정보 없음') }}
+              </div>
               <div class="table__cell text-cell" id="influence_score">{{ info.nvd.impact점수 | default('정보 없음') }}</div>
             </div>
           </div>
         </div>
         <div class="card__subtitle">메트릭 요약</div>
         <div class="card__text" id="metrics_summary">{{ metrics_summary | default('정보 없음') }}</div>
-        <div class="accodion-container">
+        <div class="accordion-container">
           <div class="accordion-title">
-            <div class="text-accodion-title">악용 가능성 매트릭 (임시 텍스트)</div>
-            <img class="btn-accodion" src="../static/vectors/btn-accodion-down.svg" />
+            <div class="text-accordion-title">악용 가능성 매트릭 (임시 텍스트)</div>
+            <img class="btn-accordion" src="../static/vectors/btn-accordion-down.svg" />
           </div>
-          <div class="accodion-content">
+          <div class="accordion-content">
             <div class="textbox-metric">
               <div class="textbox__row">
                 <div class="text-key">공격 벡터</div>
@@ -220,12 +165,12 @@
             </div>
           </div>
         </div>
-        <div class="accodion-container">
+        <div class="accordion-container">
           <div class="accordion-title">
-            <div class="text-accodion-title">영향 매트릭 (임시 텍스트)</div>
-            <img class="btn-accodion" src="../static/vectors/btn-accodion-down.svg" />
+            <div class="text-accordion-title">영향 매트릭 (임시 텍스트)</div>
+            <img class="btn-accordion" src="../static/vectors/btn-accordion-down.svg" />
           </div>
-          <div class="accodion-content">
+          <div class="accordion-content">
             <div class="textbox-metric">
               <div class="textbox__row">
                 <div class="text-key">공격 벡터</div>
@@ -330,12 +275,12 @@
         <div class="card__title">POC (Proof of Concept)</div>
         <div class="line-seperate"></div>
         <div class="card__text">POC 총 링크 수 : {{ info.nvd.poc|length }}</div>
-        <div class="accodion-container">
+        <div class="accordion-container">
           <div class="accordion-title">
-            <div class="text-accodion-title">POC 링크 목록</div>
-            <img class="btn-accodion" src="../static/vectors/btn-accodion-down.svg" />
+            <div class="text-accordion-title">POC 링크 목록</div>
+            <img class="btn-accordion" src="../static/vectors/btn-accordion-down.svg" />
           </div>
-          <div class="accodion-content">
+          <div class="accordion-content">
             <div class="table">
               <div class="table-header">
                 <div class="table-grid">
@@ -358,12 +303,12 @@
       <div class="card-ref">
         <div class="card__title">참고자료</div>
         <div class="line-seperate"></div>
-        <div class="accodion-container">
+        <div class="accordion-container">
           <div class="accordion-title">
-            <div class="text-accodion-title">참고자료 링크 목록</div>
-            <img class="btn-accodion" src="../static/vectors/btn-accodion-down.svg" />
+            <div class="text-accordion-title">참고자료 링크 목록</div>
+            <img class="btn-accordion" src="../static/vectors/btn-accordion-down.svg" />
           </div>
-          <div class="accodion-content">
+          <div class="accordion-content">
             <div class="table">
               <div class="table-header">
                 <div class="table-grid">
@@ -390,15 +335,31 @@
           <button class="button-neutral text-button--neutral" onclick="window.history.back()">뒤로</button>
           <button class="button-primary text-button--primary" onclick="saveInfo()">정보검색결과 저장</button>
           <button class="button-primary text-button--primary" onclick="redirectToRuleTestWithCVE('{{ info.nvd.id }}')">
-          룰 테스트
-        </button>
+            룰 테스트
+          </button>
         </div>
       </div>
     </div>
   </div>
-
-
   <script>
+    document.addEventListener('DOMContentLoaded', function () {
+    // 아코디언 기능
+    const accordionTitles = document.querySelectorAll('.accordion-title');
+    accordionTitles.forEach(title => {
+      title.addEventListener('click', function () {
+        const accordionContainer = this.parentElement;
+        const accordionContent = accordionContainer.querySelector('.accordion-content');
+        const accordionButton = this.querySelector('.btn-accordion');
+
+        accordionContainer.classList.toggle('active');
+        accordionContent.style.display = accordionContainer.classList.contains('active') ? 'flex' : 'none';
+        accordionButton.src = accordionContainer.classList.contains('active')
+          ? '../static/vectors/btn-accordion-up.svg'
+          : '../static/vectors/btn-accordion-down.svg';
+      });
+    });
+  });
+  // 채팅 폼
     const chatWrapper = document.getElementById('chat-wrapper');
     const chatForm = document.getElementById('chat-form');
     const promptInput = document.getElementById('user-input');
@@ -622,42 +583,42 @@
     });
 
 
-async function saveInfo() {
+    async function saveInfo() {
 
-    const cveId = document.getElementById('cve-id').innerText.trim();
-    const vulnType = document.getElementById('vuln-type').innerText.replace('취약점 유형 : ', '').trim();
-    const description = document.getElementById('description').innerText.trim();
-    const score = document.getElementById('score').innerText.trim();
-    const exploitScore = document.getElementById('exploit_score').innerText.trim();
-    const influenceScore = document.getElementById('influence_score').innerText.trim();
-    const metrics = document.getElementById('metrics').innerText.replace('메트릭 : ', '').trim();
-    const metricsSummary = document.getElementById('metrics_summary').innerText.trim();
+      const cveId = document.getElementById('cve-id').innerText.trim();
+      const vulnType = document.getElementById('vuln-type').innerText.replace('취약점 유형 : ', '').trim();
+      const description = document.getElementById('description').innerText.trim();
+      const score = document.getElementById('score').innerText.trim();
+      const exploitScore = document.getElementById('exploit_score').innerText.trim();
+      const influenceScore = document.getElementById('influence_score').innerText.trim();
+      const metrics = document.getElementById('metrics').innerText.replace('메트릭 : ', '').trim();
+      const metricsSummary = document.getElementById('metrics_summary').innerText.trim();
 
-    const cpeElements = document.querySelectorAll('.table-row .table__cell.text-cell:nth-child(1)');
-    const cpeValues = Array.from(cpeElements).map(cpeElement => cpeElement.innerText.trim());
-    const cpeData = cpeValues.length > 0 ? { CPE_List: cpeValues } : {};  
+      const cpeElements = document.querySelectorAll('.table-row .table__cell.text-cell:nth-child(1)');
+      const cpeValues = Array.from(cpeElements).map(cpeElement => cpeElement.innerText.trim());
+      const cpeData = cpeValues.length > 0 ? { CPE_List: cpeValues } : {};
 
-    const pocElements = document.querySelectorAll('.card-poc .table-row .table__cell.text-link');
-    const pocLinks = Array.from(pocElements).map(pocElement => pocElement.href.trim());
-    const pocData = pocLinks.length > 0 ? { urls: pocLinks } : {};  
+      const pocElements = document.querySelectorAll('.card-poc .table-row .table__cell.text-link');
+      const pocLinks = Array.from(pocElements).map(pocElement => pocElement.href.trim());
+      const pocData = pocLinks.length > 0 ? { urls: pocLinks } : {};
 
-    const refElements = document.querySelectorAll('.card-ref .table-row');
-    const refDataArray = Array.from(refElements).map(row => {
+      const refElements = document.querySelectorAll('.card-ref .table-row');
+      const refDataArray = Array.from(refElements).map(row => {
         const urlElement = row.querySelector('.table__cell.text-link');
         const typeElement = row.querySelector('.table__cell#reftag');
         const url = urlElement ? urlElement.href.trim() : '정보 없음';
         const type = typeElement ? typeElement.innerText.trim() : '정보 없음';
         return { url: url, type: type };
-    });
-    const referenceData = refDataArray.length > 0 ? { references: refDataArray } : {};
+      });
+      const referenceData = refDataArray.length > 0 ? { references: refDataArray } : {};
 
-    const postingDateElement = document.getElementById('posting-date');
-    const lastModifiedDateElement = document.getElementById('last-modified-date');
+      const postingDateElement = document.getElementById('posting-date');
+      const lastModifiedDateElement = document.getElementById('last-modified-date');
 
-    const postingDateText = postingDateElement.textContent.trim();
-    const lastModifiedDateText = lastModifiedDateElement.textContent.trim();
+      const postingDateText = postingDateElement.textContent.trim();
+      const lastModifiedDateText = lastModifiedDateElement.textContent.trim();
 
-    const vulnerabilityData = {
+      const vulnerabilityData = {
         vuln_type: vulnType,
         description: description,
         cpe: cpeData,
@@ -673,15 +634,15 @@ async function saveInfo() {
         cve: cveId,
         cve_posting_date: postingDateText,
         last_modified_date: lastModifiedDateText
-    };
+      };
 
-    try {
+      try {
         const response = await fetch("/saveinfo", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(vulnerabilityData)
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(vulnerabilityData)
         });
 
         if (response.ok) {
@@ -698,8 +659,8 @@ async function saveInfo() {
     }
 
     function redirectToRuleTestWithCVE(cveCode) {
-    window.location.href = `/ruletest?cve=${encodeURIComponent(cveCode)}`;
-  }
+      window.location.href = `/ruletest?cve=${encodeURIComponent(cveCode)}`;
+    }
   </script>
 </body>
 
