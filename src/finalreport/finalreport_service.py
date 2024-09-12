@@ -9,15 +9,24 @@ def get_final_report(request: Request, cve_code: str):
     user_profile = profile(supabase, request)  
     user_id = user_profile['user'].user.id
 
-    # Supabase에서 사용자와 CVE 코드가 일치하는 보고서를 조회
-    response = supabase \
+    info_result = supabase \
         .from_("info") \
         .select("*") \
         .eq("user_id", user_id) \
         .eq("cve", cve_code) \
         .execute()
 
-    if response.data and len(response.data) > 0:
-        return response.data[0]  # 최종 보고서 데이터 반환
-    else:
-        return None  # 보고서를 찾을 수 없을 때
+    # Supabase에서 사용자와 CVE 코드가 일치하는 테스트 결과 조회
+    test_result = supabase \
+        .from_("test_all") \
+        .select("*") \
+        .eq("user_id", user_id) \
+        .eq("cve", cve_code) \
+        .execute()
+
+    # 결과를 결합
+    results = {
+        "info": info_result.data,
+        "test": test_result.data
+    }
+    return results
