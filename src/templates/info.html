@@ -59,8 +59,8 @@
               <div class="table-header">
                 <div class="table-grid">
                   <div class="table__cell text-cell">공급업체</div>
-                  <div class="table__cell text-cell">포함 버전</div>
-                  <div class="table__cell text-cell">비포함 버전</div>
+                  <div class="table__cell text-cell">제품</div>
+                  <div class="table__cell text-cell">버전</div>
                 </div>
               </div>
               {% if info.nvd.제품들 %}
@@ -68,9 +68,9 @@
               {% for cpe in cpe_list %}
               <div class="table-row">
                 <div class="table-grid">
-                  <div class="table__cell text-cell" id="cpe-{{ loop.index }}">{{ cpe.CPE | default('정보 없음') }}</div>
-                  <div class="table__cell text-cell" id="included-{{ loop.index }}">{{ cpe.포함 if cpe.포함 is not none else '-' }}</div>
-                  <div class="table__cell text-cell" id="excluded-{{ loop.index }}">{{ cpe.비포함 if cpe.비포함 is not none else '-' }}</div>
+                  <div class="table__cell text-cell">{{ cpe.CPE | default('정보 없음') }}</div>
+                  <div class="table__cell text-cell">{{ cpe.포함 if cpe.포함 is not none else '-' }}</div>
+                  <div class="table__cell text-cell">{{ cpe.비포함 if cpe.비포함 is not none else '-' }}</div>
                 </div>
               </div>
               {% endfor %}
@@ -114,107 +114,91 @@
         <div class="card__text" id="metrics_summary">{{ metrics_summary | default('정보 없음') }}</div>
         <div class="accordion-container">
           <div class="accordion-title">
-            <div class="text-accordion-title">악용 가능성 매트릭 (임시 텍스트)</div>
+            <div class="text-accordion-title">악용 가능성 매트릭</div>
             <img class="btn-accordion" src="../static/vectors/btn-accordion-down.svg" />
           </div>
           <div class="accordion-content">
             <div class="textbox-metric">
               <div class="textbox__row">
                 <div class="text-key">공격 벡터</div>
-                <div class="text-value">네트워크</div>
+                <div class="text-value">{{ info.nvd.메트릭세부.공격벡터 | default('정보 없음') }}</div>
               </div>
               <div class="textbox__description">
-                이 취약점은 네트워크를 통해 원격으로 악용될 수 있습니다.
+                이 취약점은  {{ info.nvd.메트릭세부.공격벡터 | default('정보 없음') }}를 통해 원격으로 악용될 수 있습니다.
               </div>
             </div>
             <div class="textbox-metric">
               <div class="textbox__row">
                 <div class="text-key">공격 복잡성</div>
-                <div class="text-value">낮음</div>
+                <div class="text-value">{{ info.nvd.메트릭세부.공격복잡성  | default('정보 없음') }}</div>
               </div>
               <div class="textbox__description">
-                이 공격은 비교적 간단한 단계로 수행할 수 있습니다.
+                이 공격은 {{ info.nvd.메트릭세부.공격복잡성  | default('정보 없음') }}단계로 수행할 수 있습니다.
               </div>
             </div>
             <div class="textbox-metric">
               <div class="textbox__row">
                 <div class="text-key">필요한 권한</div>
-                <div class="text-value">없음</div>
+                <div class="text-value">{{ info.nvd.메트릭세부.필요한권한 | default('정보 없음') }}</div>
               </div>
               <div class="textbox__description">
-                공격자는 이 취약점을 악용하기 위해 특별한 권한이 필요하지 않습니다.
+                이 취약점을 악용하려면 {{ info.nvd.메트릭세부.필요한권한 | default('정보 없음') }}이(가) 필요합니다.
               </div>
             </div>
             <div class="textbox-metric">
               <div class="textbox__row">
                 <div class="text-key">사용자 상호 작용</div>
-                <div class="text-value">필요함</div>
+                <div class="text-value">{{ info.nvd.메트릭세부.사용자상호작용 | default('정보 없음') }}</div>
               </div>
               <div class="textbox__description">
-                공격자는 사용자가 특정 작업을 수행하도록 속일 필요가 있습니다.
+                이 취약점은 {{ info.nvd.메트릭세부.사용자상호작용 | default('정보 없음') }}이(가) 필요합니다.
               </div>
             </div>
             <div class="textbox-metric">
               <div class="textbox__row">
                 <div class="text-key">범위</div>
-                <div class="text-value">변경되지 않음</div>
+                <div class="text-value">{{ info.nvd.메트릭세부.범위  | default('정보 없음') }}</div>
               </div>
               <div class="textbox__description">
-                이 취약점은 공격자가 다른 시스템이나 구성 요소에 영향을 미치지 못하게 합니다.
+                이 취약점은 {{ info.nvd.메트릭세부.범위  | default('정보 없음') }} 범위에서 악용될 수 있습니다.
               </div>
             </div>
           </div>
         </div>
         <div class="accordion-container">
           <div class="accordion-title">
-            <div class="text-accordion-title">영향 매트릭 (임시 텍스트)</div>
+            <div class="text-accordion-title">영향 매트릭</div>
             <img class="btn-accordion" src="../static/vectors/btn-accordion-down.svg" />
           </div>
           <div class="accordion-content">
             <div class="textbox-metric">
               <div class="textbox__row">
-                <div class="text-key">공격 벡터</div>
-                <div class="text-value">네트워크</div>
+                <div class="text-key">기밀성</div>
+                <div class="text-value">{{ info.nvd.메트릭세부.기밀성 | default('정보 없음') }}</div>
               </div>
               <div class="textbox__description">
-                이 취약점은 네트워크를 통해 원격으로 악용될 수 있습니다.
+                이 취약점은 기밀성에 {{ info.nvd.메트릭세부.기밀성 | default('정보 없음') }} 영향을 미칩니다.
               </div>
             </div>
             <div class="textbox-metric">
               <div class="textbox__row">
-                <div class="text-key">공격 복잡성</div>
-                <div class="text-value">낮음</div>
+                <div class="text-key">무결성</div>
+                <div class="text-value">{{ info.nvd.메트릭세부.무결성 | default('정보 없음') }}</div>
               </div>
               <div class="textbox__description">
-                이 공격은 비교적 간단한 단계로 수행할 수 있습니다.
+                이 취약점은 무결성에 {{ info.nvd.메트릭세부.무결성 | default('정보 없음') }} 영향을 미칩니다.
               </div>
             </div>
             <div class="textbox-metric">
               <div class="textbox__row">
-                <div class="text-key">필요한 권한</div>
-                <div class="text-value">없음</div>
+                <div class="text-key">가용성</div>
+                <div class="text-value">{{ info.nvd.메트릭세부.가용성| default('정보 없음') }}</div>
               </div>
               <div class="textbox__description">
-                공격자는 이 취약점을 악용하기 위해 특별한 권한이 필요하지 않습니다.
+                이 취약점은 가용성에 {{ info.nvd.메트릭세부.가용성| default('정보 없음') }} 영향을 미칩니다.
               </div>
             </div>
-            <div class="textbox-metric">
-              <div class="textbox__row">
-                <div class="text-key">사용자 상호 작용</div>
-                <div class="text-value">필요함</div>
-              </div>
-              <div class="textbox__description">
-                공격자는 사용자가 특정 작업을 수행하도록 속일 필요가 있습니다.
-              </div>
-            </div>
-            <div class="textbox-metric">
-              <div class="textbox__row">
-                <div class="text-key">범위</div>
-                <div class="text-value">변경되지 않음</div>
-              </div>
-              <div class="textbox__description">
-                이 취약점은 공격자가 다른 시스템이나 구성 요소에 영향을 미치지 못하게 합니다.
-              </div>
+
             </div>
           </div>
         </div>
@@ -594,27 +578,9 @@
       const metrics = document.getElementById('metrics').innerText.replace('메트릭 : ', '').trim();
       const metricsSummary = document.getElementById('metrics_summary').innerText.trim();
 
-      let cpeList = [];
-      let index = 1;
-      let cpeElement = document.getElementById(`cpe-${index}`);
-      
-      while (cpeElement) {
-        const cpeValue = cpeElement.innerText.trim();
-        const includedValue = document.getElementById(`included-${index}`).innerText.trim();
-        const excludedValue = document.getElementById(`excluded-${index}`).innerText.trim();
-        
-        cpeList.push({
-          CPE: cpeValue,
-          포함: includedValue,
-          비포함: excludedValue
-        });
-
-        index++;
-        cpeElement = document.getElementById(`cpe-${index}`);
-      }
-      
-      // cpe 데이터를 딕셔너리로 변환
-      const cpeData = { CPE_List: cpeList };
+      const cpeElements = document.querySelectorAll('.table-row .table__cell.text-cell:nth-child(1)');
+      const cpeValues = Array.from(cpeElements).map(cpeElement => cpeElement.innerText.trim());
+      const cpeData = cpeValues.length > 0 ? { CPE_List: cpeValues } : {};
 
       const pocElements = document.querySelectorAll('.card-poc .table-row .table__cell.text-link');
       const pocLinks = Array.from(pocElements).map(pocElement => pocElement.href.trim());
