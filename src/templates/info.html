@@ -59,8 +59,8 @@
               <div class="table-header">
                 <div class="table-grid">
                   <div class="table__cell text-cell">공급업체</div>
-                  <div class="table__cell text-cell">제품</div>
-                  <div class="table__cell text-cell">버전</div>
+                  <div class="table__cell text-cell">포함 버전</div>
+                  <div class="table__cell text-cell">비포함 버전</div>
                 </div>
               </div>
               {% if info.nvd.제품들 %}
@@ -68,9 +68,9 @@
               {% for cpe in cpe_list %}
               <div class="table-row">
                 <div class="table-grid">
-                  <div class="table__cell text-cell">{{ cpe.CPE | default('정보 없음') }}</div>
-                  <div class="table__cell text-cell">{{ cpe.포함 if cpe.포함 is not none else '-' }}</div>
-                  <div class="table__cell text-cell">{{ cpe.비포함 if cpe.비포함 is not none else '-' }}</div>
+                  <div class="table__cell text-cell" id="cpe-{{ loop.index }}">{{ cpe.CPE | default('정보 없음') }}</div>
+                  <div class="table__cell text-cell" id="included-{{ loop.index }}">{{ cpe.포함 if cpe.포함 is not none else '-' }}</div>
+                  <div class="table__cell text-cell" id="excluded-{{ loop.index }}">{{ cpe.비포함 if cpe.비포함 is not none else '-' }}</div>
                 </div>
               </div>
               {% endfor %}
@@ -594,9 +594,27 @@
       const metrics = document.getElementById('metrics').innerText.replace('메트릭 : ', '').trim();
       const metricsSummary = document.getElementById('metrics_summary').innerText.trim();
 
-      const cpeElements = document.querySelectorAll('.table-row .table__cell.text-cell:nth-child(1)');
-      const cpeValues = Array.from(cpeElements).map(cpeElement => cpeElement.innerText.trim());
-      const cpeData = cpeValues.length > 0 ? { CPE_List: cpeValues } : {};
+      let cpeList = [];
+      let index = 1;
+      let cpeElement = document.getElementById(`cpe-${index}`);
+      
+      while (cpeElement) {
+        const cpeValue = cpeElement.innerText.trim();
+        const includedValue = document.getElementById(`included-${index}`).innerText.trim();
+        const excludedValue = document.getElementById(`excluded-${index}`).innerText.trim();
+        
+        cpeList.push({
+          CPE: cpeValue,
+          포함: includedValue,
+          비포함: excludedValue
+        });
+
+        index++;
+        cpeElement = document.getElementById(`cpe-${index}`);
+      }
+      
+      // cpe 데이터를 딕셔너리로 변환
+      const cpeData = { CPE_List: cpeList };
 
       const pocElements = document.querySelectorAll('.card-poc .table-row .table__cell.text-link');
       const pocLinks = Array.from(pocElements).map(pocElement => pocElement.href.trim());
