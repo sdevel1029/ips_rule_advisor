@@ -18,7 +18,7 @@ def get_final_report(request: Request, cve_code: str):
 
     # Supabase에서 사용자와 CVE 코드가 일치하는 테스트 결과 조회
     test_result = supabase \
-        .from_("test_all") \
+        .from_("test_result") \
         .select("*") \
         .eq("user_id", user_id) \
         .eq("cve", cve_code) \
