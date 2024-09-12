@@ -45,6 +45,7 @@ async def get_info_page(request: Request, cve_code: str = None):
 
             attack_type = await classify_attack(info_result["nvd"]["설명"])
 
+            print(info_result)
 
             return templates.TemplateResponse("info.html",{
                 "request": request,
@@ -54,6 +55,7 @@ async def get_info_page(request: Request, cve_code: str = None):
                 "current_date": current_date
                 })
         
+
         # CVE가 아닌 다른 코드를 입력한 경우
         # ex)log4j, dirty cow 등등...
         search_results = get_cve_details(cve_code)
