@@ -1,66 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="../static/vars/vars.css">
   <link rel="stylesheet" href="../static/styles/styles.css">
-  
-  
-  <style>
-   a,
-   button,
-   input,
-   select,
-   h1,
-   h2,
-   h3,
-   h4,
-   h5,
-   * {
-       box-sizing: border-box;
-       margin: 0;
-       padding: 0;
-       border: none;
-       text-decoration: none;
-       background: none;
-   
-       -webkit-font-smoothing: antialiased;
-   }
-   
-   menu, ol, ul {
-       list-style-type: none;
-       margin: 0;
-       padding: 0;
-   }
-   </style>
-     <script>
-      document.addEventListener('DOMContentLoaded', function () {
-        const accordionTitles = document.querySelectorAll('.accordion-title');
-  
-        accordionTitles.forEach(title => {
-          title.addEventListener('click', function () {
-            const accordionContainer = this.parentElement;
-            const accordionContent = accordionContainer.querySelector('.accodion-content');
-            const accordionButton = this.querySelector('.btn-accodion');
-  
-            // 아코디언이 열려 있으면 닫고, 닫혀 있으면 열기
-            if (accordionContainer.classList.contains('active')) {
-              accordionContainer.classList.remove('active');
-              accordionContent.style.display = 'none';
-              accordionButton.src = '../static/vectors/btn-accodion-down.svg'; // 닫기 아이콘으로 변경
-            } else {
-              accordionContainer.classList.add('active');
-              accordionContent.style.display = 'flex';
-              accordionButton.src = '../static/vectors/btn-accodion-up.svg'; // 열기 아이콘으로 변경
-            }
-          });
-        });
-      });
-    </script>
   <title>IPS Rule Advisor</title>
 </head>
+
 <body>
   <div class="layout-wrapper">
     <header class="header">
@@ -78,7 +27,7 @@
       <div class="header-auth">
         <div class="auth-profile">
           <div class="avatar-img">
-            <img class="shape" src="../static/images/avatar-0.png"/>
+            <img class="shape" src="../static/images/avatar-0.png" />
           </div>
           <div class="profile-name">
             <div class="text-name">YSD 님</div>
@@ -96,13 +45,13 @@
           이 취약점을 이용하면 공격자가 XYZ 구성 요소의 버퍼 오버플로우를 악용하여
           대상 시스템에서 임의의 코드를 실행할 수 있습니다.
         </div>
-        <div class="accodion-container">
+        <div class="accordion-container">
           <div class="accordion-title">
-            <div class="text-accodion-title">CVE 정보 수집 결과 자세히 보기</div>
-            <img class="btn-accodion" src="../static/vectors/btn-accodion-up.svg" />
+            <div class="text-accordion-title">CVE 정보 수집 결과 자세히 보기</div>
+            <img class="btn-accordion" src="../static/vectors/btn-accordion-up.svg" />
           </div>
-          <div class="accodion-content">
-            <div class="text-accodion-content-subtitle">영향받는 제품</div>
+          <div class="accordion-content">
+            <div class="text-accordion-content-subtitle">영향받는 제품</div>
             <div class="table">
               <div class="table-header">
                 <div class="table-grid">
@@ -144,7 +93,7 @@
                 </div>
               </div>
             </div>
-            <div class="text-accodion-content-subtitle">CVSS</div>
+            <div class="text-accordion-content-subtitle">CVSS</div>
             <div class="tab-container">
               <div class="tab-item--unselected text-tab--unselected">CVSS 2.0</div>
               <div class="tab-item--selected text-tab--selected">CVSS 3.x</div>
@@ -166,8 +115,8 @@
                 </div>
               </div>
             </div>
-            <div class="text-accodion-content-subtitle">매트릭 요약</div>
-            <div class="text-accodion">
+            <div class="text-accordion-content-subtitle">매트릭 요약</div>
+            <div class="text-accordion">
               이 취약점은 네트워크를 통해 원격으로 악용될 수 있으며, 공격 복잡성이
               낮고 특별한 권한이 필요하지 않습니다. 그러나 공격자는 사용자가 특정
               작업을 수행하도록 속일 필요가 있습니다. 이 취약점은 공격자가 다른
@@ -188,13 +137,13 @@
             content:&quot;SELECT&quot;; sid:1000001; rev:1;)
           </div>
         </div>
-        <div class="accodion-container">
+        <div class="accordion-container">
           <div class="accordion-title">
-            <div class="text-accodion-title">IPS 룰 테스트 결과 자세히 보기</div>
-            <img class="btn-accodion" src="../static/vectors/btn-accodion-up.svg" />
+            <div class="text-accordion-title">IPS 룰 테스트 결과 자세히 보기</div>
+            <img class="btn-accordion" src="../static/vectors/btn-accordion-up.svg" />
           </div>
-          <div class="accodion-content">
-            <div class="text-accodion-content-subtitle">테스트 환경</div>
+          <div class="accordion-content">
+            <div class="text-accordion-content-subtitle">테스트 환경</div>
             <div class="table">
               <div class="table-header">
                 <div class="table-grid">
@@ -213,15 +162,15 @@
                 </div>
               </div>
             </div>
-            <div class="text-accodion-content-subtitle">정확도 테스트 결과</div>
+            <div class="text-accordion-content-subtitle">정확도 테스트 결과</div>
             <div class="table">
               <div class="table-header">
                 <div class="table-grid">
                   <div class="table__cell text-cell">정확도 비율</div>
-                  <div class="table__cell text-cell">오탐 패킷(률)<br/>(False Positive)</div>
-                  <div class="table__cell text-cell">미탐 패킷(률)<br/>(False Negative)</div>
-                  <div class="table__cell text-cell">정탐 패킷(률)<br/>(True Positive)</div>
-                  <div class="table__cell text-cell">정탐 패킷(률)<br/>(True Negative)</div>
+                  <div class="table__cell text-cell">오탐 패킷(률)<br />(False Positive)</div>
+                  <div class="table__cell text-cell">미탐 패킷(률)<br />(False Negative)</div>
+                  <div class="table__cell text-cell">정탐 패킷(률)<br />(True Positive)</div>
+                  <div class="table__cell text-cell">정탐 패킷(률)<br />(True Negative)</div>
                 </div>
               </div>
               <div class="table-row">
@@ -234,7 +183,7 @@
                 </div>
               </div>
             </div>
-            <div class="text-accodion-content-subtitle">성능 테스트 결과</div>
+            <div class="text-accordion-content-subtitle">성능 테스트 결과</div>
             <div class="table">
               <div class="table-header">
                 <div class="table-grid">
@@ -307,11 +256,31 @@
           </div>
         </div>
         <div class="textarea-field">
-          <input class="textarea" placeholder="의견 추가..." ></input>
+          <input class="textarea" placeholder="의견 추가..."></input>
         </div>
         <button class="button-primary text-button--primary">의견 남기기</button>
       </div>
     </div>
   </div>
 </body>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // 아코디언 기능
+    const accordionTitles = document.querySelectorAll('.accordion-title');
+    accordionTitles.forEach(title => {
+      title.addEventListener('click', function () {
+        const accordionContainer = this.parentElement;
+        const accordionContent = accordionContainer.querySelector('.accordion-content');
+        const accordionButton = this.querySelector('.btn-accordion');
+
+        accordionContainer.classList.toggle('active');
+        accordionContent.style.display = accordionContainer.classList.contains('active') ? 'flex' : 'none';
+        accordionButton.src = accordionContainer.classList.contains('active')
+          ? '../static/vectors/btn-accordion-up.svg'
+          : '../static/vectors/btn-accordion-down.svg';
+      });
+    });
+  });
+</script>
+
 </html>

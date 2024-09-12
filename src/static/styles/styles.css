@@ -1,3 +1,14 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border: none;
+  text-decoration: none;
+  background: none;
+
+  -webkit-font-smoothing: antialiased;
+}
+
 .layout-wrapper,
 .layout-wrapper * {
   box-sizing: border-box;
@@ -272,8 +283,8 @@
   overflow: hidden;
 }
 
-/* accodion */
-.accodion-container {
+/* accordion */
+.accordion-container {
   background: var(--background-default-default-hover, #f5f5f5);
   border-radius: var(--radius-200, 0.5rem);
   border-style: solid;
@@ -300,8 +311,19 @@
   flex-shrink: 0;
   position: relative;
 }
+/*
+.accordion-title {
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+}
+*/
 
-.text-accodion-title {
+.text-accordion-title {
   color: var(--text-default-default, #1e1e1e);
   text-align: left;
   font-family: var(--body-strong-font-family, "Inter-SemiBold", sans-serif);
@@ -311,7 +333,7 @@
   position: relative;
   flex: 1;
 }
-.text-accodion{
+.text-accordion{
   color: #000000;
   text-align: left;
   font-family: var(--body-base-font-family, "Inter-Regular", sans-serif);
@@ -322,7 +344,7 @@
   align-self: stretch;
 }
 
-.btn-accodion {
+.btn-accordion {
   flex-shrink: 0;
   width: 1.25rem;
   height: 1.25rem;
@@ -330,7 +352,7 @@
   overflow: visible;
 }
 
-.accodion-content {
+.accordion-content {
   display: none;
   /*flex*/
   flex-direction: column;
@@ -340,9 +362,25 @@
   align-self: stretch;
   flex-shrink: 0;
   position: relative;
+  background-color: #fafafa;
 }
 
-.text-accodion-content-subtitle {
+/*
+.accordion-content {
+  display: none; 
+  padding: 10px;
+  background-color: #fafafa;
+  border: 1px solid #ddd;
+  border-top: none;
+}
+
+.active .accordion-content {
+  display: block;
+}
+*/
+
+
+.text-accordion-content-subtitle {
   color: var(--color-black, #333333);
   text-align: left;
   font-family: var(--heading-font-family, "Inter-SemiBold", sans-serif);
@@ -354,7 +392,7 @@
   align-self: stretch;
 }
 /* finalreport
-.accodion-content {
+.accordion-content {
   padding: var(--space-margin-margin-s, 0.5rem);
   display: flex;
   flex-direction: column;
