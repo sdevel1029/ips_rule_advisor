@@ -69,7 +69,7 @@ async def test(request:Request,client=Depends(get_supabase_client)):
         whattest = 1
     if os.path.isfile("normal_pcap/"+"/"+user_id+"/"+cve+".pcap"):
         if os.path.isfile("attack_pcap/"+"/"+user_id+"/"+cve+".pcap"):  #normal+attack
-            test_result = rpatools.test(
+            test_result = await rpatools.test(
 	        cve = cve, 
             rule= rule, 
 	        envi = envi, 
@@ -79,7 +79,7 @@ async def test(request:Request,client=Depends(get_supabase_client)):
             user_id=user_id
 	        )
         else:   #only normal
-            test_result = rpatools.test(
+            test_result = await rpatools.test(
 	        cve = cve, 
             rule= rule, 
 	        envi = envi, 
@@ -90,7 +90,7 @@ async def test(request:Request,client=Depends(get_supabase_client)):
 	        )
     else: 
         if os.path.isfile("attack_pcap/"+"/"+user_id+"/"+cve+".pcap"): #only attack
-            test_result = rpatools.test(
+            test_result = await rpatools.test(
 	        cve = cve, 
             rule= rule, 
 	        envi = envi,  
@@ -100,7 +100,7 @@ async def test(request:Request,client=Depends(get_supabase_client)):
             user_id=user_id
 	        )
         else:  #none
-            test_result = rpatools.test(
+            test_result = await rpatools.test(
 	        cve = cve, 
             rule= rule, 
 	        envi = envi, 
