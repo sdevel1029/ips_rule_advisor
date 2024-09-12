@@ -2,3 +2,4 @@ venv/
 *.log
 .env
 **/__pycache__/
+emerging-all.rules.txt
