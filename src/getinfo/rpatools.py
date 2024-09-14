@@ -61,53 +61,27 @@ async def nvd(code):
     output["id"] = result["vulnerabilities"][0]["cve"]["id"]
     output["수정시간"] = result["vulnerabilities"][0]["cve"]["lastModified"]
     output["설명"] = result["vulnerabilities"][0]["cve"]["descriptions"][0]["value"]
-    output["점수"] = result["vulnerabilities"][0]["cve"]["metrics"]["cvssMetricV31"][0][
-        "cvssData"
-    ]["baseScore"]
-    output["메트릭"] = result["vulnerabilities"][0]["cve"]["metrics"]["cvssMetricV31"][
-        0
-    ]["cvssData"]["vectorString"]
+    output["점수"] = result["vulnerabilities"][0]["cve"]["metrics"]["cvssMetricV31"][0]["cvssData"]["baseScore"]
+    output["메트릭"] = result["vulnerabilities"][0]["cve"]["metrics"]["cvssMetricV31"][0]["cvssData"]["vectorString"]
     # 메트릭 세부 만들기 시작
     tmp_for_detail = {}
-    tmp_for_detail["공격벡터"] = result["vulnerabilities"][0]["cve"]["metrics"][
-        "cvssMetricV31"
-    ][0]["cvssData"]["attackVector"]
-    tmp_for_detail["공격복잡성"] = result["vulnerabilities"][0]["cve"]["metrics"][
-        "cvssMetricV31"
-    ][0]["cvssData"]["attackComplexity"]
-    tmp_for_detail["필요한권한"] = result["vulnerabilities"][0]["cve"]["metrics"][
-        "cvssMetricV31"
-    ][0]["cvssData"]["privilegesRequired"]
-    tmp_for_detail["사용자상호작용"] = result["vulnerabilities"][0]["cve"]["metrics"][
-        "cvssMetricV31"
-    ][0]["cvssData"]["userInteraction"]
-    tmp_for_detail["범위"] = result["vulnerabilities"][0]["cve"]["metrics"][
-        "cvssMetricV31"
-    ][0]["cvssData"]["scope"]
-    tmp_for_detail["기밀성"] = result["vulnerabilities"][0]["cve"]["metrics"][
-        "cvssMetricV31"
-    ][0]["cvssData"]["confidentialityImpact"]
-    tmp_for_detail["무결성"] = result["vulnerabilities"][0]["cve"]["metrics"][
-        "cvssMetricV31"
-    ][0]["cvssData"]["integrityImpact"]
-    tmp_for_detail["가용성"] = result["vulnerabilities"][0]["cve"]["metrics"][
-        "cvssMetricV31"
-    ][0]["cvssData"]["availabilityImpact"]
+    tmp_for_detail["공격벡터"] = result["vulnerabilities"][0]["cve"]["metrics"]["cvssMetricV31"][0]["cvssData"]["attackVector"]
+    tmp_for_detail["공격복잡성"] = result["vulnerabilities"][0]["cve"]["metrics"]["cvssMetricV31"][0]["cvssData"]["attackComplexity"]
+    tmp_for_detail["필요한권한"] = result["vulnerabilities"][0]["cve"]["metrics"]["cvssMetricV31"][0]["cvssData"]["privilegesRequired"]
+    tmp_for_detail["사용자상호작용"] = result["vulnerabilities"][0]["cve"]["metrics"]["cvssMetricV31"][0]["cvssData"]["userInteraction"]
+    tmp_for_detail["범위"] = result["vulnerabilities"][0]["cve"]["metrics"]["cvssMetricV31"][0]["cvssData"]["scope"]
+    tmp_for_detail["기밀성"] = result["vulnerabilities"][0]["cve"]["metrics"]["cvssMetricV31"][0]["cvssData"]["confidentialityImpact"]
+    tmp_for_detail["무결성"] = result["vulnerabilities"][0]["cve"]["metrics"]["cvssMetricV31"][0]["cvssData"]["integrityImpact"]
+    tmp_for_detail["가용성"] = result["vulnerabilities"][0]["cve"]["metrics"]["cvssMetricV31"][0]["cvssData"]["availabilityImpact"]
 
     # 끝
     output["메트릭세부"] = tmp_for_detail
-    output["exploitability점수"] = result["vulnerabilities"][0]["cve"]["metrics"][
-        "cvssMetricV31"
-    ][0]["exploitabilityScore"]
-    output["impact점수"] = result["vulnerabilities"][0]["cve"]["metrics"][
-        "cvssMetricV31"
-    ][0]["impactScore"]
+    output["exploitability점수"] = result["vulnerabilities"][0]["cve"]["metrics"]["cvssMetricV31"][0]["exploitabilityScore"]
+    output["impact점수"] = result["vulnerabilities"][0]["cve"]["metrics"]["cvssMetricV31"][0]["impactScore"]
 
     ###############################################################
     # 메트릭 v3.1 - 동건
-    cvssMetric_v31 = result["vulnerabilities"][0]["cve"]["metrics"]["cvssMetricV31"][0][
-        "cvssData"
-    ]
+    cvssMetric_v31 = result["vulnerabilities"][0]["cve"]["metrics"]["cvssMetricV31"][0]["cvssData"]
 
     # metrics_exploitability: 'attackVector'부터 'scope'까지
     keys_exploitability = [
