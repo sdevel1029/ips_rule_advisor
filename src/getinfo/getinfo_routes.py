@@ -48,7 +48,11 @@ async def get_info_page(request: Request, cve_code: str = None):
 
             attack_type = await classify_attack(info_result["nvd"]["설명"])
             attack_description = attack_types.get(attack_type, "정보없음")
-           
+
+
+            snort_community_rules = info_result.get("snort_community_rule", {}).get("rules", [])
+            emerging_rules = info_result.get("emerging_rule", {}).get("rules", [])
+            
 
             return templates.TemplateResponse("info.html",{
                 "request": request,
@@ -56,9 +60,10 @@ async def get_info_page(request: Request, cve_code: str = None):
                 "type": attack_type,
                 "type_description" : attack_description,
                 "metrics_summary": metrics_summary,
-                "current_date": current_date
+                "current_date": current_date,
+                "snort_community_rule": snort_community_rules,
+                "emerging_rule": emerging_rules
                 })
-        
 
         # CVE가 아닌 다른 코드를 입력한 경우
         # ex)log4j, dirty cow 등등...

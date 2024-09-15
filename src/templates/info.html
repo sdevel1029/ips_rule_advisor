@@ -119,20 +119,7 @@
             <div class="text-accordion-title">악용 가능성 매트릭</div>
             <img class="btn-accordion" src="../static/vectors/btn-accordion-down.svg" />
           </div>
-          <!--
-          <div class="accordion-content">
-            {% for key, value in info.nvd.악용가능성메트릭.items() %}
-            <div class="textbox-metric">
-              <div class="textbox__row">
-                <div class="text-key">{{ key }}</div>
-                <div class="text-value">{{ value | default('정보 없음') }}</div>
-              </div>
-              <div class="textbox__description">{{ key }}가 {{ value }} 합니다.</div>
-            </div>
-            {% endfor %}
-          </div>
-        -->
-          
+
           <div class="accordion-content">
             <div class="textbox-metric">
               <div class="textbox__row">
@@ -187,20 +174,7 @@
             <div class="text-accordion-title">영향 매트릭</div>
             <img class="btn-accordion" src="../static/vectors/btn-accordion-down.svg" />
           </div>
-          <!--
-          <div class="accordion-content">
-            {% for key, value in info.nvd.영향메트릭.items() %}
-            <div class="textbox-metric">
-              <div class="textbox__row">
-                <div class="text-key">{{ key }}</div>
-                <div class="text-value">{{ value | default('정보 없음') }}</div>
-              </div>
-              <div class="textbox__description">{{ key }}가 {{ value }} 합니다.</div>
-            </div>
-            {% endfor %}
-          </div>
-        -->
-       
+
           <div class="accordion-content">
             <div class="textbox-metric">
               <div class="textbox__row">
@@ -238,37 +212,62 @@
     <div class="card-rule">
       <div class="card__title">연관 IPS Rule</div>
       <div class="line-seperate"></div>
+      
       <div class="card__row">
-        <div class="card__subtitle">공격 유형</div>
+        <div class="card__subtitle">SNORT COMMUNITY RULE</div>
         <div class="dropdown-field">
           <select class="dropdown-select" name="" id="">
-            <option class="dropdown-item text-dropdown-item" value="SQL Injection">SQL Injection</option>
-            <option class="dropdown-item text-dropdown-item" value="XSS">XSS</option>
+            {% if snort_community_rule %}
+              {% for rule in snort_community_rule %}
+                <option class="dropdown-item text-dropdown-item" value="{{ rule }}">{{ rule }}</option>
+              {% endfor %}
+            {% else %}
+              <option class="dropdown-item text-dropdown-item" value="">정보 없음</option>
+            {% endif %}
           </select>
         </div>
       </div>
       <div class="card__rulebox">
         <div class="text-rulebox">
-          {{ type | default('정보 없음') }}
+          {% if snort_community_rule %}
+            {% for rule in snort_community_rule %}
+              <p>{{ rule }}</p>
+            {% endfor %}
+          {% else %}
+            <p>정보 없음</p>
+          {% endif %}
         </div>
       </div>
+    
+      <!-- EMERGING RULE -->
       <div class="card__row">
-        <div class="card__subtitle">영향받는 제품</div>
+        <div class="card__subtitle">EMERGING RULE</div>
         <div class="dropdown-field">
           <select class="dropdown-select" name="" id="">
-            <option class="dropdown-item text-dropdown-item" value="SQL Injection">abc</option>
-            <option class="dropdown-item text-dropdown-item" value="XSS">xyz</option>
+            {% if info.emerging_rule.rules %}
+              {% for rule in info.emerging_rule.rules %}
+                <option class="dropdown-item text-dropdown-item" value="{{ rule }}">{{ rule }}</option>
+              {% endfor %}
+            {% else %}
+              <option class="dropdown-item text-dropdown-item" value="">정보 없음</option>
+            {% endif %}
           </select>
         </div>
       </div>
       <div class="card__rulebox">
         <div class="text-rulebox">
-          alert http any any -&gt; 192.168.1.0/24 any (msg:&quot;Detect SQL
-          injection attempt&quot;; http.uri; content:&quot;SELECT&quot;;
-          sid:1000004; rev:1;)
+          {% if emerging_rule %}
+            {% for rule in emerging_rule %}
+              <p>{{ rule }}</p>
+            {% endfor %}
+          {% else %}
+            <p>정보 없음</p>
+          {% endif %}
         </div>
       </div>
     </div>
+    
+    
 
     <div class="card-gpt">
       <div class="card__title">ChatGPT 프롬프트</div>
