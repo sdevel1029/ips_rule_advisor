@@ -15,15 +15,15 @@
   <div class="layout-wrapper">
     <header class="header">
       <div class="header-logo">
-        <button class="logo" onclick="window.location.href='/';">
-          <img class="hdd-fill" src="../static/vectors/logo-hdd-fill0.svg" alt="hdd-icon"/>
-          <img class="shield-plus" src="../static/vectors/logo-shield-plus0.svg" alt="shield-icon"/>
-        </button>
+        <div class="logo">
+          <img class="hdd-fill" src="../static/vectors/logo-hdd-fill0.svg" />
+          <img class="shield-plus" src="../static/vectors/logo-shield-plus0.svg" />
+        </div>
       </div>
       <div class="header-nav">
         <a class="nav-item item-text" href="/">정보수집</a>
         <a class="nav-item--active item-text" href="/ruletest">룰 테스트</a>
-        <!-- <a class="nav-item item-text" href="">마이페이지</a> -->
+        <!--<a class="nav-item item-text" href="">마이페이지</a>-->
       </div>
       <div class="header-auth">
         <div class="auth-profile">
@@ -36,6 +36,7 @@
         </div>
       </div>
     </header>
+
     <form id="ruleTestForm" class="card-rule-form">
       <div class="card__title">IDS/IPS 룰 테스트</div>
       <div class="form-input">
@@ -79,7 +80,16 @@
           <button type="submit" class="button-primary text-button--primary">테스트</button>
         </div>
       </div>
+      <div class="card__row--left">
+      <div class="packet-download-section">
+        <div id="normal_packet_link_container">
+        </div>
+        <div id="attack_packet_link_container">
+        </div>
+      </div>
+    </div>
     </form>
+
   </div>
 
   <script>
@@ -91,11 +101,18 @@
       const urlParams = new URLSearchParams(window.location.search);
       return urlParams.get('envi'); // 쿼리에서 'cve' 값 추출
     }
+    function getruleFromQuery() {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get('rule'); // 쿼리에서 'cve' 값 추출
+    }
+
 
 
     document.addEventListener('DOMContentLoaded', function () {
       const queryCVE = getCVEFromQuery();
       const envi = getenviFromQuery();
+      const rule = getruleFromQuery()
+      document.getElementById("rule").value = rule;
       if (queryCVE) {
         // 쿼리에 CVE 값이 있다면 입력란에 그 값을 미리 채워줍니다.
         document.getElementById("cve").value = queryCVE;
@@ -104,6 +121,19 @@
         // 쿼리에 CVE 값이 있다면 입력란에 그 값을 미리 채워줍니다.
         document.getElementById("envi").value = envi;
       }
+      {const container = document.getElementById("normal_packet_link_container");
+      const downloadLink = document.createElement('a');
+      downloadLink.href = `/rule/download?file_location=original/normal`;
+      downloadLink.innerText = "기본 공격 패킷 다운로드";
+      container.appendChild(downloadLink);}
+
+      {const container = document.getElementById("attack_packet_link_container");
+      const downloadLink = document.createElement('a');
+      downloadLink.href = `/rule/download?file_location=original/attack`;
+      downloadLink.innerText = "기본 공격 패킷 다운로드";
+      container.appendChild(downloadLink);
+      }
+          
     });
 
     document.getElementById("ruleTestForm").addEventListener("submit", async function (event) {
@@ -170,6 +200,15 @@
           });
           if (response.ok) {
             alert("정상 패킷 업로드 성공");
+            const result = await response.json();
+            const file_location = result.info
+            alert(file_location)
+            const container = document.getElementById("normal_packet_link_container");
+            container.innerHTML = ""; // 이전 링크 제거
+            const downloadLink = document.createElement('a');
+            downloadLink.href = `/rule/download?file_location=${file_location}`;
+            downloadLink.innerText = "정상 패킷 다운로드";
+            container.appendChild(downloadLink);
           } else {
             alert("정상 패킷 업로드 실패");
           }
@@ -197,7 +236,18 @@
             body: formData
           });
           if (response.ok) {
-            alert("공격 패킷 업로드 성공");
+            alert("공격 패킷 업로드 성공");        
+            // 다운로드 링크 생성
+            const result = await response.json();
+            const file_location = result.info
+            alert(file_location)
+            const container = document.getElementById("attack_packet_link_container");
+            container.innerHTML = ""; // 이전 링크 제거
+            const downloadLink = document.createElement('a');
+            downloadLink.href = `/rule/download?file_location=${file_location}`;
+            downloadLink.innerText = "공격 패킷 다운로드";
+            container.appendChild(downloadLink);
+          
           } else {
             alert("공격 패킷 업로드 실패");
           }
