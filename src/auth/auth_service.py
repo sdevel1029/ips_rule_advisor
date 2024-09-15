@@ -80,3 +80,8 @@ def profile(client: Client, request: Request):
             raise HTTPException(status_code=401, detail="Invalid session token")
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
+'''
+def mypage(client: Client, request: Request):
+    try:
+    except
+    '''
