@@ -9,6 +9,7 @@ from src.auth.auth_service import (
     sign_in_google,
     callback,
     profile,
+ #   mypage,
 )
 from fastapi.templating import Jinja2Templates
 from json import JSONDecodeError
@@ -73,3 +74,10 @@ def callback_route(
 @router.get("/profile")
 def profile_route(request: Request, client=Depends(get_supabase_client)):
     return profile(request=request, client=client)
+'''
+@router.get("/mypage")
+def mypage_route(
+    request:Request, response:Response, client=Depends(get_supabase_client)
+):
+    return mypage(client=client, request=request, response=response)
+    '''
