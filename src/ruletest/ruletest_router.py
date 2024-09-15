@@ -6,10 +6,10 @@ from src.database.supabase_client import get_supabase_client
 from fastapi import APIRouter, Depends,  Request, HTTPException
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
-from fastapi import Form
+from fastapi import Form, Query
 from fastapi.responses import RedirectResponse
 from fastapi.responses import JSONResponse
-
+from fastapi.responses import FileResponse
 router = APIRouter()
 templates = Jinja2Templates(directory="src/templates")
 
@@ -33,7 +33,15 @@ async def upload_file(request: Request,cve: str = Form(...), file: UploadFile = 
     file_location = f"{folder_path}/{cve}.pcap"
     with open(file_location, "wb") as buffer:
         buffer.write(await file.read())
-    return {"info": f"file '{file.filename}' saved at '{file_location}'"}
+    return {"info": file_location}
+
+@router.get("/download")
+async def download_file(file_location: str = Query(..., description="The name of the file to download")):
+    file_location = file_location
+    print(file_location)
+    if not os.path.exists(file_location):
+        raise HTTPException(status_code=404, detail="File not found")
+    return FileResponse(file_location, media_type='application/octet-stream', filename=file_location)
 
 
 @router.post("/uploadfile/attack")
@@ -46,7 +54,7 @@ async def upload_file(request: Request,cve: str = Form(...), file: UploadFile = 
     file_location = folder_path+"/"+cve+".pcap"
     with open(file_location, "wb") as buffer:
         buffer.write(await file.read())
-    return {"info": f"file '{file.filename}' saved at '{file_location}'"}
+    return {"info": file_location}
 
 
 @router.post("/test/input")
@@ -84,7 +92,7 @@ async def test(request:Request,client=Depends(get_supabase_client)):
             rule= rule, 
 	        envi = envi, 
 	        file_path_1= "normal_pcap/"+"/"+user_id+"/"+cve+".pcap",
-	        file_path_2= "original/attack",
+	        file_path_2= "original/attack.pcap",
 	        what_test = whattest,
             user_id=user_id
 	        )
@@ -94,7 +102,7 @@ async def test(request:Request,client=Depends(get_supabase_client)):
 	        cve = cve, 
             rule= rule, 
 	        envi = envi,  
-	        file_path_1= "original/normal",
+	        file_path_1= "original/normal.pcap",
 	        file_path_2= "attack_pcap/"+"/"+user_id+"/"+cve+".pcap",
 	        what_test = whattest,
             user_id=user_id
@@ -104,11 +112,9 @@ async def test(request:Request,client=Depends(get_supabase_client)):
 	        cve = cve, 
             rule= rule, 
 	        envi = envi, 
-	        file_path_1="original/normal",
-	        file_path_2= "original/attack",
+	        file_path_1="original/normal.pcap",
+	        file_path_2= "original/attack.pcap",
 	        what_test = whattest,
             user_id=user_id
 	        )
-
-
     return JSONResponse(test_result)
