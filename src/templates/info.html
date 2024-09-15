@@ -216,15 +216,15 @@
       <div class="card__row">
         <div class="card__subtitle">SNORT COMMUNITY RULE</div>
         <div class="dropdown-field">
-          <select class="dropdown-select" name="" id="">
-            {% if snort_community_rule %}
+          <!-- <select class="dropdown-select" name="" id="">-->
+            {% if snort_community_rule %} 
               {% for rule in snort_community_rule %}
-                <option class="dropdown-item text-dropdown-item" value="{{ rule }}">{{ rule }}</option>
-              {% endfor %}
+               <!-- <option class="dropdown-item text-dropdown-item" value="{{ rule }}">{{ rule }}</option>-->
+              {% endfor %} 
             {% else %}
-              <option class="dropdown-item text-dropdown-item" value="">정보 없음</option>
+              <!-- <option class="dropdown-item text-dropdown-item" value="">정보 없음</option> -->
             {% endif %}
-          </select>
+          <!-- </select> -->
         </div>
       </div>
       <div class="card__rulebox">
@@ -239,19 +239,19 @@
         </div>
       </div>
     
-      <!-- EMERGING RULE -->
+       <!-- EMERGING RULE  -->
       <div class="card__row">
         <div class="card__subtitle">EMERGING RULE</div>
         <div class="dropdown-field">
-          <select class="dropdown-select" name="" id="">
+          <!-- <select class="dropdown-select" name="" id=""> -->
             {% if info.emerging_rule.rules %}
               {% for rule in info.emerging_rule.rules %}
-                <option class="dropdown-item text-dropdown-item" value="{{ rule }}">{{ rule }}</option>
+                <!-- <option class="dropdown-item text-dropdown-item" value="{{ rule }}">{{ rule }}</option> -->
               {% endfor %}
             {% else %}
-              <option class="dropdown-item text-dropdown-item" value="">정보 없음</option>
+              <!-- <option class="dropdown-item text-dropdown-item" value="">정보 없음</option> -->
             {% endif %}
-          </select>
+          <!-- </select> -->
         </div>
       </div>
       <div class="card__rulebox">
