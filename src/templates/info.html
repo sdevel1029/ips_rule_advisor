@@ -7,6 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="../static/vars/vars.css">
   <link rel="stylesheet" href="../static/styles/styles.css">
+  <link rel="stylesheet" href="../static/styles/chatbot.css">
   <title>IPS Rule Advisor</title>
 </head>
 
@@ -284,6 +285,27 @@
         <!-- 채팅 표시 공간 -->
       </div>
     </div>
+
+    <!-- chat bot -->
+    <div class="chatbot-container">
+      <div class="chatbot-header">
+        <h2>챗봇</h2>
+        <img src="chatbot-icon.svg" alt="Chatbot Icon">
+      </div>
+      <div class="chatbot-messages" id="chatbot-messages">
+        <!-- 채팅 표시 공간 -->
+      </div>
+      <div class="chatbot-input">
+        <input type="text" id="user-input" placeholder="메세지를 입력하세요..." />
+        <button id="send-button">
+          <img src="send-icon.svg" alt="Send Icon" />
+        </button>
+      </div>
+      <div class="typing-indicator" id="typing-indicator">
+        Chatbot is typing...
+      </div>
+    </div>
+     <!-- chat bot -->
 
     <div class="card-poc">
       <div class="card__title">POC (Proof of Concept)</div>
