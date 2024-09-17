@@ -268,40 +268,22 @@
       </div>
     </div>
     
-    
-
-    <div class="card-gpt">
-      <div class="card__title">ChatGPT 프롬프트</div>
-      <form class="chat-form" id="chat-form">
-        <div class="icon-paperclip">
-          <img class="paperclip" src="../static/vectors/icon-paperclip.svg" />
-        </div>
-        <input class="input-chat" id="user-input" name="user-input" type="text" placeholder="메시지 to ChatGPT..." />
-        <button type="submit" class="icon-send">
-          <img class="send" src="../static/vectors/icon-send.svg" />
-        </button>
-      </form>
-      <div class="chat-wrapper" id="chat-wrapper">
-        <!-- 채팅 표시 공간 -->
-      </div>
-    </div>
-
     <!-- chat bot -->
-    <div class="chatbot-container">
-      <div class="chatbot-header">
+    <div class="chatbot-containerM">
+      <div class="chatbot-headerM">
         <h2>챗봇</h2>
-        <img src="chatbot-icon.svg" alt="Chatbot Icon">
+        <img src="../static/vectors/logo-shield-plus0.svg" alt="Chatbot Icon">
       </div>
-      <div class="chatbot-messages" id="chatbot-messages">
+      <div class="chatbot-messagesM" id="chatbot-messagesM">
         <!-- 채팅 표시 공간 -->
       </div>
-      <div class="chatbot-input">
-        <input type="text" id="user-input" placeholder="메세지를 입력하세요..." />
-        <button id="send-button">
-          <img src="send-icon.svg" alt="Send Icon" />
+      <div class="chatbot-inputM">
+        <input type="text" id="user-inputM" placeholder="메세지를 입력하세요..." />
+        <button id="send-buttonM">
+          <img src="../static/vectors/icon-send.svg" alt="Send Icon" />
         </button>
       </div>
-      <div class="typing-indicator" id="typing-indicator">
+      <div class="typing-indicatorM" id="typing-indicatorM">
         Chatbot is typing...
       </div>
     </div>
@@ -377,7 +359,8 @@
     </div>
   </div>
   </div>
-  <script>
+  
+<script>
     document.addEventListener('DOMContentLoaded', function () {
       // 아코디언 기능
       const accordionTitles = document.querySelectorAll('.accordion-title');
@@ -395,229 +378,6 @@
         });
       });
     });
-    // 채팅 폼
-    const chatWrapper = document.getElementById('chat-wrapper');
-    const chatForm = document.getElementById('chat-form');
-    const promptInput = document.getElementById('user-input');
-
-    // 도우미 함수: 요소 생성, 클래스 추가, 텍스트 삽입, 속성 설정까지 한 번에
-    function createElementWithOptions(tag, options = {}) {
-      const element = document.createElement(tag);
-      // 클래스 추가
-      if (options.classes) {
-        element.classList.add(...options.classes);
-      }
-
-      // 텍스트 삽입
-      if (options.text) {
-        element.innerText = options.text;
-      }
-
-      // 속성 설정
-      if (options.attributes) {
-        for (let key in options.attributes) {
-          element.setAttribute(key, options.attributes[key]);
-        }
-      }
-      return element;
-    }
-
-    function addMyMessage(message) {
-      const chatWrapper = document.getElementById('chat-wrapper');
-
-      // 메시지 박스 생성
-      const messageBox = createElementWithOptions('div', { classes: ['message-my'] });
-
-      // 메시지 내용 생성
-      const messageFrame = createElementWithOptions('div', { classes: ['message-box-right'] });
-      const bubbleMessage = createElementWithOptions('div', { classes: ['bubble-message-my'] });
-      const messageFrameInner = createElementWithOptions('div', { classes: ['message-frame-my'] });
-      const textMessage = createElementWithOptions('div', {
-        classes: ['text-message-my'],
-        text: message // 실제 메시지 텍스트 삽입
-      });
-
-      // 메시지 시간 추가
-      const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-      const messageFooter = createElementWithOptions('div', { classes: ['message-footer'] });
-      const timeElement = createElementWithOptions('div', {
-        classes: ['time-my'],
-        text: time
-      });
-
-      const bubbleTip = createElementWithOptions('div', { classes: ['bubble-side-my'] });
-      const bubbleTipImage = createElementWithOptions('img', {
-        classes: ['bubble-tip-my'],
-        attributes: { src: '../static/vectors/bubble-tip-my.svg' }
-      });
-
-      const bottomCurveRectangle = createElementWithOptions('div', { classes: ['bottom-curve-rectangle-my'] });
-      const bottomCurveVector = createElementWithOptions('img', {
-        classes: ['bottom-curve-vector-my'],
-        attributes: { src: '../static/vectors/bottom-curve-vector-my.svg' }
-      });
-
-      // 메시지 구조 조립
-      messageFooter.appendChild(timeElement);
-      messageFrameInner.appendChild(textMessage);
-      messageFrameInner.appendChild(messageFooter);
-
-      bubbleMessage.appendChild(messageFrameInner);
-
-      messageFrame.appendChild(bubbleMessage);
-      bubbleTip.appendChild(bubbleTipImage);
-      bubbleTip.appendChild(bottomCurveRectangle);
-      bubbleTip.appendChild(bottomCurveVector);
-
-      messageFrame.appendChild(bubbleTip);
-      messageBox.appendChild(messageFrame);
-
-      // 채팅 창에 메시지 추가
-      chatWrapper.appendChild(messageBox);
-
-      // 새 메시지 표시 후 자동 스크롤
-      chatWrapper.scrollTop = chatWrapper.scrollHeight;
-    }
-
-    function addGptMessage(message) {
-      const chatWrapper = document.getElementById('chat-wrapper');
-
-      // 메시지 박스 생성
-      const messageBox = createElementWithOptions('div', { classes: ['message-gpt'] });
-
-      // 메시지 내용 생성
-      const messageFrame = createElementWithOptions('div', { classes: ['message-box-left'] });
-
-      const avatar = createElementWithOptions('div', { classes: ['message-box__avatar'] });
-      const avatarImg = createElementWithOptions('img', {
-        classes: ['chat-gpt'],
-        attributes: { src: '../static/vectors/icon-chat-gpt.svg' }
-      });
-      avatar.appendChild(avatarImg);
-
-      const bubbleContainer = createElementWithOptions('div', { classes: ['message-box__bubble'] });
-
-      const bubbleTip = createElementWithOptions('div', { classes: ['bubble-side-gpt'] });
-
-      const bubbleTipImage = createElementWithOptions('img', {
-        classes: ['bubble-tip-gpt'],
-        attributes: { src: '../static/vectors/bubble-tip-gpt.svg' }
-      });
-
-      const bottomCurveRectangle = createElementWithOptions('div', { classes: ['bottom-curve-rectangle-gpt'] });
-
-      const bottomCurveVector = createElementWithOptions('img', {
-        classes: ['bottom-curve-vector-gpt'],
-        attributes: { src: '../static/vectors/bottom-curve-vector-gpt.svg' }
-      });
-
-      const bubbleMessage = createElementWithOptions('div', { classes: ['bubble-message-gpt'] });
-
-      const messageFrameInner = createElementWithOptions('div', { classes: ['message-frame-gpt'] });
-
-      const messageTitle = createElementWithOptions('div', { classes: ['message__title'] });
-      const textMessageName = createElementWithOptions('div', {
-        classes: ['text-message-name'],
-        text: 'ChatGPT' // ChatGPT 이름
-      });
-
-      const messageBody = createElementWithOptions('div', { classes: ['message__body'] });
-      const textMessage = createElementWithOptions('div', {
-        classes: ['text-message-gpt'],
-        text: message // 실제 GPT 메시지 텍스트 삽입
-      });
-
-      // 메시지 시간 추가 및 아이콘 그룹 생성
-      const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-      const messageFooter = createElementWithOptions('div', { classes: ['message__footer'] });
-      const timeElement = createElementWithOptions('div', {
-        classes: ['time-gpt'],
-        text: time
-      });
-
-      const iconGroup = createElementWithOptions('div', { classes: ['icon-group'] });
-      const icons = ['icon-copy', 'icon-thumbs-up', 'icon-thumbs-down', 'icon-refresh-cw'];
-
-      icons.forEach(icon => {
-        const iconElement = createElementWithOptions('img', {
-          classes: ['icon-message-botton'],
-          attributes: { src: `../static/vectors/${icon}.svg` }
-        });
-        iconGroup.appendChild(iconElement);
-      });
-
-      // 메시지 구조 조립
-      messageFooter.appendChild(timeElement);
-      messageFooter.appendChild(iconGroup);
-
-      messageTitle.appendChild(textMessageName);
-      messageBody.appendChild(textMessage);
-
-      messageFrameInner.appendChild(messageTitle);
-      messageFrameInner.appendChild(messageBody);
-      messageFrameInner.appendChild(messageFooter);
-
-      bubbleMessage.appendChild(messageFrameInner);
-
-      bubbleContainer.appendChild(bubbleTip);
-      bubbleTip.appendChild(bubbleTipImage);
-      bubbleTip.appendChild(bottomCurveRectangle);
-      bubbleTip.appendChild(bottomCurveVector);
-
-      bubbleContainer.appendChild(bubbleMessage);
-
-      messageFrame.appendChild(avatar);
-      messageFrame.appendChild(bubbleContainer);
-      messageBox.appendChild(messageFrame);
-
-      // 채팅 창에 메시지 추가
-      chatWrapper.appendChild(messageBox);
-
-      // 새 메시지 표시 후 자동 스크롤
-      chatWrapper.scrollTop = chatWrapper.scrollHeight;
-    }
-
-    let sessionId = null;
-
-    // 폼 제출 이벤트 핸들러
-    chatForm.addEventListener('submit', async function (event) {
-      event.preventDefault();
-      const userMessage = promptInput.value;
-      if (userMessage.trim() === '') return;
-
-      const cveTitleElement = document.querySelector('.card__title');
-      const cveCode = cveTitleElement ? cveTitleElement.textContent.trim() : '';
-
-      addMyMessage(userMessage);
-      promptInput.value = '';
-
-      try {
-        const response = await fetch('/openai/chat', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ message: userMessage, cve_code: cveCode, session_id: sessionId })
-        });
-
-        const data = await response.json();
-        addGptMessage(data.reply.reply);
-
-        // 응답에서 세션 ID를 가져오고 변수에 저장
-        if (data.session_id) {
-          sessionId = data.session_id;
-        } else {
-          console.warn('No session_id returned from server');
-        }
-
-        console.log('Server response:', data);
-
-      } catch (error) {
-        console.error('Error:', error);
-        addGptMessage('chatGPT와 연결이 되지 않았습니다.', 'gpt');
-      }
-    });
-
 
     async function saveInfo() {
 
@@ -715,7 +475,7 @@
     function redirectToRuleTestWithCVE(cveCode) {
       window.location.href = `/ruletest?cve=${encodeURIComponent(cveCode)}`;
     }
-  </script>
+</script>
+<script src="../static/scripts/chatbot.js"></script>
 </body>
-
 </html>
