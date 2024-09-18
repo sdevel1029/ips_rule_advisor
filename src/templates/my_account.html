@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>계정 관리</title>
+    <link rel="stylesheet" href="../../static/styles/styles.css">
+</head>
+<body>
+
+    <!-- 네비게이션 -->
+    <nav class="navbar">
+        <div class="nav-left">
+            <img src="/static/images/logo.png" alt="Logo" class="logo">
+        </div>
+        <ul class="nav-center">
+            <li><a href="/info">정보수집</a></li>
+            <li><a href="/rule-test">룰 테스트</a></li>
+            <li><a href="/mypage">마이페이지</a></li>
+        </ul>
+        <div class="nav-right">
+            <img src="/static/images/user-avatar.png" alt="User Avatar" class="user-avatar">
+            <span>YSD님</span>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <aside class="sidebar">
+            <ul>
+                <li><a href="/mypage/info-collection">내 정보수집 기록</a></li>
+                <li><a href="/mypage/rule-test-record">내 룰 테스트 기록</a></li>
+                <li><a href="/mypage/final-report-record">내 최종보고서 기록</a></li>
+                <li class="active"><a href="/mypage/account-management">계정 관리</a></li>
+                <li><a href="/mypage/payment-management">결제 관리</a></li>
+                <li><a href="/mypage/settings">설정</a></li>
+                <li><a href="/logout">로그아웃</a></li>
+            </ul>
+        </aside>
+
+        <div class="content">
+            <h2>계정 관리</h2>
+            <form class="account-form">
+                <label for="username">사용자명</label>
+                <input type="text" id="username" name="username" value="YSD">
+                
+                <label for="email">이메일</label>
+                <input type="email" id="email" name="email" value="ysd@example.com">
+                
+                <label for="password">새 비밀번호</label>
+                <input type="password" id="password" name="password">
+                
+                <label for="confirm-password">비밀번호 확인</label>
+                <input type="password" id="confirm-password" name="confirm-password">
+                
+                <button type="submit">변경 사항 저장</button>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>
