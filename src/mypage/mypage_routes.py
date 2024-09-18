@@ -9,9 +9,9 @@ router = APIRouter()
 templates = Jinja2Templates(directory="src/templates")
 
 
-@router.get("/", response_class=HTMLResponse)
+@router.get("/mypage", response_class=HTMLResponse)
 async def home(request: Request):
-    return templates.TemplateResponse("mypage.html", {"request": request})
+    return templates.TemplateResponse("my_info.html", {"request": request})
 
 
 @router.get("/gptkey")
