@@ -470,6 +470,8 @@
   /* align-self: stretch; 
   position: relative; */
   flex: 1;
+  padding: 0.5rem; /* 패딩 추가 */
+  min-height: 3rem; /* 최소 높이 설정 */
 }
 
 .text-cell {
@@ -494,13 +496,13 @@
   border-width: 0.0625rem;
   padding: 0rem 1.25rem 0rem 1.25rem;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 0.625rem;
-  align-items: flex-start;
+  align-items: center;
   justify-content: flex-start;
   align-self: stretch;
   flex-shrink: 0;
-  height: 3.125rem;
+  /* height: 3.125rem; */
   position: relative;
 }
 
