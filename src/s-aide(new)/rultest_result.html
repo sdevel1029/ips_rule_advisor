@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>S-aide - 최신 보안 정보 제공 사이트</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="assets/img/favicon.png" rel="icon">
+    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link
+        href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+        rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="assets/vendor/quill/quill.snow.css" rel="stylesheet">
+    <link href="assets/vendor/quill/quill.bubble.css" rel="stylesheet">
+    <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+    <link href="assets/vendor/simple-datatables/style.css" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="assets/css/style.css" rel="stylesheet">
+
+    <!-- =======================================================
+  * Template Name: NiceAdmin
+  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
+  * Updated: Apr 20 2024 with Bootstrap v5.3.3
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+
+<body>
+    <!-- ======= Header ======= -->
+    <header id="header" class="header fixed-top d-flex align-items-center">
+
+        <div class="d-flex align-items-center justify-content-between">
+            <a href="index.html" class="logo d-flex align-items-center">
+                <img src="assets/img/logo.png" alt="">
+                <span class="d-none d-lg-block">S-aide</span>
+            </a>
+            <i class="bi bi-list toggle-sidebar-btn"></i>
+        </div><!-- End Logo -->
+
+        <nav class="header-nav ms-auto">
+            <ul class="d-flex align-items-center">
+
+                <li class="nav-item dropdown pe-3">
+
+                    <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+                        <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
+                        <span class="d-none d-md-block ps-2">K. Anderson</span>
+                    </a><!-- End Profile Iamge Icon -->
+                </li><!-- End Profile Nav -->
+
+            </ul>
+        </nav><!-- End Icons Navigation -->
+
+    </header><!-- End Header -->
+
+    <!-- ======= Sidebar ======= -->
+    <aside id="sidebar" class="sidebar">
+
+        <ul class="sidebar-nav" id="sidebar-nav">
+
+            <li class="nav-item">
+                <a class="nav-link " href="getinfo.html">
+                    <i class="bi bi-search"></i>
+                    <span>정보 수집</span>
+                </a>
+            </li><!-- End 정보 수집 Nav -->
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-menu-button-wide"></i><span>정보 수집 검색 기록</span><i
+                        class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a href="components-alerts.html">
+                            <i class="bi bi-circle"></i><span>CVE-2024-5045</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="info.html">
+                            <i class="bi bi-circle"></i><span>log4j</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="ruletest.html">
+                    <i class="ri ri-test-tube-line"></i>
+                    <span>룰 테스트</span>
+                </a>
+            </li><!-- End 룰 테스트 Nav -->
+
+            <li class="nav-heading">분할</li>
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="settings.html">
+                    <i class="bi bi-gear"></i>
+                    <span>설정</span>
+                </a>
+            </li><!-- End 설정 page Nav -->
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="auth_register.html">
+                    <i class="bi bi-card-list"></i>
+                    <span>회원가입</span>
+                </a>
+            </li><!-- End 회원가입 Page Nav -->
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="login.html">
+                    <i class="bi bi-box-arrow-in-right"></i>
+                    <span>로그인</span>
+                </a>
+            </li><!-- End 로그인 Page Nav -->
+
+            <li class="nav-item"></li>
+            <a class="nav-link collapsed" href="">
+                <i class="bi bi-box-arrow-left"></i>
+                <span>로그아웃</span>
+            </a>
+            </li><!-- End 로그아웃 Page Nav -->
+
+        </ul>
+
+    </aside><!-- End Sidebar-->
+
+    <main id="main" class="main">
+        <section class="section">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">룰 테스트 결과</h5>
+                            <!-- Bordered Table -->
+                            <h5>테스트 환경</h5>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">테스트 IDS/IPS</th>
+                                        <th scope="col">총 테스트 패킷</th>
+                                        <th scope="col">공격 패킷 수</th>
+                                        <th scope="col">정상 패킷 수</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">Snort 2.9x</th>
+                                        <td>100</td>
+                                        <td>10</td>
+                                        <td>80</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <!-- End Bordered Table -->
+                            <h5>정확도 테스트 결과</h5>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">정확도 비율</th>
+                                        <th scope="col">오탐(FP) 패킷(률)</th>
+                                        <th scope="col">미탐(FN) 패킷(률)</th>
+                                        <th scope="col">정탐(TP) 패킷(률)</th>
+                                        <th scope="col">정탐(TN) 패킷(률)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">8n%</th>
+                                        <td>10</td>
+                                        <td>10</td>
+                                        <td>40</td>
+                                        <td>40</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">오탐된 패킷 번호</th>
+                                        <th scope="col">미탐된 패킷 번호</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th>12</th>
+                                        <td>13</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">사용된 정상 패킷</th>
+                                        <th scope="col">사용된 공격 패킷</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th><a>정상 패킷 다운로드</a></th>
+                                        <td><a>공격 패킷 다운로드</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <!-- End Bordered Table -->
+                            <h5>성능 테스트 결과</h5>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">패킷 유형</th>
+                                        <th scope="col">지연 시간</th>
+                                        <th scope="col">CPU 사용량</th>
+                                        <th scope="col">메모리 사용량</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">정상 패킷</th>
+                                        <td>5ms</td>
+                                        <td>10%</td>
+                                        <td>5mb</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">공격 패킷</th>
+                                        <td>5ms</td>
+                                        <td>10%</td>
+                                        <td>5mb</td>
+                                    </tr>
+                            </table>
+                            <!-- End Bordered Table -->
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main><!-- End #main -->
+
+    <!-- ======= Footer ======= -->
+    <footer id="footer" class="footer">
+        <div class="copyright">
+            &copy; Copyright <strong><span>S-aide</span></strong>. All Rights Reserved
+        </div>
+        <div class="credits">
+            <!-- All the links in the footer should remain intact. -->
+            <!-- You can delete the links only if you purchased the pro version. -->
+            <!-- Licensing information: https://bootstrapmade.com/license/ -->
+            <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
+            Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+        </div>
+    </footer><!-- End Footer -->
+
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+            class="bi bi-arrow-up-short"></i></a>
+
+    <!-- Vendor JS Files -->
+    <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/vendor/chart.js/chart.umd.js"></script>
+    <script src="assets/vendor/echarts/echarts.min.js"></script>
+    <script src="assets/vendor/quill/quill.js"></script>
+    <script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
+    <script src="assets/vendor/tinymce/tinymce.min.js"></script>
+    <script src="assets/vendor/php-email-form/validate.js"></script>
+
+    <!-- Template Main JS File -->
+    <script src="assets/js/main.js"></script>
+
+</body>
+
+</html>
