@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../static/vars/vars.css">
+  <link rel="stylesheet" href="../static/styles/styles.css">
+
+  <title>IPS Rule Advisor</title>
+</head>
+
+<body>
+  <div class="layout-wrapper">
+    <header class="header">
+      <div class="header-logo">
+        <button class="logo" onclick="window.location.href='/';">
+          <img class="hdd-fill" src="../static/vectors/logo-hdd-fill0.svg" alt="hdd-icon"/>
+          <img class="shield-plus" src="../static/vectors/logo-shield-plus0.svg" alt="shield-icon"/>
+        </button>
+      </div>
+      <div class="header-nav">
+        <a class="nav-item item-text" href="/">정보수집</a>
+        <a class="nav-item--active item-text" href="/ruletest">룰 테스트</a>
+        <!-- <a class="nav-item item-text" href="">마이페이지</a> -->
+      </div>
+      <div class="header-auth">
+        <div class="auth-profile">
+          <div class="avatar-img">
+            <img class="shape" src="../static/images/avatar-0.png" />
+          </div>
+          <div class="profile-name">
+            <div class="text-name">YSD 님</div>
+          </div>
+        </div>
+      </div>
+    </header>
+    <div class="main-container">
+      <div class="card-cve">
+        <div class="card__title" id="cve-id">{{ test_result.cve }}</div>
+        <div class="line-seperate"></div>
+        <div class="card__text" id="publish-date">테스트 일시: {{ test_result.created_at }}</div>
+      </div>
+      <div class="card-rule-result">
+        <div class="card__title">테스트 결과</div>
+        <div class="line-seperate"></div>
+        <div class="card__subtitle">테스트 IPS 룰</div>
+        <div class="card__rulebox">
+          <div class="text-rulebox" id="test-rule">{{ test_result.rule }}</div>
+        </div>
+        <div class="card__subtitle">테스트 환경</div>
+        <div class="table">
+          <div class="table-header">
+            <div class="table-grid">
+              <div class="table__cell text-cell">테스트 환경</div>
+              <div class="table__cell text-cell">총 테스트 패킷</div>
+              <div class="table__cell text-cell">공격 패킷</div>
+              <div class="table__cell text-cell">정상 패킷</div>
+            </div>
+          </div>
+          <div class="table-row">
+            <div class="table-grid">
+              <div class="table__cell text-cell" id="test-environment">{{ test_result.setting }}</div>
+              <div class="table__cell text-cell" id="total-packets">{{ test_result.total }}</div>
+              <div class="table__cell text-cell" id="attack-packets">{{ test_result.attacknum }}</div>
+              <div class="table__cell text-cell" id="normal-packets">{{ test_result.normalnum }}</div>
+            </div>
+          </div>
+        </div>
+        <div class="card__subtitle">정확도 테스트 결과</div>
+        <div class="table">
+          <div class="table-header">
+            <div class="table-grid">
+              <div class="table__cell text-cell">정확도 비율</div>
+              <div class="table__cell text-cell">오탐 패킷(률)<br />(False Positive)</div>
+              <div class="table__cell text-cell">미탐 패킷(률)<br />(False Negative)</div>
+              <div class="table__cell text-cell">정탐 패킷(률)<br />(True Positive)</div>
+              <div class="table__cell text-cell">정탐 패킷(률)<br />(True Negative)</div>
+            </div>
+          </div>
+          <div class="table-row">
+            <div class="table-grid">
+              <div class="table__cell text-cell" id="accuracy-rate">{{ test_result.accuracyrate }}</div>
+              <div class="table__cell text-cell" id="false-positive">{{ test_result.attackrate }}</div>
+              <div class="table__cell text-cell" id="false-negative">{{ test_result.normalrate }}</div>
+              <div class="table__cell text-cell" id="true-positive">{{ test_result.attacktrue }}</div>
+              <div class="table__cell text-cell" id="true-negative">{{ test_result.normaltrue }}</div>
+            </div>
+          </div>
+        </div>
+        <div class="table">
+          <div class="table-header">
+            <div class="table-grid">
+              <div class="table__cell text-cell">오탐된 패킷 번호</div>
+              <div class="table__cell text-cell">미탐된 패킷 번호</div>
+            </div>
+          </div>
+          <div class="table-row">
+            <div class="table-grid">
+              <div class="table__cell text-cell" id="normalpacket_num">{{ test_result.normalpacket_num }}</div>
+              <div class="table__cell text-cell" id="attackpacket_num">{{ test_result.attackpacket_num }}</div>
+            </div>
+          </div>
+        </div>
+        <div class="table">
+          <div class="table-header">
+            <div class="table-grid">
+              <div class="table__cell text-cell">사용된 정상 패킷</div>
+              <div class="table__cell text-cell">사용된 공격 패킷</div>
+            </div>
+          </div>
+          <div class="table-row">
+            <div class="table-grid">
+              <div class="table__cell text-cell" id="normal_packet"></div>
+              <div class="table__cell text-cell" id="attack_packet"></div>
+            </div>
+          </div>
+        </div>
+        <div class="card__subtitle">성능 테스트 결과</div>
+        <div class="table">
+          <div class="table-header">
+            <div class="table-grid">
+              <div class="table__cell text-cell">패킷 유형</div>
+              <div class="table__cell text-cell">지연 시간</div>
+              <div class="table__cell text-cell">CPU 사용량</div>
+              <div class="table__cell text-cell">메모리 사용량</div>
+            </div>
+          </div>
+          <div class="table-row">
+            <div class="table-grid">
+              <div class="table__cell text-cell" id="category">정상 패킷</div>
+              <div class="table__cell text-cell" id="normallatency">{{ test_result.normallatency }}</div>
+              <div class="table__cell text-cell" id="cpu-usage">{{ test_result.normalcpu_usage }}</div>
+              <div class="table__cell text-cell" id="memory-usage">{{ test_result.normalmemory_usage }}</div>
+            </div>
+          </div>
+          <div class="table-row">
+            <div class="table-grid">
+              <div class="table__cell text-cell" id="category">공격 패킷</div>
+              <div class="table__cell text-cell" id="attacklatency">{{ test_result.attacklatency }}</div>
+              <div class="table__cell text-cell" id="cpu-usage">{{ test_result.attackcpu_usage }}</div>
+              <div class="table__cell text-cell" id="memory-usage">{{ test_result.attackmemory_usage }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('rule-test-button').addEventListener('click', () => {
+        const cveId = "{{ test_result.cve }}";
+        const envi = "{{ test_result.envi }}";
+        const rule = "{{ test_result.rule }}";
+        if (cveId !== 'N/A') {
+          window.location.href = `/ruletest?cve=${encodeURIComponent(cveId)}&envi=${encodeURIComponent(envi)}&rule=${encodeURIComponent(rule)}`;
+        } else {
+          alert('CVE ID를 로드할 수 없습니다.');
+        }
+      });
+
+      {const ncontainer = document.getElementById("normal_packet");
+      const downloadLink = document.createElement('a');
+      const normal = "{{test_result.normalpacket}}";
+      downloadLink.href = `/rule/download?file_location=${normal}`;
+      downloadLink.innerText = "정상 패킷 다운로드";
+      ncontainer.appendChild(downloadLink);}
+
+      {const acontainer = document.getElementById("attack_packet");
+      const downloadLink = document.createElement('a');
+      const attack = "{{test_result.attackpacket}}";
+      downloadLink.href = `/rule/download?file_location=${attack}`;
+      downloadLink.innerText = "공격 패킷 다운로드";
+      acontainer.appendChild(downloadLink);
+      }
+    });
+  </script>
+</body>
+
+</html>
