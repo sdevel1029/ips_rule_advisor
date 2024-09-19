@@ -9,7 +9,7 @@
 <body>
 <div class="payment-container">
     <h2>결제 관리</h2>
-    <form>
+    <form id="cardForm">
         <div class="input-group">
             <label for="card-details">카드번호 입력</label>
             <input type="text" id="card-details" name="card-details" placeholder="1234-xxxx-xxxx-1234">
@@ -20,4 +20,32 @@
     </form>
 </div>
 </body>
+<script>
+    document.getElementById('cardForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent the default form submission
+    
+        // Get the API key value from the input field
+        const card = document.getElementById('card-details').value;
+        
+    
+        // Send the API key to the server using fetch
+        fetch('/card/change', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({card:card})
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert("성공")
+            window.location.href = "/ruleresult"
+            // Optionally, you can display a message or redirect the user here
+        })
+        .catch((error) => {
+            alert("실패")
+        });
+    });
+    </script>
 </html>
+
