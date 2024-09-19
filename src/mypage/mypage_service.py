@@ -15,6 +15,16 @@ def chage_gpt(client: Client, request:Request,key):
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
     
+def chage_card(client: Client, request:Request,key):
+    try:
+        user = request.cookies.get("user")
+        user_info = client.auth.get_user(user)
+        user_id = user_info.user.id
+        user = client.table("userinfo").update({"card": key}).eq("id", user_id).execute()
+        return {"status": "success"}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    
 def past_test(client: Client, request:Request):
     try:
         user = request.cookies.get("user")
