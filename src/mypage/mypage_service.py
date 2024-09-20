@@ -36,6 +36,17 @@ def past_test(client: Client, request:Request):
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
     
+def past_info(client: Client, request:Request):
+    try:
+        user = request.cookies.get("user")
+        user_info = client.auth.get_user(user)
+        user_id = user_info.user.id
+        past_test = client.table("info").select("*").eq("user_id", user_id).execute()
+        return past_test.data
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+    
 def past_final(client: Client,request:Request):
     try:
         user = request.cookies.get("user")
