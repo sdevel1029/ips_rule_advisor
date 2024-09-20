@@ -61,7 +61,6 @@
     </div>
 
     <script>
-
         const rowsPerPage = 5;  // Number of records per page
         let currentPage = 1;
 
@@ -113,7 +112,7 @@
             if (currentPage > 1) {
                 const prevButton = document.createElement('a');
                 prevButton.href = '#';
-                prevButton.innerText = '«';
+                prevButton.innerText = '« ';
                 prevButton.addEventListener('click', function(event) {
                     event.preventDefault();
                     currentPage--;
@@ -126,7 +125,7 @@
             for (let i = startPage; i <= endPage; i++) {
                 const pageButton = document.createElement('a');
                 pageButton.href = '#';
-                pageButton.innerText = i;
+                pageButton.innerText = i+" ";
                 if (i === currentPage) {
                     pageButton.classList.add('active');
                 }
