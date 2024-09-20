@@ -108,24 +108,28 @@
 
 
 
-    document.addEventListener('DOMContentLoaded', function () {
-      const queryCVE = getCVEFromQuery();
-      const envi = getenviFromQuery();
-      const rule = getruleFromQuery()
-      document.getElementById("rule").value = rule;
-      if (queryCVE) {
-        // 쿼리에 CVE 값이 있다면 입력란에 그 값을 미리 채워줍니다.
-        document.getElementById("cve").value = queryCVE;
-      }
-      if (queryCVE) {
-        // 쿼리에 CVE 값이 있다면 입력란에 그 값을 미리 채워줍니다.
-        document.getElementById("envi").value = envi;
-      }
-      {const container = document.getElementById("normal_packet_link_container");
-      const downloadLink = document.createElement('a');
-      downloadLink.href = `/rule/download?file_location=original/normal`;
-      downloadLink.innerText = "기본 공격 패킷 다운로드";
-      container.appendChild(downloadLink);}
+        document.addEventListener('DOMContentLoaded', function () {
+            const queryCVE = getCVEFromQuery();
+            /* const envi = getenviFromQuery(); */
+            const rule = getruleFromQuery()
+            document.getElementById("rule").value = rule;
+            if (queryCVE) {
+                // 쿼리에 CVE 값이 있다면 입력란에 그 값을 미리 채워줍니다.
+                document.getElementById("cve").value = queryCVE;
+            }
+            /*
+            if (queryCVE) {
+              // 쿼리에 CVE 값이 있다면 입력란에 그 값을 미리 채워줍니다.
+              document.getElementById("envi").value = envi;
+            }
+           */
+            {
+                const container = document.getElementById("normal_packet_link_container");
+                const downloadLink = document.createElement('a');
+                downloadLink.href = `/rule/download?file_location=original/normal`;
+                downloadLink.innerText = "기본 공격 패킷 다운로드";
+                container.appendChild(downloadLink);
+            }
 
       {const container = document.getElementById("attack_packet_link_container");
       const downloadLink = document.createElement('a');
