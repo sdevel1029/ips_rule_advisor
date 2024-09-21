@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../static/vars/vars.css">
+  <link rel="stylesheet" href="../static/styles/styles.css">
+  <link rel="stylesheet" href="../static/styles/chatbot.css">
+  <title>IPS Rule Advisor</title>
+</head>
+
+<body>
+  <div class="layout-wrapper">
+    <header class="header">
+      <div class="header-logo">
+        <button class="logo" onclick="window.location.href='/';">
+          <img class="hdd-fill" src="../static/vectors/logo-hdd-fill0.svg" alt="hdd-icon" />
+          <img class="shield-plus" src="../static/vectors/logo-shield-plus0.svg" alt="shield-icon" />
+        </button>
+      </div>
+      <div class="header-nav">
+        <a class="nav-item--active item-text" href="/">정보수집</a>
+        <a class="nav-item item-text" href="/ruletest">룰 테스트</a>
+        <!-- <a class="nav-item item-text" href="">마이페이지</a> -->
+      </div>
+      <div class="header-auth">
+        <div class="auth-profile">
+          <div class="avatar-img">
+            <img class="shape" src="../static/images/avatar-0.png" />
+          </div>
+          <div class="profile-name">
+            <div class="text-name">YSD 님</div>
+          </div>
+        </div>
+      </div>
+    </header>
+    <div class="main-container">
+      <div class="card-cve">
+        <div class="card__title" id="cve-id">{{info.cve}}</div>
+        <div class="line-seperate"></div>
+        <div class="card__text" id="dates">
+          게시일 : <span id="posting-date">{{info.cve_posting_date}}</span> |
+          최종 수정일 : <span id="last-modified-date">{{info.last_modified_date}}</span>
+        </div>
+        <div class="card__text" id="vuln-type">취약점 유형 : {{info.vuln_type}}
+          <div class="tooltip-text">{{info.description}}</div>
+        </div>
+        <div class="card__text" id="description">{{info.description}}</div>
+      </div>
+
+      <div class="card-cpe">
+        <div class="card__title">영향받는 제품</div>
+        <div class="accordion-container">
+          <div class="accordion-title">
+            <div class="text-accordion-title">CPE 목록</div>
+            <img class="btn-accordion" src="../static/vectors/btn-accordion-down.svg" />
+          </div>
+          <div class="accordion-content">
+            <div class="table">
+              <div class="table-header">
+                <div class="table-grid">
+                  <div class="table__cell text-cell">공급업체</div>
+                  <div class="table__cell text-cell">제품</div>
+                  <div class="table__cell text-cell">버전</div>
+                </div>
+              </div>
+              {% if info.cpe %}
+              {% for cpe in info.cpe.CPE_List %}
+              <div class="table-row">
+                <div class="table-grid">
+                  <div class="table__cell text-cell" id="cpe-{{ loop.index }}">{{ cpe.CPE | default('정보 없음') }}</div>
+                  <div class="table__cell text-cell" id="included-{{ loop.index }}">{{ cpe.포함 if cpe.포함 is not none else '-' }}</div>
+                  <div class="table__cell text-cell" id="excluded-{{ loop.index }}">{{ cpe.비포함 if cpe.비포함 is not none else '-' }}</div>
+                </div>
+              </div>
+              {% endfor %}
+              {% else %}
+              <p>정보가 없습니다.</p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-cvss">
+        <div class="card__title">CVSS</div>
+        <div class="line-seperate"></div>
+        <div class="tab-container">
+          <div class="tab-item--unselected text-tab--unselected">CVSS 2.0</div>
+          <div class="tab-item--selected text-tab--selected">CVSS 3.x</div>
+        </div>
+        <div class="card__text" id="metrics">
+          메트릭 : {{info.metric}}
+        </div>
+        <div class="table">
+          <div class="table-header">
+            <div class="table-grid">
+              <div class="table__cell text-cell">기본 점수</div>
+              <div class="table__cell text-cell">악용 가능성 점수</div>
+              <div class="table__cell text-cell">영향 점수</div>
+            </div>
+          </div>
+          <div class="table-row">
+            <div class="table-grid">
+              <div class="table__cell text-cell" id="score">{{info.score}}</div>
+              <div class="table__cell text-cell" id="exploit_score">{{info.exploit_score}}
+              </div>
+              <div class="table__cell text-cell" id="influence_score">{{info.influence_score}}</div>
+            </div>
+          </div>
+        </div>
+        <div class="card__subtitle">메트릭 요약</div>
+        <div class="card__text" id="metrics_summary">{{info.metrics_summary}}</div>
+      </div>
+    </div>
+
+    <div class="card-rule">
+      <div class="card__title">연관 IPS Rule</div>
+      <div class="line-seperate"></div>
+      
+      <div class="card__row">
+        <div class="card__subtitle">SNORT COMMUNITY RULE</div>
+      </div>
+      <div class="card__rulebox">
+        <div class="text-rulebox">
+          {% if info.related_rules_type %}
+            {% for rule in info.related_rules_type %}
+              <p>{{ rule }}</p>
+            {% endfor %}
+          {% else %}
+            <p>정보 없음</p>
+          {% endif %}
+        </div>
+      </div>
+    
+       <!-- EMERGING RULE  -->
+      <div class="card__row">
+        <div class="card__subtitle">EMERGING RULE</div>
+      </div>
+      <div class="card__rulebox">
+        <div class="text-rulebox">
+          {% if info.related_rules_product %}
+            {% for rule in info.related_rules_product %}
+              <p>{{ rule }}</p>
+            {% endfor %}
+          {% else %}
+            <p>정보 없음</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="card-poc">
+      <div class="card__title">POC (Proof of Concept)</div>
+      <div class="line-seperate"></div>
+      {% if info.reference%}
+      <div class="card__text">POC 총 링크 수 : {{info.reference.references|length}}</div>
+      {% endif %}
+      <div class="accordion-container">
+        <div class="accordion-title">
+          <div class="text-accordion-title">POC 링크 목록</div>
+          <img class="btn-accordion" src="../static/vectors/btn-accordion-down.svg" />
+        </div>
+        <div class="accordion-content">
+          <div class="table">
+            <div class="table-header">
+              <div class="table-grid">
+                <div class="table__cell text-cell">링크</div>
+              </div>
+            </div>
+            {% if info.reference%}
+            {% for poc in info.reference.references %}
+            <div class="table-row">
+              <div class="table-grid">
+                <a class="table__cell text-link" href="{{ poc.url }}">{{ poc.url | default('정보 없음') }}</a>
+              </div>
+            </div>
+            {% endfor %}
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+  
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // 아코디언 기능
+      const accordionTitles = document.querySelectorAll('.accordion-title');
+      accordionTitles.forEach(title => {
+        title.addEventListener('click', function () {
+          const accordionContainer = this.parentElement;
+          const accordionContent = accordionContainer.querySelector('.accordion-content');
+          const accordionButton = this.querySelector('.btn-accordion');
+
+          accordionContainer.classList.toggle('active');
+          accordionContent.style.display = accordionContainer.classList.contains('active') ? 'flex' : 'none';
+          accordionButton.src = accordionContainer.classList.contains('active')
+            ? '../static/vectors/btn-accordion-up.svg'
+            : '../static/vectors/btn-accordion-down.svg';
+        });
+      });
+    });
+</script>
+</body>
+</html>
