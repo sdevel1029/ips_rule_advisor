@@ -41,7 +41,7 @@ async def past(request: Request,client=Depends(get_supabase_client)):
 @router.get("/infoshow", response_class=HTMLResponse)
 async def past(request: Request,uuid,client=Depends(get_supabase_client)):
     info_result = client.table("info").select("*").eq("id", uuid).execute()
-    return templates.TemplateResponse("my_info.html", {"info" : info_result,"request": request})
+    return templates.TemplateResponse("my_info_show.html", {"info" : info_result.data[0],"request": request})
 
 
 @router.post("/gptkey/change")
