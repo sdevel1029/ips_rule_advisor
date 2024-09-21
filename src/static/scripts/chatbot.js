@@ -50,9 +50,12 @@ function addGptMessage(message) {
   }
 
   sendButton.addEventListener('click', async function () {
-    const cveTitleElement = document.querySelector('.card__title');
-    const cveCode = cveTitleElement ? cveTitleElement.textContent.trim() : '';
+    const cveCodeElement = document.getElementById('cve-id');
+    const cveCode = cveCodeElement ? cveCodeElement.innerText.trim() : '';
     const userMessage = promptInput.value;
+
+    console.log(cveCode)
+    
     
     if (userMessage.trim() === '') return;
 
@@ -60,7 +63,6 @@ function addGptMessage(message) {
     promptInput.value = '';
 
     showTypingIndicator(true);
-
     try {
       const response = await fetch('/openai/chat', {
         method: 'POST',

@@ -7,7 +7,7 @@ from src.database.comment_data import *
 
 router = APIRouter()
 
-templates = Jinja2Templates(directory="src/templates")
+templates = Jinja2Templates(directory="src/templates/")
 
 
 @router.get("/finalreport", response_class=HTMLResponse)

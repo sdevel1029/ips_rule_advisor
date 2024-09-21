@@ -16,7 +16,7 @@ from json import JSONDecodeError
 
 
 router = APIRouter()
-templates = Jinja2Templates(directory="src/static/pages/html")
+templates = Jinja2Templates(directory="src/templates/")
 
 
 @router.post("/sign_up")

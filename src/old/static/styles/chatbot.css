@@ -1,0 +1,112 @@
+.chatbot-containerM {
+    width: 400px;
+    height: 700px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    background-color: #f5f5f5;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000; 
+  }
+  
+  .chatbot-headerM {
+    background-color: #007bff;
+    color: white;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+  }
+  
+  .chatbot-headerM h2 {
+    margin: 0;
+    font-size: 20px;
+  }
+  
+  .chatbot-headerM img {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .chatbot-messagesM {
+    padding: 15px;
+    height: 600px;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .user-messageM,
+  .bot-messageM {
+    max-width: 70%;
+    padding: 10px 15px;
+    border-radius: 20px;
+  }
+  
+  .user-messageM {
+    align-self: flex-end;
+    background-color: #007bff; 
+    color: white;
+    padding: 10px 15px;
+    border-radius: 20px;
+    max-width: 70%;
+    word-wrap: break-word;
+}
+
+.bot-messageM {
+    align-self: flex-start;
+    background-color: #e0e0e0; 
+    color: black; 
+    padding: 10px 15px;
+    border-radius: 20px;
+    max-width: 70%;
+    word-wrap: break-word;
+}
+  
+  .chatbot-inputM {
+    display: flex;
+    padding: 10px;
+    background-color: white;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+  }
+  
+  .chatbot-inputM input {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #f0f0f0;
+  }
+  
+  .chatbot-inputM button {
+    background-color: #007bff;
+    border: none;
+    padding: 10px;
+    border-radius: 50%;
+    margin-left: 10px;
+    cursor: pointer;
+  }
+  
+  .chatbot-inputM button img {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .typing-indicatorM {
+    padding: 10px;
+    font-size: 12px;
+    color: #666;
+    display: none;
+  }
+
+  .text-message-my {
+    transform: none;
+    direction: ltr; 
+  }

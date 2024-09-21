@@ -1,0 +1,77 @@
+    <!-- ======= Sidebar ======= -->
+    <aside id="sidebar" class="sidebar">
+        <ul class="sidebar-nav" id="sidebar-nav">
+    
+            <li class="nav-item">
+                <a class="nav-link" href="/">
+                    <i class="bi bi-search"></i>
+                    <span>정보 수집</span>
+                </a>
+            </li><!-- End 정보 수집 Nav -->
+    
+            {% if request.cookies.get('user') %}
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-menu-button-wide"></i><span>정보 수집 검색 기록</span><i
+                        class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="components-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a href="#">
+                            <i class="bi bi-circle"></i><span>CVE-2024-5045</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="bi bi-circle"></i><span>log4j</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            {% endif %}
+    
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="/ruletest">
+                    <i class="ri ri-test-tube-line"></i>
+                    <span>룰 테스트</span>
+                </a>
+            </li><!-- End 룰 테스트 Nav -->
+    
+            <li class="nav-heading">내 정보</li>
+    
+            {% if request.cookies.get('user') %}
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="/settings">
+                        <i class="bi bi-gear"></i>
+                        <span>설정</span>
+                    </a>
+                </li><!-- End 설정 page Nav -->
+            {% endif %}
+    
+            {% if not request.cookies.get('user') %}
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="/register">
+                        <i class="bi bi-card-list"></i>
+                        <span>회원가입</span>
+                    </a>
+                </li><!-- End 회원가입 Page Nav -->
+    
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="/login">
+                        <i class="bi bi-box-arrow-in-right"></i>
+                        <span>로그인</span>
+                    </a>
+                </li><!-- End 로그인 Page Nav -->
+            {% endif %}
+    
+            {% if request.cookies.get('user') %}
+            <li class="nav-item">
+                <a class="nav-link collapsed" id="logout-button">
+                    <i class="bi bi-box-arrow-left"></i>
+                    <span>로그아웃</span>
+                </a>
+            </li><!-- End 로그아웃 Page Nav -->
+            {% endif %}
+    
+        </ul>
+    </aside><!-- End Sidebar -->
