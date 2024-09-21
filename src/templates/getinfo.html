@@ -2,192 +2,167 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="../static/vars/vars.css">
-  <link rel="stylesheet" href="../static/styles/styles.css">
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>IPS Rule Advisor</title>
+    <title>S-aide - 최신 보안 정보 제공 사이트</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="../static/assets/img/favicon.png" rel="icon">
+    <link href="../static/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link
+        href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+        rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="../static/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../static/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="../static/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="../static/assets/vendor/quill/quill.snow.css" rel="stylesheet">
+    <link href="../static/assets/vendor/quill/quill.bubble.css" rel="stylesheet">
+    <link href="../static/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+    <link href="../static/assets/vendor/simple-datatables/style.css" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="../static/assets/css/style.css" rel="stylesheet">
+
+    <!-- =======================================================
+  * Template Name: NiceAdmin
+  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
+  * Updated: Apr 20 2024 with Bootstrap v5.3.3
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+
 </head>
 
 <body>
-  <div class="layout-wrapper">
-    <header class="header">
-      <div class="header-logo">
-        <button class="logo" onclick="window.location.href='/';">
-          <img class="hdd-fill" src="../static/vectors/logo-hdd-fill0.svg" alt="hdd-icon"/>
-          <img class="shield-plus" src="../static/vectors/logo-shield-plus0.svg" alt="shield-icon"/>
-        </button>
-      </div>
-      <div class="header-nav">
-        <a class="nav-item--active item-text" href="/">정보수집</a>
-        <a class="nav-item item-text" href="/ruletest">룰 테스트</a>
-        <a class="nav-item item-text" href="/mypage">마이페이지</a>
-      </div>
-      <div class="header-auth" id="auth-container">
-        <form action="/register" method="get" class="auth__form-neutral">
-          <button class="button-neutral text-button--neutral">회원가입</button>
-        </form>
-        <form action="/login" method="get" class="auth__form-primary">
-          <button class="button-primary text-button--primary">로그인</button>
-        </form>
-      </div>
-    </header>
-    <form class="content__search-form" id="cve-form" action="/getinfo" method="get">
-      <div class="search-form__title-group">
-        <div class="search-form__title">보안 취약점 정보 검색</div>
-        <div class="search-form__subtitle">CVE 코드, 키워드 등...</div>
-      </div>
-      <div class="search-form__input-group">
-        <input class="search-form__input" id="cve_code" name="cve_code" type="text"
-          placeholder="CVE-2000-12345, log4j, etc..." required />
-        <button class="button-primary text-button--primary" type="submit">검색</button>
-      </div>
-    </form>
-    {% if search_results %}
-    <div class="accordion-container">
-      <div class="accordion-title">
-        <div class="text-accordion-title">Search Result</div>
-        <img class="btn-accordion" src="../static/vectors/btn-accordion-down.svg" />
-      </div>
-      <div class="accordion-content">
-        {% for result in search_results %}
-        <div class="result-item">
-          <strong>
-            <a href="https://www.cve.org/CVERecord?id={{ result.cve_code }}" target="_blank">코드: {{ result.cve_code }}</a></strong>
-          <br>설명: {{ result.description }}<br><br>
-        </div>
-        {% endfor %}
-      </div>
-    </div>
-    {% endif %}
-  </div>
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      // 아코디언 기능
-      const accordionTitles = document.querySelectorAll('.accordion-title');
-      accordionTitles.forEach(title => {
-        title.addEventListener('click', function () {
-          const accordionContainer = this.parentElement;
-          const accordionContent = accordionContainer.querySelector('.accordion-content');
-          const accordionButton = this.querySelector('.btn-accordion');
+    <!-- ======= Header ======= -->
+    <header id="header" class="header fixed-top d-flex align-items-center">
 
-          accordionContainer.classList.toggle('active');
-          accordionContent.style.display = accordionContainer.classList.contains('active') ? 'flex' : 'none';
-          accordionButton.src = accordionContainer.classList.contains('active')
-            ? '../static/vectors/btn-accordion-up.svg'
-            : '../static/vectors/btn-accordion-down.svg';
-        });
-      });
+        <div class="d-flex align-items-center justify-content-between">
+            <a href="/" class="logo d-flex align-items-center">
+                <img src="../static/assets/img/logo.png" alt="">
+                <span class="d-none d-lg-block">S-aide</span>
+            </a>
+            <i class="bi bi-list toggle-sidebar-btn"></i>
+        </div><!-- End Logo -->
 
-      // 해시 프래그먼트 처리
-      var fragment = window.location.hash.substring(1);
-      if (fragment) {
-        // 프래그먼트 값을 쿼리 매개변수로 변환하여 서버로 리다이렉트
-        window.location.href = '/auth/callback?' + fragment;
-      }
+    </header><!-- End Header -->
 
-      // 쿠키 확인 및 인증 처리
-      function getCookie(name) {
-        let matches = document.cookie.match(new RegExp(
-          "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
-        ));
-        return matches ? decodeURIComponent(matches[1]) : undefined;
-      }
+    <!-- 사이드바 임포트 -->
+    {% include 'sidebar.html' %}
 
-      const userCookie = getCookie('user');
-      const authContainer = document.getElementById('auth-container');
+    <main id="main" class="main">
+        <section class="section">
+            <div class="row justify-content-center">
+                <div class="col-lg-8"> <!-- 너비를 줄여 중앙 정렬 -->
+                    <div class="search-area text-center" style="margin-top: 200px;"> <!-- 중앙 정렬을 위해 text-center 추가, 여백 추가 -->
+                        <h2 class="section-title">보안 취약점 정보 검색</h2>
+                        <p>CVE 코드, 키워드, 등...</p>
+    
+                        <!-- 검색 바 -->
+                        <div class="search-bar mb-4">
+                            <form class="search-form d-flex align-items-center" id="cve-form" method="get" action="/getinfo">
+                                <input id="cve_code" type="text" name="cve_code" placeholder="Search" title="Enter search keyword" required style="flex: 1; margin-right: 10px;">
+                                <button type="submit" title="Search" id="submit-btn" style="flex-shrink: 0;">
+                                    <i class="bi bi-search"></i>
+                                    <div class="spinner-border text-primary d-none" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                </button>
+                            </form>
+                        </div>
+    
+                        <!-- 필터 옵션 -->
+                        <div class="row row-cols-auto mb-3 justify-content-center">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked">
+                                <label class="form-check-label" for="flexSwitchCheckChecked">CVE 코드</label>
+                            </div>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckKeyword">
+                                <label class="form-check-label" for="flexSwitchCheckKeyword">키워드</label>
+                            </div>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckAttackGroup">
+                                <label class="form-check-label" for="flexSwitchCheckAttackGroup">뉴스기사, 칼럼</label>
+                            </div>
+                        </div>
+    
+                        <!-- 검색 결과 -->
+                        {% if search_results %}
+                        <div class="datatable-container">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" style="width: 5%;">#</th>
+                                        <th scope="col" style="width: 10%;">CVE</th>
+                                        <th scope="col" style="width: 85%;">설명</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for result in search_results %}
+                                    <tr>
+                                        <th scope="row">{{ loop.index }}</th>
+                                        <td><a href="/getinfo?cve_code={{ result.cve_code }}">{{ result.cve_code }}</a></td>
+                                        <td>{{ result.description }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="datatable-bottom">
+                            <div class="datatable-info">#n ~ #m / 총 {{ search_results|length }}개의 검색 결과</div>
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination">
+                                    <li class="page-item">
+                                        <a class="page-link disabled" href="#" aria-label="Previous">
+                                            <span aria-hidden="true">«</span>
+                                        </a>
+                                    </li>
+                                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#" aria-label="Next">
+                                            <span aria-hidden="true">»</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                        {% else %}
+                        <!-- <p>정보가 없습니다.</p> -->
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main><!-- End #main -->
+    
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center">
+        <i class="bi bi-arrow-up-short"></i></a>
 
-      if (userCookie) {
-        authContainer.innerHTML = `
-                <button class="auth__button-logout text-button--neutral" id="logout-button">로그아웃</button>
-              `;
+    <!-- Vendor JS Files -->
+    <script src="../static/assets/vendor/apexcharts/apexcharts.min.js"></script>
+    <script src="../static/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../static/assets/vendor/chart.js/chart.umd.js"></script>
+    <script src="../static/assets/vendor/echarts/echarts.min.js"></script>
+    <script src="../static/assets/vendor/quill/quill.js"></script>
+    <script src="../static/assets/vendor/simple-datatables/simple-datatables.js"></script>
+    <script src="../static/assets/vendor/tinymce/tinymce.min.js"></script>
+    <script src="../static/assets/vendor/php-email-form/validate.js"></script>
 
-        const logoutButton = document.getElementById('logout-button');
-        logoutButton.addEventListener('click', function () {
-          fetch('/auth/sign_out', { method: 'GET' })
-            .then(response => {
-              if (response.ok) {
-                window.location.href = '/';
-              } else {
-                alert('로그아웃에 실패했습니다.');
-              }
-            })
-            .catch(error => {
-              console.error('Error:', error);
-              alert('로그아웃 중 문제가 발생했습니다.');
-            });
-        });
-      }
-    });
-  </script>
-  <!-- 
-        <script>
-          document.addEventListener('DOMContentLoaded', function () {
-            const accordionTitles = document.querySelectorAll('.accordion-title');
-            accordionTitles.forEach(title => {
-              title.addEventListener('click', function () {
-                const accordionContainer = this.parentElement;
-                const accordionContent = accordionContainer.querySelector('.accordion-content');
-                const accordionButton = this.querySelector('.btn-accordion');
-      
-                // 아코디언이 열려 있으면 닫고, 닫혀 있으면 열기
-                if (accordionContainer.classList.contains('active')) {
-                  accordionContainer.classList.remove('active');
-                  accordionContent.style.display = 'none';
-                  accordionButton.src = '../static/vectors/btn-accordion-down.svg'; // 닫기 아이콘으로 변경
-                } else {
-                  accordionContainer.classList.add('active');
-                  accordionContent.style.display = 'flex';
-                  accordionButton.src = '../static/vectors/btn-accordion-up.svg'; // 열기 아이콘으로 변경
-                }
-              });
-            });
-          });
-        </script>
-  <script>
-    window.onload = function () {
-      var fragment = window.location.hash.substring(1); // '#' 제거
-      if (fragment) {
-        // 프래그먼트 값을 쿼리 매개변수로 변환하여 서버로 리다이렉트
-        window.location.href = '/auth/callback?' + fragment;
-      }
-    };
-    function getCookie(name) {
-      let matches = document.cookie.match(new RegExp(
-        "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
-      ));
-      return matches ? decodeURIComponent(matches[1]) : undefined;
-    }
+    <!-- Template Main JS File -->
+    <script src="../static/assets/js/main.js"></script>
+    <!-- getinfo Js File -->
+    <script src="../static/scripts/getinfo.js"></script>
 
-    document.addEventListener("DOMContentLoaded", function () {
-      const userCookie = getCookie('user');
-      const authContainer = document.getElementById('auth-container');
 
-      if (userCookie) {
-        authContainer.innerHTML = `
-          <button class="auth__button-logout text-button--neutral" id="logout-button">로그아웃</button>
-        `;
-
-        const logoutButton = document.getElementById('logout-button');
-        logoutButton.addEventListener('click', function () {
-          fetch('/auth/sign_out', {
-            method: 'GET',
-          }).then(response => {
-            if (response.ok) {
-              window.location.href = '/';
-            } else {
-              alert('로그아웃에 실패했습니다.');
-            }
-          }).catch(error => {
-            console.error('Error:', error);
-            alert('로그아웃 중 문제가 발생했습니다.');
-          });
-        });
-      }
-    });
-  </script>
-  -->
 </body>
 </html>

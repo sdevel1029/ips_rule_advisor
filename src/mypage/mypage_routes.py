@@ -31,7 +31,7 @@ async def past(request: Request,client=Depends(get_supabase_client)):
 @router.get("/ruleshow", response_class=HTMLResponse)
 async def past(request: Request,testid,client=Depends(get_supabase_client)):
     test_result = client.table("test_result").select("*").eq("id", testid).execute()
-    return templates.TemplateResponse("my_ruletest_show.html", {"test_result": test_result.data[0],"request": request})
+    return templates.TemplateResponse("my_ruletest_show.html", {"test_result": test_result,"request": request})
 
 @router.get("/info", response_class=HTMLResponse)
 async def past(request: Request,client=Depends(get_supabase_client)):
@@ -41,7 +41,7 @@ async def past(request: Request,client=Depends(get_supabase_client)):
 @router.get("/infoshow", response_class=HTMLResponse)
 async def past(request: Request,uuid,client=Depends(get_supabase_client)):
     info_result = client.table("info").select("*").eq("id", uuid).execute()
-    return templates.TemplateResponse("my_info_show.html", {"info" : info_result.data[0],"request": request})
+    return templates.TemplateResponse("my_info.html", {"info" : info_result,"request": request})
 
 
 @router.post("/gptkey/change")

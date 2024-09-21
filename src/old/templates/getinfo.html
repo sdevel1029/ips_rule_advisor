@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../static/vars/vars.css">
+  <link rel="stylesheet" href="../static/styles/styles.css">
+
+  <title>IPS Rule Advisor</title>
+</head>
+
+<body>
+  <div class="layout-wrapper">
+    <header class="header">
+      <div class="header-logo">
+        <button class="logo" onclick="window.location.href='/';">
+          <img class="hdd-fill" src="../static/vectors/logo-hdd-fill0.svg" alt="hdd-icon"/>
+          <img class="shield-plus" src="../static/vectors/logo-shield-plus0.svg" alt="shield-icon"/>
+        </button>
+      </div>
+      <div class="header-nav">
+        <a class="nav-item--active item-text" href="/">정보수집</a>
+        <a class="nav-item item-text" href="/ruletest">룰 테스트</a>
+        <a class="nav-item item-text" href="/mypage">마이페이지</a>
+      </div>
+      <div class="header-auth" id="auth-container">
+        <form action="/register" method="get" class="auth__form-neutral">
+          <button class="button-neutral text-button--neutral">회원가입</button>
+        </form>
+        <form action="/login" method="get" class="auth__form-primary">
+          <button class="button-primary text-button--primary">로그인</button>
+        </form>
+      </div>
+    </header>
+    <form class="content__search-form" id="cve-form" action="/getinfo" method="get">
+      <div class="search-form__title-group">
+        <div class="search-form__title">보안 취약점 정보 검색</div>
+        <div class="search-form__subtitle">CVE 코드, 키워드 등...</div>
+      </div>
+      <div class="search-form__input-group">
+        <input class="search-form__input" id="cve_code" name="cve_code" type="text"
+          placeholder="CVE-2000-12345, log4j, etc..." required />
+        <button class="button-primary text-button--primary" type="submit">검색</button>
+      </div>
+    </form>
+    {% if search_results %}
+    <div class="accordion-container">
+      <div class="accordion-title">
+        <div class="text-accordion-title">Search Result</div>
+        <img class="btn-accordion" src="../static/vectors/btn-accordion-down.svg" />
+      </div>
+      <div class="accordion-content">
+        {% for result in search_results %}
+        <div class="result-item">
+          <strong>
+            <a href="https://www.cve.org/CVERecord?id={{ result.cve_code }}" target="_blank">코드: {{ result.cve_code }}</a></strong>
+          <br>설명: {{ result.description }}<br><br>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // 아코디언 기능
+      const accordionTitles = document.querySelectorAll('.accordion-title');
+      accordionTitles.forEach(title => {
+        title.addEventListener('click', function () {
+          const accordionContainer = this.parentElement;
+          const accordionContent = accordionContainer.querySelector('.accordion-content');
+          const accordionButton = this.querySelector('.btn-accordion');
+
+          accordionContainer.classList.toggle('active');
+          accordionContent.style.display = accordionContainer.classList.contains('active') ? 'flex' : 'none';
+          accordionButton.src = accordionContainer.classList.contains('active')
+            ? '../static/vectors/btn-accordion-up.svg'
+            : '../static/vectors/btn-accordion-down.svg';
+        });
+      });
+
+      // 해시 프래그먼트 처리
+      var fragment = window.location.hash.substring(1);
+      if (fragment) {
+        // 프래그먼트 값을 쿼리 매개변수로 변환하여 서버로 리다이렉트
+        window.location.href = '/auth/callback?' + fragment;
+      }
+
+      // 쿠키 확인 및 인증 처리
+      function getCookie(name) {
+        let matches = document.cookie.match(new RegExp(
+          "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+        ));
+        return matches ? decodeURIComponent(matches[1]) : undefined;
+      }
+
+      const userCookie = getCookie('user');
+      const authContainer = document.getElementById('auth-container');
+
+      if (userCookie) {
+        authContainer.innerHTML = `
+                <button class="auth__button-logout text-button--neutral" id="logout-button">로그아웃</button>
+              `;
+
+        const logoutButton = document.getElementById('logout-button');
+        logoutButton.addEventListener('click', function () {
+          fetch('/auth/sign_out', { method: 'GET' })
+            .then(response => {
+              if (response.ok) {
+                window.location.href = '/';
+              } else {
+                alert('로그아웃에 실패했습니다.');
+              }
+            })
+            .catch(error => {
+              console.error('Error:', error);
+              alert('로그아웃 중 문제가 발생했습니다.');
+            });
+        });
+      }
+    });
+  </script>
+  <!-- 
+        <script>
+          document.addEventListener('DOMContentLoaded', function () {
+            const accordionTitles = document.querySelectorAll('.accordion-title');
+            accordionTitles.forEach(title => {
+              title.addEventListener('click', function () {
+                const accordionContainer = this.parentElement;
+                const accordionContent = accordionContainer.querySelector('.accordion-content');
+                const accordionButton = this.querySelector('.btn-accordion');
+      
+                // 아코디언이 열려 있으면 닫고, 닫혀 있으면 열기
+                if (accordionContainer.classList.contains('active')) {
+                  accordionContainer.classList.remove('active');
+                  accordionContent.style.display = 'none';
+                  accordionButton.src = '../static/vectors/btn-accordion-down.svg'; // 닫기 아이콘으로 변경
+                } else {
+                  accordionContainer.classList.add('active');
+                  accordionContent.style.display = 'flex';
+                  accordionButton.src = '../static/vectors/btn-accordion-up.svg'; // 열기 아이콘으로 변경
+                }
+              });
+            });
+          });
+        </script>
+  <script>
+    window.onload = function () {
+      var fragment = window.location.hash.substring(1); // '#' 제거
+      if (fragment) {
+        // 프래그먼트 값을 쿼리 매개변수로 변환하여 서버로 리다이렉트
+        window.location.href = '/auth/callback?' + fragment;
+      }
+    };
+    function getCookie(name) {
+      let matches = document.cookie.match(new RegExp(
+        "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+      ));
+      return matches ? decodeURIComponent(matches[1]) : undefined;
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      const userCookie = getCookie('user');
+      const authContainer = document.getElementById('auth-container');
+
+      if (userCookie) {
+        authContainer.innerHTML = `
+          <button class="auth__button-logout text-button--neutral" id="logout-button">로그아웃</button>
+        `;
+
+        const logoutButton = document.getElementById('logout-button');
+        logoutButton.addEventListener('click', function () {
+          fetch('/auth/sign_out', {
+            method: 'GET',
+          }).then(response => {
+            if (response.ok) {
+              window.location.href = '/';
+            } else {
+              alert('로그아웃에 실패했습니다.');
+            }
+          }).catch(error => {
+            console.error('Error:', error);
+            alert('로그아웃 중 문제가 발생했습니다.');
+          });
+        });
+      }
+    });
+  </script>
+  -->
+</body>
+</html>

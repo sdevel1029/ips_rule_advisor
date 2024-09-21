@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Page</title>
+    <link rel="stylesheet" href="../../static/styles/styles.css">
+</head>
+<body>
+
+    <!-- 네비게이션 -->
+    <nav class="navbar">
+        <div class="nav-left">
+            <img src="/static/images/logo.png" alt="Logo" class="logo">
+        </div>
+        <ul class="nav-center">
+            <li><a href="/info">정보수집</a></li>
+            <li><a href="/rule-test">룰 테스트</a></li>
+            <li><a href="/mypage">마이페이지</a></li>
+        </ul>
+        <div class="nav-right">
+            <img src="/static/images/user-avatar.png" alt="User Avatar" class="user-avatar">
+            <span>YSD님</span>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <aside class="sidebar">
+            <ul>
+                <li><a href="/mypage/info-collection">내 정보수집 기록</a></li>
+                <li class="active"><a href="/mypage/rule-test-record">내 룰 테스트 기록</a></li>
+                <li><a href="/mypage/final-report-record">내 최종보고서 기록</a></li>
+                <li><a href="/mypage/account-management">계정 관리</a></li>
+                <li><a href="/mypage/payment-management">결제 관리</a></li>
+                <li><a href="/mypage/settings">설정</a></li>
+                <li><a href="/logout">로그아웃</a></li>
+            </ul>
+        </aside>
+
+        <div class="content">
+            <h2>내 룰 테스트 기록</h2>
+            <table class="test-records">
+                <thead>
+                    <tr>
+                        <th>순번</th>
+                        <th>CVE 코드</th>
+                        <th>시간</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>78</td>
+                        <td>CVE-2024-12345</td>
+                        <td>2024.05.30 17:55</td>
+                    </tr>
+                    <tr>
+                        <td>77</td>
+                        <td>CVE-2024-12345</td>
+                        <td>2024.05.20 17:55</td>
+                    </tr>
+                    <!-- Add more rows here -->
+                </tbody>
+            </table>
+
+            <!-- Pagination -->
+            <div class="pagination">
+                <a href="#">&laquo;</a>
+                <a href="#">1</a>
+                <a href="#">2</a>
+                <a href="#">3</a>
+                <a href="#">...</a>
+                <a href="#">7</a>
+                <a href="#">8</a>
+                <a href="#">&raquo;</a>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

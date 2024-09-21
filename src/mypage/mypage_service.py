@@ -1,4 +1,3 @@
-
 from supabase import Client
 from fastapi import HTTPException, Response, Request
 from fastapi.responses import RedirectResponse
@@ -42,8 +41,8 @@ def past_info(client: Client, request:Request):
         user = request.cookies.get("user")
         user_info = client.auth.get_user(user)
         user_id = user_info.user.id
-        past_info = client.table("info").select("*").eq("user_id", user_id).execute()
-        return past_info.data
+        past_test = client.table("info").select("*").eq("user_id", user_id).execute()
+        return past_test.data
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 

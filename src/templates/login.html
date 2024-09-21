@@ -2,62 +2,130 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="../static/vars/vars.css">
-  <link rel="stylesheet" href="../static/styles/styles.css">
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>IPS Rule Advisor</title>
+  <title>로그인 - S-aide</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="../static/assets/img/favicon.png" rel="icon">
+  <link href="../static/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link
+    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+    rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="../static/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../static/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="../static/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="../static/assets/vendor/quill/quill.snow.css" rel="stylesheet">
+  <link href="../static/assets/vendor/quill/quill.bubble.css" rel="stylesheet">
+  <link href="../static/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="../static/assets/vendor/simple-datatables/style.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="../static/assets/css/style.css" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: NiceAdmin
+  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
+  * Updated: Apr 20 2024 with Bootstrap v5.3.3
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
 </head>
 
 <body>
-  <div class="layout-wrapper">
-    <header class="header">
-      <div class="header-logo">
-        <button class="logo" onclick="window.location.href='/';">
-          <img class="hdd-fill" src="../static/vectors/logo-hdd-fill0.svg" alt="hdd-icon"/>
-          <img class="shield-plus" src="../static/vectors/logo-shield-plus0.svg" alt="shield-icon"/>
-        </button>
-      </div>
-    </header>
-    <div class="content__login-form">
-      <div class="content-title">로그인</div>
-      <div class="form-input">
-        <label class="label-input" for="email">이메일 주소</label>
-        <input class="input-text" id="email" type="text" placeholder="example@email.com">
-        <div class="text-description--error" id="emailError" style="display: none; color: red;">유효하지 않은 이메일 형식입니다.</div>
-      </div>
-      <div class="form-input">
-        <label class="label-input" for="password">비밀번호</label>
-        <input class="input-text" id="password" type="password" placeholder="특수문자, 숫자, 영문 대소문자 구별, 최소 8글자 이상">
-        <div class="text-description--error" id="passwordError" style="display: none; color: red;">비밀번호는 최소 8자 이상이며, 영문
-          대/소문자, 숫자, 특수문자를 포함해야 합니다.</div>
-      </div>
-      <div class="form-row-01">
-        <div class="checkbox-field">
-          <input class="input-checkbox" id="remember_me" type="checkbox">
-          <label class="label-checkbox" for="remember_me">자동 로그인</label>
-        </div>
-        <a href="#" class="text-link">비밀번호를 잊으셨나요?</a>
-      </div>
-      <button class="button-login text-button--primary" onclick="validateAndLogin()">로그인</button>
-      <button class="button-register text-button--neutral" onclick="window.location.href='/register';">회원가입</button>
-      <div class="form-row-02">
-        <div class="line-separate"></div>
-        <div class="text-seperate">또는</div>
-        <div class="line-separate"></div>
-      </div>
-      <button class="button-login--google">
-        <label class="label-login--google" for="">
-          <div class="logo-google">
-            <img class="logo-googleg-48-dp" src="/static/vectors/icon-googleg-48-dp0.svg" />
+
+  <main>
+    <div class="container">
+
+      <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+
+              <div class="d-flex justify-content-center py-4">
+                <a href="/" class="logo d-flex align-items-center w-auto">
+                  <img src="../static/assets/img/logo.png" alt="">
+                  <span class="d-none d-lg-block">S-aide</span>
+                </a>
+              </div><!-- End Logo -->
+
+              <div class="card mb-3">
+
+                <div class="card-body">
+
+                  <div class="pt-4 pb-2">
+                    <h5 class="card-title text-center pb-0 fs-4">로그인</h5>
+                    <p class="text-center small">로그인하려면 이메일 주소와 비밀번호를 입력하세요</p>
+                  </div>
+
+                  <form class="row g-3 needs-validation" novalidate>
+
+                    <div class="col-12">
+                      <label for="email" class="form-label">E-mail</label>
+                      <input type="email" name="email" class="form-control" id="email" required>
+                      <div class="invalid-feedback" id="emailError">이메일 주소를 입력해주세요.</div>
+                    </div>
+
+                    <div class="col-12">
+                      <label for="password" class="form-label">비밀번호</label>
+                      <input type="password" name="password" class="form-control" id="password" required>
+                      <div class="invalid-feedback" id="passwordError">비밀번호를 입력해주세요.</div>
+                    </div>
+
+                    <div class="col-12">
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="remember" value="true" id="rememberMe">
+                        <label class="form-check-label" for="rememberMe">자동 로그인</label>
+                      </div>
+                    </div>
+                    <div class="col-12">
+                      <button class="btn btn-primary w-100" onclick="validateAndLogin()">로그인</button>
+                    </div>
+                    <div class="col-12">
+                      <button class="btn btn-light w-100" onclick="window.location.href='/auth/sign_in_google';">
+                        <i class="bx bxl-google"></i>
+                        구글 로그인</button>
+                    </div>
+                    <div class="col-12">
+                      <p class="small mb-0">계정이 없으신가요? <a href="/register">회원가입</a></p>
+                    </div>
+                  </form>
+
+                </div>
+              </div>
+
+            </div>
           </div>
-          <div class="text-button--google" onclick="window.location.href='/auth/sign_in_google';">구글 로그인</div>
-        </label>
-      </button>
+        </div>
+
+      </section>
+
     </div>
-  </div>
+  </main><!-- End #main -->
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="../static/assets/vendor/apexcharts/apexcharts.min.js"></script>
+  <script src="../static/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../static/assets/vendor/chart.js/chart.umd.js"></script>
+  <script src="../static/assets/vendor/echarts/echarts.min.js"></script>
+  <script src="../static/assets/vendor/quill/quill.js"></script>
+  <script src="../static/assets/vendor/simple-datatables/simple-datatables.js"></script>
+  <script src="../static/assets/vendor/tinymce/tinymce.min.js"></script>
+  <script src="../static/assets/vendor/php-email-form/validate.js"></script>
+
+  <!-- Template Main JS File -->
+  <script src="../static/assets/js/main.js"></script>
 
   <script>
     function validateEmail(email) {
@@ -114,6 +182,7 @@
       }
     }
   </script>
+
 </body>
 
 </html>

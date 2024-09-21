@@ -10,6 +10,7 @@ from src.ruletest.ruletest_router import router as ruletest_router
 from src.rule.rule import router as rule_router
 from src.finalreport.finalreport_routes import router as final_router
 from src.mypage.mypage_routes import router as mypage_router
+from src.settings.settings_routes import router as settings_router
 import uvicorn
 import asyncio
 from src.getinfo import rpatools
@@ -24,7 +25,7 @@ app = FastAPI()
 
 
 # Static files setup
-app.mount("/static", StaticFiles(directory="src/static"), name="static")
+app.mount("/static", StaticFiles(directory="./src/static"), name="static")
 
 # Include routers
 app.include_router(auth_router, prefix="/auth")
@@ -36,6 +37,7 @@ app.include_router(login_router)
 app.include_router(rule_router)
 app.include_router(final_router)
 app.include_router(mypage_router)
+app.include_router(settings_router)
 
 if __name__ == "__main__":
     uvicorn.run("src.main:app", host="127.0.0.1", port=8000, reload=True)

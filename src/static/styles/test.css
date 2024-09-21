@@ -1,0 +1,128 @@
+.comment-area {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-margin-margin-m, 1rem);
+    align-items: flex-start;
+    justify-content: flex-start;
+    align-self: stretch;
+    flex-shrink: 0;
+    position: relative;
+  }
+  
+  .comment-block {
+    display: flex;
+    flex-direction: row;
+    gap: var(--space-padding-padding-m, 0.75rem);
+    align-items: center;
+    justify-content: flex-start;
+    align-self: stretch;
+    flex-shrink: 0;
+    position: relative;
+  }
+  .avatar-img {
+    border-radius: var(--radius-full, 624.9375rem);
+    flex-shrink: 0;
+    width: var(--icon-large, 2.5rem);
+    height: var(--icon-large, 2.5rem);
+    position: relative;
+    overflow: hidden;
+  }
+  .img {
+    width: 2.5rem;
+    height: 2.5rem;
+    position: absolute;
+    left: calc(50% - 1.25rem);
+    top: calc(50% - 1.25rem);
+    object-fit: cover;
+  }
+  
+  .comment-block-right {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex: 1;
+    position: relative;
+  }
+  
+  .comment-info {
+    display: flex;
+    flex-direction: row;
+    gap: var(--space-margin-margin-s, 0.5rem);
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-shrink: 0;
+    position: relative;
+  }
+  
+  .text-comment-name {
+    color: var(--text-default-default, #1e1e1e);
+    text-align: left;
+    font-family: var(--body-strong-font-family, "Inter-SemiBold", sans-serif);
+    font-size: var(--body-strong-font-size, 1rem);
+    line-height: var(--body-strong-line-height, 140%);
+    font-weight: var(--body-strong-font-weight, 600);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+  
+  .text-comment-time {
+    color: var(--text-default-secondary, #757575);
+    text-align: left;
+    font-family: var(--body-base-font-family, "Inter-Regular", sans-serif);
+    font-size: var(--body-base-font-size, 1rem);
+    line-height: var(--body-base-line-height, 140%);
+    font-weight: var(--body-base-font-weight, 400);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+  
+  .text-comment-text {
+    color: var(--text-default-default, #1e1e1e);
+    text-align: left;
+    font-family: var(--body-base-font-family, "Inter-Regular", sans-serif);
+    font-size: var(--body-base-font-size, 1rem);
+    line-height: var(--body-base-line-height, 140%);
+    font-weight: var(--body-base-font-weight, 400);
+    position: relative;
+    align-self: stretch;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+  .textarea-field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-200, 0.5rem);
+    align-items: flex-start;
+    justify-content: flex-start;
+    align-self: stretch;
+    flex-shrink: 0;
+    position: relative;
+  }
+  
+  .textarea {
+    background: var(--background-default-default, #ffffff);
+    border-radius: var(--radius-200, 0.5rem);
+    border-style: solid;
+    border-color: var(--border-default-default, #d9d9d9);
+    border-width: 0.0625rem;
+    padding: var(--space-300, 0.75rem) var(--space-400, 1rem) var(--space-300, 0.75rem) var(--space-400, 1rem);
+    display: flex;
+    flex-direction: row;
+    gap: 0rem;
+    align-items: flex-start;
+    justify-content: flex-start;
+    align-self: stretch;
+    flex-shrink: 0;
+    min-width: 15rem;
+    min-height: 5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  
