@@ -112,8 +112,8 @@
           </div>
           <div class="table-row">
             <div class="table-grid">
-              <div class="table__cell text-cell" id="normal_packet"></div>
-              <div class="table__cell text-cell" id="attack_packet"></div>
+              <div class="table__cell text-cell" id="normal_packet"><a href="/rule/download?file_location={{ test_result.normalpacket }}">정상 패킷</a></div>
+              <div class="table__cell text-cell" id="attack_packet"><a href="/rule/download?file_location={{ test_result.attackpacket }}">공격 패킷</a></div>
             </div>
           </div>
         </div>
@@ -147,35 +147,6 @@
       </div>
     </div>
   </div>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      document.getElementById('rule-test-button').addEventListener('click', () => {
-        const cveId = "{{ test_result.cve }}";
-        const envi = "{{ test_result.envi }}";
-        const rule = "{{ test_result.rule }}";
-        if (cveId !== 'N/A') {
-          window.location.href = `/ruletest?cve=${encodeURIComponent(cveId)}&envi=${encodeURIComponent(envi)}&rule=${encodeURIComponent(rule)}`;
-        } else {
-          alert('CVE ID를 로드할 수 없습니다.');
-        }
-      });
-
-      {const ncontainer = document.getElementById("normal_packet");
-      const downloadLink = document.createElement('a');
-      const normal = "{{test_result.normalpacket}}";
-      downloadLink.href = `/rule/download?file_location=${normal}`;
-      downloadLink.innerText = "정상 패킷 다운로드";
-      ncontainer.appendChild(downloadLink);}
-
-      {const acontainer = document.getElementById("attack_packet");
-      const downloadLink = document.createElement('a');
-      const attack = "{{test_result.attackpacket}}";
-      downloadLink.href = `/rule/download?file_location=${attack}`;
-      downloadLink.innerText = "공격 패킷 다운로드";
-      acontainer.appendChild(downloadLink);
-      }
-    });
-  </script>
 </body>
 
 </html>
