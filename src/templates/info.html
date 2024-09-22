@@ -34,6 +34,7 @@
     <!-- Custom CSS File-->
     <link rel="stylesheet" href="../static/styles/chatbot.css">
     <link rel="stylesheet" href="../static/styles/test.css">
+    <link rel="stylesheet" href="../static/styles/info.css">
 
     <!-- =======================================================
   * Template Name: NiceAdmin
@@ -63,7 +64,11 @@
 
    <main id="main" class="main">
     <section class="section">
+    
+    <!-- 저장 버튼 -->
+    <button id="save-btn" onclick="saveInfo()">저장</button>
 
+    <!-- 챗봇 토글 버튼 -->
     <button id="toggle-chatbot-button">AI 채팅</button>
 
     <!-- chat bot -->
@@ -482,20 +487,20 @@
                                                         <tbody>
                                                             {% if info.nvd.참고자료 %}
                                                             {% for ref in info.nvd.참고자료 %}
-                                                            <tr>
+                                                            <tr class="reference-row">
                                                                 <th scope="row">{{ loop.index }}</th>
-                                                                <td><a href="{{ ref.url }}">{{ ref.url | default('정보
-                                                                        없음') }}</a>
-                                                                </td>
-                                                                <td id="reftag">
+                                                                <td><a href="{{ ref.url }}" class="reference-url">{{ ref.url | default('정보 없음') }}</a></td>
+                                                                <td class="reference-type">
                                                                     {{ ref.tags | join(', ') | default('정보 없음') }}
                                                                 </td>
                                                             </tr>
                                                             {% endfor %}
                                                             {% else %}
-                                                            <p>정보 없음</p>
+                                                            <tr>
+                                                                <td colspan="3">정보 없음</td>
+                                                            </tr>
                                                             {% endif %}
-                                                        </tbody>
+                                                        </tbody>                                                        
                                                     </table>
 
                                                 </div>
@@ -533,6 +538,10 @@
 
 <!-- chatbot 전용 JS -->
 <script src="../static/scripts/chatbot.js"></script>
+
+<!-- info.html 전용 JS -->
+<script src="../static/scripts/info.js"></script>
+
 
 </body>
 </html>
