@@ -55,7 +55,7 @@
         {% for result in search_results %}
         <div class="result-item">
           <strong>
-            <a href="https://www.cve.org/CVERecord?id={{ result.cve_code }}" target="_blank">코드: {{ result.cve_code }}</a></strong>
+            <a href="/getinfo?cve_code={{ result.cve_code }}" target="_blank">코드: {{ result.cve_code }}</a></strong>
           <br>설명: {{ result.description }}<br><br>
         </div>
         {% endfor %}
