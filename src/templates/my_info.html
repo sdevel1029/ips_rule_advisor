@@ -115,11 +115,11 @@
                             <div class="table__cell text-cell">CVE 코드</div>
                         </div>
                     </div>
-                    {% for record in test_cve %}
+                    {% for record in info_cve %}
                     <div class="table-row">
                         <div class="table-grid">
                             <div class="table__cell text-cell" id="test-environment">{{ record[0] if record[0] is not none else '정보 없음' }}</div>
-                            <div class="table__cell text-cell" id="total-packets"><a href="/ruletest/result?testid={{ record[3] }}">{{ record[1] if record[1] is not none else '정보 없음' }}</a></div>
+                            <div class="table__cell text-cell" id="total-packets"><a href="/finalreport?cve_code={{ record[1] }}">{{ record[1] if record[1] is not none else '정보 없음' }}</a></div>
                         </div>
                     </div>
                     {% endfor %}
