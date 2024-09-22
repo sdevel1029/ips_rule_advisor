@@ -56,20 +56,6 @@
             <i class="bi bi-list toggle-sidebar-btn"></i>
         </div><!-- End Logo -->
 
-        <nav class="header-nav ms-auto">
-            <ul class="d-flex align-items-center">
-
-                <li class="nav-item dropdown pe-3">
-
-                    <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-                        <img src="../static/assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-                        <span class="d-none d-md-block ps-2">K. Anderson</span>
-                    </a><!-- End Profile Iamge Icon -->
-                </li><!-- End Profile Nav -->
-
-            </ul>
-        </nav><!-- End Icons Navigation -->
-
     </header><!-- End Header -->
 
    <!-- 사이드바 임포트 -->
@@ -77,11 +63,13 @@
 
    <main id="main" class="main">
     <section class="section">
-        
+
+    <button id="toggle-chatbot-button">AI 채팅</button>
+
     <!-- chat bot -->
     <div class="chatbot-containerM">
         <div class="chatbot-headerM">
-          <h2>챗봇</h2>
+          <h2>AI Advisor</h2>
         </div>
         <div class="chatbot-messagesM" id="chatbot-messagesM">
           <!-- 채팅 표시 공간 -->
@@ -89,14 +77,14 @@
         <div class="chatbot-inputM">
           <input type="text" id="user-inputM" placeholder="메세지를 입력하세요..." />
           <button id="send-buttonM">
-            전송
+            <img src="../static/vectors/icon-send.svg" alt="Send Icon" />
           </button>
         </div>
         <div class="typing-indicatorM" id="typing-indicatorM">
           Chatbot is typing...
         </div>
     </div>
-       <!-- chat bot -->
+    <!-- chat bot -->
   
    
             <div class="row">
@@ -413,38 +401,7 @@
 
                         </div>
                     </div>
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">관련 룰 테스트 결과 목록 (임시)</h5>
-                            <div class="list-group">
-                                <a href="#" class="list-group-item list-group-item-action">
-                                    <!-- class="active" aria-current="true" -->
-                                    <div class="d-flex w-100 justify-content-between">
-                                        <h5 class="mb-1">정탐률 8n% 오탐률 n%</h5>
-                                        <small>2024.09.15</small>
-                                    </div>
-                                    <p class="mb-1">지연시간 ~5ms, 메모리 점유율 ~400MB</p>
-                                    <small>8개의 Snort 2.9x 룰셋 적용.</small>
-                                </a>
-                                <a href="#" class="list-group-item list-group-item-action">
-                                    <div class="d-flex w-100 justify-content-between">
-                                        <h5 class="mb-1">정탐률 7n% 오탐률 1n%</h5>
-                                        <small class="text-muted">2024.09.12</small>
-                                    </div>
-                                    <p class="mb-1">지연시간 ~15ms, 메모리 점유율 ~600MB</p>
-                                    <small class="text-muted">15개의 Snort 2.9x 룰셋 적용.</small>
-                                </a>
-                                <a href="#" class="list-group-item list-group-item-action">
-                                    <div class="d-flex w-100 justify-content-between">
-                                        <h5 class="mb-1">정탐률 6n% 오탐률 2n%</h5>
-                                        <small class="text-muted">2024.09.11</small>
-                                    </div>
-                                    <p class="mb-1">지연시간 ~25ms, 메모리 점유율 ~300MB</p>
-                                    <small class="text-muted">5개의 Snort 2.9x 룰셋 적용.</small>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
+                    
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="card">

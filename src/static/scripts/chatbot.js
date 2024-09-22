@@ -85,6 +85,28 @@ function addGptMessage(message) {
       console.error('Error:', error);
       addGptMessage('chatGPT와 연결이 되지 않았습니다.');
     }
+  });
+});
 
+document.addEventListener('DOMContentLoaded', function () {
+  const toggleChatbotButton = document.getElementById('toggle-chatbot-button');
+  const chatbotContainer = document.querySelector('.chatbot-containerM');
+  
+  console.log(toggleChatbotButton); // null인지 확인
+  console.log(chatbotContainer); // null인지 확인
+  
+  if (!toggleChatbotButton || !chatbotContainer) {
+      console.error('챗봇 토글 버튼 또는 챗봇 컨테이너 요소를 찾을 수 없습니다.');
+      return;
+  }
+
+  chatbotContainer.style.display = 'none';
+
+  toggleChatbotButton.addEventListener('click', function () {
+      if (chatbotContainer.style.display === 'none' || chatbotContainer.style.display === '') {
+          chatbotContainer.style.display = 'flex';
+      } else {
+          chatbotContainer.style.display = 'none';
+      }
   });
 });
