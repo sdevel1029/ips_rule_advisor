@@ -5,6 +5,7 @@ from src.mypage.mypage_service import *
 from src.database.supabase_client import get_supabase_client
 from src.auth.auth_service import profile
 from src.database.info_save import *
+from datetime import datetime
 
 router = APIRouter()
 
@@ -63,20 +64,37 @@ async def home(request: Request):
     test_cve = []
     for i in response_test.data:
         tmp_list = []
-        tmp_list.append(i["created_at"])
+        dt = datetime.fromisoformat(i["created_at"])
+        date_only = dt.date()
+        tmp_list.append(date_only)
         tmp_list.append(i["cve"])
         tmp_list.append(i["rule"])
         tmp_list.append(i["id"])
         test_cve.append(tmp_list)
     test_cve.reverse() # 뒤집어서 최신순으로 만들어주기
 
-    return templates.TemplateResponse("my_info.html", {"request": request, "info_cve": info_cve, "test_cve": test_cve})
+    finalreport_test = supabase.table("final_report").select("*").eq("user_id", user_id).execute()
+    final = []
+    for i in finalreport_test.data:
+        tmp_list = []
+        dt = datetime.fromisoformat(i["created_at"])
+        date_only = dt.date()
+        tmp_list.append(date_only)
+        tmp_list.append(i["cve"])
+        final.append(tmp_list)
+    final.reverse() # 뒤집어서 최신순으로 만들어주기
+
+    return templates.TemplateResponse("my_info.html", {"request": request, "info_cve": info_cve, "test_cve": test_cve, "final": final})
 
 
 
 @router.get("/gptkey", response_class=HTMLResponse)
 async def gpt_key(request: Request):
     return templates.TemplateResponse("chage_gptkey.html", {"request": request})
+
+@router.get("/myaccount", response_class=HTMLResponse)
+async def gpt_key(request: Request):
+    return templates.TemplateResponse("my_payment.html", {"request": request})
 
 @router.get("/pastresult", response_class=HTMLResponse)
 async def past(request: Request,client=Depends(get_supabase_client)):
