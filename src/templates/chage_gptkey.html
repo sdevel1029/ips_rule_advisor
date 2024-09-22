@@ -1,51 +1,105 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>설정</title>
-    <link rel="stylesheet" href="../../static/styles/styles.css">
+    <link rel="stylesheet" href="../static/vars/vars.css">
+    <link rel="stylesheet" href="../static/styles/styles.css">
+    <title>IPS Rule Advisor</title>
+    <style>
+        .accordion {
+            cursor: pointer;
+            padding: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            background-color: #f1f1f1;
+            text-align: left;
+            outline: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .accordion.active {
+            background-color: #ddd;
+        }
+
+        .panel {
+            padding: 0 18px;
+            display: none;
+            background-color: white;
+            overflow: hidden;
+        }
+
+        .panel.show {
+            display: block;
+        }
+    </style>
 </head>
 <body>
-<div class="settings-container">
-    <h2>설정</h2>
-    <form id="apiKeyForm">
-        <div class="input-group">
-            <label for="apikey">ChatGPT API Key 입력</label>
-            <input type="text" id="apikey" name="apikey" placeholder="ChatGPT API Key 여기" required>
+    <div class="layout-wrapper">
+        <header class="header">
+            <div class="header-logo">
+                <div class="logo">
+                <img class="hdd-fill" src="../static/vectors/logo-hdd-fill0.svg" />
+                <img class="shield-plus" src="../static/vectors/logo-shield-plus0.svg" />
+                </div>
+            </div>
+            <div class="header-nav">
+                <a class="nav-item item-text" href="/">정보수집</a>
+                <a class="nav-item--active item-text" href="/ruletest">룰 테스트</a>
+                <a class="nav-item item-text" href="/mypage">마이페이지</a>
+            </div>
+            <div class="header-auth">
+                <div class="auth-profile">
+                    <div class="avatar-img">
+                        <img class="shape" src="../static/images/avatar-0.png" />
+                    </div>
+                    <div class="profile-name">
+                        <div class="text-name">YSD 님</div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="settings-container">
+            <h2>설정</h2>
+            <form id="apiKeyForm">
+                <div class="input-group">
+                    <label for="apikey">ChatGPT API Key 입력</label>
+                    <input type="text" id="apikey" name="apikey" placeholder="ChatGPT API Key 여기" required>
+                </div>
+                <div class="button-group">
+                    <button type="submit" class="button-primary text-button--primary">확인</button>
+                  </div>
+            </form>
         </div>
-        <div class="button-group">
-            <button type="submit" class="button-primary text-button--primary">확인</button>
-          </div>
-    </form>
-</div>
 
-<script>
-document.getElementById('apiKeyForm').addEventListener('submit', function(event) {
-    event.preventDefault(); // Prevent the default form submission
-
-    // Get the API key value from the input field
-    const apiKey = document.getElementById('apikey').value;
-    
-
-    // Send the API key to the server using fetch
-    fetch('/gptkey/change', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({key:apiKey})
-    })
-    .then(response => response.json())
-    .then(data => {
-        alert("성공")
-        window.location.href = "/mypage"
-        // Optionally, you can display a message or redirect the user here
-    })
-    .catch((error) => {
-        alert("실패")
-    });
-});
-</script>
-</body>
-</html>
+    </body>
+    <script>
+        document.getElementById('apiKeyForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the default form submission
+        
+            // Get the API key value from the input field
+            const apiKey = document.getElementById('apikey').value;
+            
+        
+            // Send the API key to the server using fetch
+            fetch('/gptkey/change', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({key:apiKey})
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert("성공")
+                window.location.href = "/mypage"
+                // Optionally, you can display a message or redirect the user here
+            })
+            .catch((error) => {
+                alert("실패")
+            });
+        });
+        </script>
+    </html>
