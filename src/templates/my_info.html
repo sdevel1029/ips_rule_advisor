@@ -94,14 +94,16 @@
                             <div class="table__cell text-cell">날짜</div>
                             <div class="table__cell text-cell">CVE 코드</div>
                             <div class="table__cell text-cell">rule</div>
+                            <div class="table__cell text-cell">setting</div>
                         </div>
                     </div>
                     {% for record in test_cve %}
                     <div class="table-row">
                         <div class="table-grid">
                             <div class="table__cell text-cell" id="test-environment">{{ record[0] if record[0] is not none else '정보 없음' }}</div>
-                            <div class="table__cell text-cell" id="total-packets"><a href="/ruletest/result?testid={{ record[3] }}">{{ record[1] if record[1] is not none else '정보 없음' }}</a></div>
+                            <div class="table__cell text-cell" id="total-packets"><a href="/ruleshow?testid={{ record[3] }}">{{ record[1] if record[1] is not none else '정보 없음' }}</a></div>
                             <div class="table__cell text-cell" id="total-packets">{{ record[2] if record[2] is not none else '정보 없음' }}</div>
+                            <div class="table__cell text-cell" id="total-packets">{{ record[4] if record[4] is not none else '정보 없음' }}</div>
                         </div>
                     </div>
                     {% endfor %}
@@ -115,7 +117,7 @@
                             <div class="table__cell text-cell">CVE 코드</div>
                         </div>
                     </div>
-                    {% for record in info_cve %}
+                    {% for record in final %}
                     <div class="table-row">
                         <div class="table-grid">
                             <div class="table__cell text-cell" id="test-environment">{{ record[0] if record[0] is not none else '정보 없음' }}</div>
@@ -128,8 +130,8 @@
             </div>
             <div class="form-input"></div>
                 <h2>기타</h2>
-                <h4>계정 관리</h4>
-                <h4>결제 관리</h4>
+                <h4><a href="/gptkey">gptkey 입력</a></h4>
+                <h4><a href="/myaccount">결제 관리</a></h4>
                 <h4>설정</h4>
             </div>
         </form>
