@@ -60,7 +60,7 @@ async def home(request: Request):
     info_cve.reverse() # 뒤집어서 최신순으로 만들어주기
 
     # 테스트 기록을 "test_cve"에 넣기. 날짜, cve, rule 만
-    response_test = supabase.table("test_all").select("created_at, cve, rule, id").eq("user_id", user_id).execute()
+    response_test = supabase.table("test_result").select("created_at, cve, rule, id, setting").eq("user_id", user_id).execute()
     test_cve = []
     for i in response_test.data:
         tmp_list = []
@@ -70,6 +70,7 @@ async def home(request: Request):
         tmp_list.append(i["cve"])
         tmp_list.append(i["rule"])
         tmp_list.append(i["id"])
+        tmp_list.append(i["setting"])
         test_cve.append(tmp_list)
     test_cve.reverse() # 뒤집어서 최신순으로 만들어주기
 
@@ -109,6 +110,7 @@ async def past(request: Request,client=Depends(get_supabase_client)):
 @router.get("/ruleshow", response_class=HTMLResponse)
 async def past(request: Request,testid,client=Depends(get_supabase_client)):
     test_result = client.table("test_result").select("*").eq("id", testid).execute()
+    print(test_result.data[0])
     return templates.TemplateResponse("my_ruletest_show.html", {"test_result": test_result.data[0],"request": request})
 
 @router.get("/info", response_class=HTMLResponse)
@@ -135,3 +137,4 @@ async def gpt_card(request: Request,client=Depends(get_supabase_client)):
     key =data.get("card")
     chage_card(client=client,request=request,key=key)
     return "success"
+
