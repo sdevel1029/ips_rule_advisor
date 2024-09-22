@@ -1,0 +1,14 @@
+/* 저장 버튼 스타일 */
+#save-btn {
+    position: fixed; /* 페이지의 특정 위치에 고정 */
+    bottom: 20px; /* 화면 하단에 고정 */
+    left: 320px; /* 화면 좌측에 고정 */
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 20px;
+    cursor: pointer;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1100; 
+  }
