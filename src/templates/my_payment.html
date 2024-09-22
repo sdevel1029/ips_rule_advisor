@@ -14,9 +14,9 @@
             <label for="card-details">카드번호 입력</label>
             <input type="text" id="card-details" name="card-details" placeholder="1234-xxxx-xxxx-1234">
         </div>
-        <div class="input-group">
-            <button type="submit">확인</button>
-        </div>
+        <div class="button-group">
+            <button type="submit" class="button-primary text-button--primary">확인</button>
+          </div>
     </form>
 </div>
 </body>
@@ -39,7 +39,7 @@
         .then(response => response.json())
         .then(data => {
             alert("성공")
-            window.location.href = "/ruleresult"
+            window.location.href = "/mypage"
             // Optionally, you can display a message or redirect the user here
         })
         .catch((error) => {
@@ -48,4 +48,5 @@
     });
     </script>
 </html>
+
 
