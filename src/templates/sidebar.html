@@ -11,11 +11,11 @@
     
             {% if request.cookies.get('user') %}
             <li class="nav-item">
-                <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
-                    <i class="bi bi-menu-button-wide"></i><span>정보 수집 검색 기록</span><i
+                <a class="nav-link collapsed" data-bs-target="#info-collection-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-menu-button-wide"></i><span>정보 수집 목록</span><i
                         class="bi bi-chevron-down ms-auto"></i>
                 </a>
-                <ul id="components-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                <ul id="info-collection-nav" class="nav-content collapse" data-bs-parent="#info-collection-parent">
                     <li>
                         <a href="#">
                             <i class="bi bi-circle"></i><span>CVE-2024-5045</span>
@@ -36,6 +36,27 @@
                     <span>룰 테스트</span>
                 </a>
             </li><!-- End 룰 테스트 Nav -->
+
+            {% if request.cookies.get('user') %}
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#rule-test-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-menu-button-wide"></i><span>룰 테스트 목록</span><i
+                        class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="rule-test-nav" class="nav-content collapse" data-bs-parent="#rule-test-parent">
+                    <li>
+                        <a href="#">
+                            <i class="bi bi-circle"></i><span>CVE-2024-5045</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="bi bi-circle"></i><span>CVE-2024-5042</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            {% endif %}
     
             <li class="nav-heading">내 정보</li>
     
