@@ -62,7 +62,7 @@
     
             {% if request.cookies.get('user') %}
                 <li class="nav-item">
-                    <a class="nav-link collapsed" href="/settings">
+                    <a class="nav-link" href="/settings">
                         <i class="bi bi-gear"></i>
                         <span>설정</span>
                     </a>
@@ -87,7 +87,7 @@
     
             {% if request.cookies.get('user') %}
             <li class="nav-item">
-                <a class="nav-link collapsed" id="logout-button">
+                <a class="nav-link" id="logout-button">
                     <i class="bi bi-box-arrow-left"></i>
                     <span>로그아웃</span>
                 </a>
