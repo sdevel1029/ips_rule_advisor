@@ -326,3 +326,14 @@ window.onload = function () {
           window.location.href = '/auth/callback?' + fragment;
       }
   };
+
+document.addEventListener("DOMContentLoaded", function () {
+  const currentUrl = window.location.pathname;  // 현재 페이지의 URL 경로
+  const navLinks = document.querySelectorAll(".sidebar-nav .nav-link");  // 모든 네비게이션 링크 선택
+
+  navLinks.forEach(link => {
+      if (link.getAttribute("href") === currentUrl) {
+          link.classList.add("active");  // 현재 페이지의 URL과 일치하는 링크에 'active' 클래스 추가
+      }
+  });
+});
