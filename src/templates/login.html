@@ -87,7 +87,7 @@
                       </div>
                     </div>
                     <div class="col-12">
-                      <button class="btn btn-primary w-100" onclick="validateAndLogin()">로그인</button>
+                      <button class="btn btn-primary w-100" onclick="validateAndLogin(event)">로그인</button>
                     </div>
                     <div class="col-12">
                       <button class="btn btn-light w-100" onclick="window.location.href='/auth/sign_in_google';">
@@ -138,7 +138,10 @@
       return passwordPattern.test(password);
     }
 
-    async function validateAndLogin() {
+    async function validateAndLogin(event) {
+      // 기본 폼 제출 동작 방지
+      event.preventDefault();
+
       const email = document.getElementById("email").value;
       const password = document.getElementById("password").value;
       const emailError = document.getElementById("emailError");
@@ -175,7 +178,7 @@
           alert("로그인 실패: " + (errorData.message || "알 수 없는 오류"));
           window.location.href = "/login";
         } else {
-          window.location.href = "/";
+          window.location.href = "/";  // 로그인 성공 시 메인 페이지로 이동
         }
       } catch (error) {
         alert("서버와의 통신 중 문제가 발생했습니다. 다시 시도해주세요.");
