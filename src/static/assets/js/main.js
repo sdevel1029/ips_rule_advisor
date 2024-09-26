@@ -345,9 +345,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     const response = await fetch('/past_info');
     if (response.ok) {
         const data = await response.json();
+
+        // 정보 수집 목록 데이터
         const pastCveList = data.past_cve_list;
         const listContainer = document.getElementById('past-cve-list');
 
+        // 테스트 결과 목록 데이터 
+        const pastTestList = data.past_test_list;
+        const listContainer2 = document.getElementById('past-test-list');
+
+        // 정보 수집 목록 표시
         pastCveList.forEach(cve => {
             const listItem = document.createElement('li');
             listItem.innerHTML = `<a href="/getinfo?cve_code=${cve.cve}">
@@ -356,12 +363,21 @@ document.addEventListener("DOMContentLoaded", async () => {
             listContainer.appendChild(listItem);
         });
 
-         // CustomEvent로 데이터 전송
-        document.dispatchEvent(new CustomEvent('pastCveListLoaded', { detail: pastCveList }));
+        // 테스트 결과 목록 표시
+        pastTestList.forEach(test => {
+          const listItem = document.createElement('li');
+          listItem.innerHTML = `<a href="/getinfo?test_code=${test.cve}">
+                                <i class="bi bi-circle"></i><span>${test.cve}</span>
+                              </a>`;
+          listContainer2.appendChild(listItem);
+        });
+
+        // CustomEvent로 정보 수집 목록과 테스트 결과 목록을 전송
+        document.dispatchEvent(new CustomEvent('pastCveListLoaded', { detail: { pastCveList, pastTestList } }));
     } else {
-        console.error("Failed to fetch past CVE list");
+        console.error("Failed to fetch past data");
     }
   } catch (error) {
-    console.error("Error fetching CVE list: ", error);
+    console.error("Error fetching data: ", error);
   }
 });
