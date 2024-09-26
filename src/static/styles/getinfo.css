@@ -1,0 +1,13 @@
+.spinner-container {
+    margin: 300px 0; /* 위아래 여백 추가 */
+}
+
+.spinner-border {
+    width: 3rem;  /* 스피너의 너비를 3rem으로 설정 */
+    height: 3rem; /* 스피너의 높이를 3rem으로 설정 */
+}
+
+.loading-message {
+    font-size: 1.5rem; /* 메시지 글자 크기를 1.5rem으로 설정 */
+    margin-top: 10px;  /* 메시지와 스피너 사이에 여백 추가 */
+}
