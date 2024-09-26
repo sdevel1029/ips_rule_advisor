@@ -355,6 +355,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                                 </a>`;
             listContainer.appendChild(listItem);
         });
+
+         // CustomEvent로 데이터 전송
+        document.dispatchEvent(new CustomEvent('pastCveListLoaded', { detail: pastCveList }));
     } else {
         console.error("Failed to fetch past CVE list");
     }
