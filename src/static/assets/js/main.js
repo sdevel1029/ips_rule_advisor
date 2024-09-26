@@ -318,6 +318,8 @@
 
 })();
 
+// 여기서부터 커스텀 스크립트 ================================================================================
+
 // 요청 url의 # 제거 스크립트
 window.onload = function () {
   var fragment = window.location.hash.substring(1); // '#' 제거
@@ -336,4 +338,27 @@ document.addEventListener("DOMContentLoaded", function () {
           link.classList.add("active");  // 현재 페이지의 URL과 일치하는 링크에 'active' 클래스 추가
       }
   });
+});
+
+document.addEventListener("DOMContentLoaded", async () => {
+  try {
+    const response = await fetch('/past_info');
+    if (response.ok) {
+        const data = await response.json();
+        const pastCveList = data.past_cve_list;
+        const listContainer = document.getElementById('past-cve-list');
+
+        pastCveList.forEach(cve => {
+            const listItem = document.createElement('li');
+            listItem.innerHTML = `<a href="/getinfo?cve_code=${cve.cve}">
+                                  <i class="bi bi-circle"></i><span>${cve.cve}</span>
+                                </a>`;
+            listContainer.appendChild(listItem);
+        });
+    } else {
+        console.error("Failed to fetch past CVE list");
+    }
+  } catch (error) {
+    console.error("Error fetching CVE list: ", error);
+  }
 });
