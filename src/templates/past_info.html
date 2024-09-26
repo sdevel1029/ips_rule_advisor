@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>S-aide - 최신 보안 정보 제공 사이트</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="../static/assets/img/favicon.png" rel="icon">
+    <link href="../static/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link
+        href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+        rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="../static/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../static/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="../static/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="../static/assets/vendor/quill/quill.snow.css" rel="stylesheet">
+    <link href="../static/assets/vendor/quill/quill.bubble.css" rel="stylesheet">
+    <link href="../static/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+    <link href="../static/assets/vendor/simple-datatables/style.css" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="../static/assets/css/style.css" rel="stylesheet">
+
+    <!-- Custom CSS File-->
+    <link rel="stylesheet" href="../static/styles/chatbot.css">
+    <link rel="stylesheet" href="../static/styles/test.css">
+    <link rel="stylesheet" href="../static/styles/info.css">
+
+    <!-- =======================================================
+  * Template Name: NiceAdmin
+  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
+  * Updated: Apr 20 2024 with Bootstrap v5.3.3
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+
+<body>
+    <!-- ======= Header ======= -->
+    <header id="header" class="header fixed-top d-flex align-items-center">
+
+        <div class="d-flex align-items-center justify-content-between">
+            <a href="/" class="logo d-flex align-items-center">
+                <img src="../static/assets/img/logo.png" alt="">
+                <span class="d-none d-lg-block">S-aide</span>
+            </a>
+            <i class="bi bi-list toggle-sidebar-btn"></i>
+        </div><!-- End Logo -->
+
+    </header><!-- End Header -->
+
+   <!-- 사이드바 임포트 -->
+   {% include 'sidebar.html' %}
+
+   <main id="main" class="main">
+    <section class="section">
+    
+    <!-- 저장 버튼 -->
+    <button id="save-btn" onclick="saveInfo()">저장</button>
+
+    <!-- 챗봇 토글 버튼 -->
+    <button id="toggle-chatbot-button">AI 채팅</button>
+
+    <!-- chat bot -->
+    <div class="chatbot-containerM">
+        <div class="chatbot-headerM">
+          <h2>AI Advisor</h2>
+        </div>
+        <div class="chatbot-messagesM" id="chatbot-messagesM">
+          <!-- 채팅 표시 공간 -->
+        </div>
+        <div class="chatbot-inputM">
+          <input type="text" id="user-inputM" placeholder="메세지를 입력하세요..." />
+          <button id="send-buttonM">
+            <img src="../static/vectors/icon-send.svg" alt="Send Icon" />
+          </button>
+        </div>
+        <div class="typing-indicatorM" id="typing-indicatorM">
+          Chatbot is typing...
+        </div>
+    </div>
+    <!-- chat bot -->
+  
+   
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title" id="cve-id">{{info.cve}}</h5>
+                                    <div id="dates">
+                                        게시일 : <span id="posting-date">{{info.cve_posting_date}}</span> |
+                                        최종 수정일 : <span id="last-modified-date">{{info.last_modified_date}}</span>
+                                    </div>
+                                    <p id="vuln-type" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                        data-bs-original-title="{{ type_description | default('정보없음') }}">
+                                        취약점 유형 : {{info.vuln_type}}</p>
+                                    <p id="description">{{info.description}}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">CVSS</h5>
+                                    <p id="metrics">메트릭 : {{info.metric}}</p>
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">기본 점수</th>
+                                                <th scope="col">악용 가능성 점수</th>
+                                                <th scope="col">영향 점수</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td id="score">{{info.score}}</td>
+                                                <td id="exploit_score">{{info.exploit_score}}</td>
+                                                <td id="influence_score">{{info.influence_score}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <h5>매트릭 요약</h5>
+                                    <p id="metrics_summary">{{info.metrics_summary}}</p>
+
+                                    <!-- Accordion without outline borders -->
+                                    <div class="accordion accordion-flush" id="accordion_metrics">
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="flush-heading_exploitability">
+                                                <button class="accordion-button collapsed" type="button"
+                                                    data-bs-toggle="collapse"
+                                                    data-bs-target="#flush-exploitability_metrics" aria-expanded="false"
+                                                    aria-controls="flush-exploitability_metrics">
+                                                    악용 가능성 매트릭
+                                                </button>
+                                            </h2>
+                                            <div id="flush-exploitability_metrics" class="accordion-collapse collapse"
+                                                aria-labelledby="flush-heading_exploitability"
+                                                data-bs-parent="#accordion_metrics">
+                                                <div class="accordion-body">
+                                                    <table class="table">
+                                                        <tbody data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                                            data-bs-original-title="이 취약점은  {{ info.nvd.메트릭세부.공격벡터 | default('정보 없음') }}를 통해 원격으로 악용될 수 있습니다.">
+                                                            <tr>
+                                                                <th scope="row">Attack Vector (AV)</th>
+                                                                <td
+                                                                    class="{% if info.nvd.메트릭세부.공격벡터 == 'NETWORK' %}table-active{% endif %}">
+                                                                    Network (AV:N)</td>
+                                                                <td
+                                                                    class="{% if info.nvd.메트릭세부.공격벡터 == 'ADJACENT NETWORK' %}table-active{% endif %}">
+                                                                    Adjacent Network (AV:A)</td>
+                                                                <td
+                                                                    class="{% if info.nvd.메트릭세부.공격벡터 == 'LOCAL' %}table-active{% endif %}">
+                                                                    Local (AV:L)</td>
+                                                                <td
+                                                                    class="{% if info.nvd.메트릭세부.공격벡터 == 'PHYSICAL' %}table-active{% endif %}">
+                                                                    Physical (AV:P)</td>
+                                                            </tr>
+                                                        </tbody>
+                                                        <tbody data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                                            data-bs-original-title="이 공격은 {{ info.nvd.메트릭세부.공격복잡성  | default('정보 없음') }}단계로 수행할 수 있습니다.">
+                                                            <tr>
+                                                                <th scope="row">Attack Complexity (AC)</th>
+                                                                <td
+                                                                    class="{% if info.nvd.메트릭세부.공격복잡성 == 'LOW' %}table-active{% endif %}">
+                                                                    Low (AC:L)</td>
+                                                                <td
+                                                                    class="{% if info.nvd.메트릭세부.공격복잡성 == 'HIGH' %}table-active{% endif %}">
+                                                                    High (AC:H)</td>
+                                                            </tr>
+                                                        </tbody>
+                                                        <tbody data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                                            data-bs-original-title="이 취약점을 악용하려면 {{ info.nvd.메트릭세부.필요한권한 | default('정보 없음') }}이(가) 필요합니다.">
+                                                            <tr>
+                                                                <th scope="row">Privileges Required (PR)</th>
+                                                                <td
+                                                                    class="{% if info.nvd.메트릭세부.필요한권한 == 'NONE' %}table-active{% endif %}">
+                                                                    None (PR:N)</td>
+                                                                <td
+                                                                    class="{% if info.nvd.메트릭세부.필요한권한 == 'LOW' %}table-active{% endif %}">
+                                                                    Low (PR:L)</td>
+                                                                <td
+                                                                    class="{% if info.nvd.메트릭세부.필요한권한 == 'HIGH' %}table-active{% endif %}">
+                                                                    High (PR:H)</td>
+                                                            </tr>
+                                                        </tbody>
+                                                        <tbody data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                                            data-bs-original-title="이 취약점은 {{ info.nvd.메트릭세부.사용자상호작용 | default('정보 없음') }}이(가) 필요합니다.">
+                                                            <tr>
+                                                                <th scope="row">User Interaction (UI)</th>
+                                                                <td
+                                                                    class="{% if info.nvd.메트릭세부.사용자상호작용 == 'NONE' %}table-active{% endif %}">
+                                                                    None (UI:N)</td>
+                                                                <td
+                                                                    class="{% if info.nvd.메트릭세부.사용자상호작용 == 'REQUIRED' %}table-active{% endif %}">
+                                                                    Required (UI:R)</td>
+                                                            </tr>
+                                                        </tbody>
+                                                        <tbody data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                                            data-bs-original-title="이 취약점은 {{ info.nvd.메트릭세부.범위  | default('정보 없음') }} 범위에서 악용될 수 있습니다.">
+                                                            <tr>
+                                                                <th scope="row">Scope (S)</th>
+                                                                <td
+                                                                    class="{% if info.nvd.메트릭세부.범위 == 'UNCHANGED' %}table-active{% endif %}">
+                                                                    Unchanged (S:U)</td>
+                                                                <td
+                                                                    class="{% if info.nvd.메트릭세부.범위 == 'CHANGED' %}table-active{% endif %}">
+                                                                    Changed (S:C)</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="flush-heading_impact">
+                                                <button class="accordion-button collapsed" type="button"
+                                                    data-bs-toggle="collapse" data-bs-target="#flush-impact_mectrics"
+                                                    aria-expanded="false" aria-controls="flush-impact_mectrics">
+                                                    영향 매트릭
+                                                </button>
+                                            </h2>
+                                            <div id="flush-impact_mectrics" class="accordion-collapse collapse"
+                                                aria-labelledby="flush-heading_impact"
+                                                data-bs-parent="#accordion_metrics">
+                                                <div class="accordion-body">
+                                                    <table class="table">
+                                                        <tbody data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                                            data-bs-original-title="이 취약점은 기밀성에 {{ info.nvd.메트릭세부.기밀성 | default('정보 없음') }} 영향을 미칩니다.">
+                                                            <tr>
+                                                                <th scope="row">Confidentiality Impact (C)</th>
+                                                                <td
+                                                                    class="{% if info.nvd.메트릭세부.기밀성 == 'NONE' %}table-active{% endif %}">
+                                                                    None (C:N)</td>
+                                                                <td
+                                                                    class="{% if info.nvd.메트릭세부.기밀성 == 'LOW' %}table-active{% endif %}">
+                                                                    Low (C:L)</td>
+                                                                <td
+                                                                    class="{% if info.nvd.메트릭세부.기밀성 == 'HIGH' %}table-active{% endif %}">
+                                                                    High (C:H)</td>
+                                                            </tr>
+                                                        </tbody>
+                                                        <tbody data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                                            data-bs-original-title="이 취약점은 무결성에 {{ info.nvd.메트릭세부.무결성 | default('정보 없음') }} 영향을 미칩니다.">
+                                                            <tr>
+                                                                <th scope="row">Integrity Impact (I)</th>
+                                                                <td
+                                                                    class="{% if info.nvd.메트릭세부.무결성 == 'NONE' %}table-active{% endif %}">
+                                                                    None (I:N)</td>
+                                                                <td
+                                                                    class="{% if info.nvd.메트릭세부.무결성 == 'LOW' %}table-active{% endif %}">
+                                                                    Low (I:L)</td>
+                                                                <td
+                                                                    class="{% if info.nvd.메트릭세부.무결성 == 'HIGH' %}table-active{% endif %}">
+                                                                    High (I:H)</td>
+                                                            </tr>
+                                                        </tbody>
+                                                        <tbody data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                                            data-bs-original-title="이 취약점은 가용성에 {{ info.nvd.메트릭세부.가용성| default('정보 없음') }} 영향을 미칩니다.">
+                                                            <tr>
+                                                                <th scope="row">Availability Impact (A)</th>
+                                                                <td
+                                                                    class="{% if info.nvd.메트릭세부.가용성 == 'NONE' %}table-active{% endif %}">
+                                                                    None (A:N)</td>
+                                                                <td
+                                                                    class="{% if info.nvd.메트릭세부.가용성 == 'LOW' %}table-active{% endif %}">
+                                                                    Low (A:L)</td>
+                                                                <td
+                                                                    class="{% if info.nvd.메트릭세부.가용성 == 'HIGH' %}table-active{% endif %}">
+                                                                    High (A:H)</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div><!-- End Accordion without outline borders -->
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">cpe</h5>
+                            <!-- Accordion without outline borders -->
+                            <div class="accordion accordion-flush" id="accordion_cpe">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="flush-heading_cpe">
+                                        <button class="accordion-button collapsed" type="button"
+                                            data-bs-toggle="collapse" data-bs-target="#flush-cpe_list"
+                                            aria-expanded="false" aria-controls="flush-cpe_list">
+                                            CPE 리스트
+                                        </button>
+                                    </h2>
+                                    <div id="flush-cpe_list" class="accordion-collapse collapse"
+                                        aria-labelledby="flush-heading_cpe" data-bs-parent="#accordion_cpe">
+                                        <div class="accordion-body">
+                                            <table class="table table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">#</th>
+                                                        <th scope="col">공급업체</th>
+                                                        <th scope="col">제품</th>
+                                                        <th scope="col">버전</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% if info.nvd.제품들 %}
+                                                    {% for cpe_list in info.nvd.제품들 %}
+                                                    {% for cpe in cpe_list %}
+                                                    <tr>
+                                                        <th scope="row">{{ loop.index }}</th>
+                                                        <td id="cpe-{{ loop.index }}">{{ cpe.CPE | default('정보 없음') }}
+                                                        </td>
+                                                        <td id="included-{{ loop.index }}">{{ cpe.포함 if cpe.포함 is not
+                                                            none else '-' }}</td>
+                                                        <td id="excluded-{{ loop.index }}">{{ cpe.비포함 if cpe.비포함 is not
+                                                            none else '-' }}</td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                    {% endfor %}
+                                                    {% else %}
+                                                    <p>정보가 없습니다.</p>
+                                                    {% endif %}
+                                                </tbody>
+                                            </table>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div><!-- End Accordion without outline borders -->
+
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">연관 IPS/IDS 룰</h5>
+
+                            <!-- Accordion without outline borders -->
+                            <div class="accordion accordion-flush" id="accordion_rules">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="flush-heading_snortRules">
+                                        <button class="accordion-button collapsed" type="button"
+                                            data-bs-toggle="collapse" data-bs-target="#flush-snortRules"
+                                            aria-expanded="false" aria-controls="flush-snortRules">
+                                            SNORT COMMUNITY RULE
+                                        </button>
+                                    </h2>
+                                    <div id="flush-snortRules" class="accordion-collapse collapse"
+                                        aria-labelledby="flush-heading_snortRules" data-bs-parent="#accordion_rules">
+                                        <div class="accordion-body">
+                                            <ul class="list-group">
+                                                {% if snort_community_rule %}
+                                                {% for rule in snort_community_rule %}
+                                                <li class="list-group-item">{{ rule }}</li>
+                                                {% endfor %}
+                                                {% else %}
+                                                <p>정보 없음</p>
+                                                {% endif %}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="flush-heading_emergingRule">
+                                        <button class="accordion-button collapsed" type="button"
+                                            data-bs-toggle="collapse" data-bs-target="#flush-emergingRule"
+                                            aria-expanded="false" aria-controls="flush-emergingRule">
+                                            EMERGING RULE
+                                        </button>
+                                    </h2>
+                                    <div id="flush-emergingRule" class="accordion-collapse collapse"
+                                        aria-labelledby="flush-heading_emergingRule" data-bs-parent="#accordion_rules">
+                                        <div class="accordion-body">
+                                            <ul class="list-group">
+                                                {% if emerging_rule %}
+                                                {% for rule in emerging_rule %}
+                                                <li class="list-group-item">{{ rule }}</li>
+                                                {% endfor %}
+                                                {% else %}
+                                                <p>정보 없음</p>
+                                                {% endif %}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div><!-- End Accordion without outline borders -->
+
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">POC (Proof of Concept)</h5>
+                                    <p>POC 총 링크 수 : {{ info.nvd.poc|length }}</p>
+                                    <!-- Accordion without outline borders -->
+                                    <div class="accordion accordion-flush" id="accordion_poc">
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="flush-heading_poc">
+                                                <button class="accordion-button collapsed" type="button"
+                                                    data-bs-toggle="collapse" data-bs-target="#flush-poc_list"
+                                                    aria-expanded="false" aria-controls="flush-poc_list">
+                                                    POC 링크 리스트
+                                                </button>
+                                            </h2>
+                                            <div id="flush-poc_list" class="accordion-collapse collapse"
+                                                aria-labelledby="flush-heading_poc" data-bs-parent="#accordion_poc">
+                                                <div class="accordion-body">
+                                                    <table class="table table-striped">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col">#</th>
+                                                                <th scope="col">링크</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% if info.nvd.poc %}
+                                                            {% for poc in info.nvd.poc %}
+                                                            <tr>
+                                                                <th scope="row">{{ loop.index }}</th>
+                                                                <td><a href="{{ poc.url }}">{{ poc.url | default('정보
+                                                                        없음') }}</a>
+                                                                </td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                            {% else %}
+                                                            <p>정보 없음</p>
+                                                            {% endif %}
+                                                        </tbody>
+                                                    </table>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div><!-- End Accordion without outline borders -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">참고자료</h5>
+                                    <!-- Accordion without outline borders -->
+                                    <div class="accordion accordion-flush" id="accordion_reference">
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="flush-heading_reference">
+                                                <button class="accordion-button collapsed" type="button"
+                                                    data-bs-toggle="collapse" data-bs-target="#flush-reference_list"
+                                                    aria-expanded="false" aria-controls="flush-reference_list">
+                                                    참고자료 링크 리스트
+                                                </button>
+                                            </h2>
+                                            <div id="flush-reference_list" class="accordion-collapse collapse"
+                                                aria-labelledby="flush-heading_reference"
+                                                data-bs-parent="#accordion_reference">
+                                                <div class="accordion-body">
+                                                    <table class="table table-striped">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col">#</th>
+                                                                <th scope="col">링크</th>
+                                                                <th scope="col">유형</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% if info.nvd.참고자료 %}
+                                                            {% for ref in info.nvd.참고자료 %}
+                                                            <tr class="reference-row">
+                                                                <th scope="row">{{ loop.index }}</th>
+                                                                <td><a href="{{ ref.url }}" class="reference-url">{{ ref.url | default('정보 없음') }}</a></td>
+                                                                <td class="reference-type">
+                                                                    {{ ref.tags | join(', ') | default('정보 없음') }}
+                                                                </td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                            {% else %}
+                                                            <tr>
+                                                                <td colspan="3">정보 없음</td>
+                                                            </tr>
+                                                            {% endif %}
+                                                        </tbody>                                                        
+                                                    </table>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div><!-- End Accordion without outline borders -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                  
+
+                </div>
+            </div>
+        </section>
+
+    </main><!-- End #main -->
+
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+            class="bi bi-arrow-up-short"></i></a>
+
+
+<!-- Vendor JS Files -->
+<script src="../static/assets/vendor/apexcharts/apexcharts.min.js"></script>
+<script src="../static/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="../static/assets/vendor/chart.js/chart.umd.js"></script>
+<script src="../static/assets/vendor/echarts/echarts.min.js"></script>
+<script src="../static/assets/vendor/quill/quill.js"></script>
+<script src="../static/assets/vendor/simple-datatables/simple-datatables.js"></script>
+<script src="../static/assets/vendor/tinymce/tinymce.min.js"></script>
+<script src="../static/assets/vendor/php-email-form/validate.js"></script>
+
+<!-- Template Main JS File -->
+<script src="../static/assets/js/main.js"></script>
+
+<!-- chatbot 전용 JS -->
+<script src="../static/scripts/chatbot.js"></script>
+
+<!-- info.html 전용 JS -->
+<script src="../static/scripts/info.js"></script>
+
+
+</body>
+</html>

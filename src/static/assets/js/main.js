@@ -347,7 +347,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const data = await response.json();
 
         // 정보 수집 목록 데이터
-        const pastCveList = data.past_cve_list;
+        const pastInfoList = data.past_info_list;
         const listContainer = document.getElementById('past-cve-list');
 
         // 테스트 결과 목록 데이터 
@@ -355,10 +355,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         const listContainer2 = document.getElementById('past-test-list');
 
         // 정보 수집 목록 표시
-        pastCveList.forEach(cve => {
+        pastInfoList.forEach(info => {
             const listItem = document.createElement('li');
-            listItem.innerHTML = `<a href="/getinfo?cve_code=${cve.cve}">
-                                  <i class="bi bi-circle"></i><span>${cve.cve}</span>
+            listItem.innerHTML = `<a href="/infoshow?uuid=${info.id}">
+                                  <i class="bi bi-circle"></i><span>${info.cve}</span>
                                 </a>`;
             listContainer.appendChild(listItem);
         });
