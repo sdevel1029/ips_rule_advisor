@@ -70,6 +70,10 @@
                         <div class="search-bar mb-4">
                             <form class="search-form d-flex align-items-center" id="cve-form" method="get" action="/getinfo">
                                 <input id="cve_code" type="text" name="cve_code" placeholder="Search" title="Enter search keyword" required style="flex: 1; margin-right: 10px;" autocomplete="off">
+                                
+                                <!-- 필터 선택된 옵션을 서버로 전달 -->
+                                <input type="hidden" name="filter_type" id="filter_type" value="CVE">
+    
                                 <button type="submit" title="Search" id="submit-btn" style="flex-shrink: 0;">
                                     <i class="bi bi-search"></i>
                                     <div class="spinner-border text-primary d-none" role="status">
@@ -84,19 +88,19 @@
                             
                         </div>
     
-                        <!-- 필터 옵션 -->
+                        <!-- 필터 옵션 클릭 시 filter_type 업데이트 -->
                         <div class="row row-cols-auto mb-3 justify-content-center">
                             <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked">
-                                <label class="form-check-label" for="flexSwitchCheckChecked">CVE 코드</label>
+                                <input class="form-check-input" type="radio" name="filter_type_option" id="filter_cve" value="CVE" checked>
+                                <label class="form-check-label" for="filter_cve">CVE 코드</label>
                             </div>
                             <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckKeyword">
-                                <label class="form-check-label" for="flexSwitchCheckKeyword">키워드</label>
+                                <input class="form-check-input" type="radio" name="filter_type_option" id="filter_keyword" value="Keyword">
+                                <label class="form-check-label" for="filter_keyword">키워드</label>
                             </div>
                             <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckAttackGroup">
-                                <label class="form-check-label" for="flexSwitchCheckAttackGroup">뉴스기사, 칼럼</label>
+                                <input class="form-check-input" type="radio" name="filter_type_option" id="filter_news" value="News">
+                                <label class="form-check-label" for="filter_news">뉴스기사, 칼럼</label>
                             </div>
                         </div>
     

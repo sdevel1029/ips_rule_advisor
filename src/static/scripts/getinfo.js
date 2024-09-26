@@ -122,3 +122,9 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 });
 
+// 필터 옵션 클릭 시 hidden input 업데이트
+document.querySelectorAll('input[name="filter_type_option"]').forEach(option => {
+    option.addEventListener('change', function() {
+        document.getElementById('filter_type').value = this.value;
+    });
+});
