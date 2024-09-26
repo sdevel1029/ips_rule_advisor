@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Request, Depends
+from fastapi import APIRouter, Request, Depends,Response
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from src.mypage.mypage_service import *
@@ -19,12 +19,12 @@ async def gpt_key(request: Request):
     return templates.TemplateResponse("chage_gptkey.html", {"request": request})
 
 @router.get("/pastresult", response_class=HTMLResponse)
-async def past(request: Request,client=Depends(get_supabase_client)):
+async def past(response:Response,request: Request,client=Depends(get_supabase_client)):
     final = past_final(client=client,request=request)
     return templates.TemplateResponse("past_result.html", {"data": final,"request": request})
 
 @router.get("/ruleresult", response_class=HTMLResponse)
-async def past(request: Request,client=Depends(get_supabase_client)):
+async def past(response:Response,request: Request,client=Depends(get_supabase_client)):
     test = past_test(client=client,request=request)
     return templates.TemplateResponse("my_ruletest.html", {"data" : test,"request": request})
 
@@ -34,7 +34,7 @@ async def past(request: Request,testid,client=Depends(get_supabase_client)):
     return templates.TemplateResponse("my_ruletest_show.html", {"test_result": test_result,"request": request})
 
 @router.get("/info", response_class=HTMLResponse)
-async def past(request: Request,client=Depends(get_supabase_client)):
+async def past(response:Response,request: Request,client=Depends(get_supabase_client)):
     info = past_info(client=client,request=request)
     return templates.TemplateResponse("my_info.html", {"data" : info,"request": request})
 
@@ -45,15 +45,16 @@ async def past(request: Request,uuid,client=Depends(get_supabase_client)):
 
 
 @router.post("/gptkey/change")
-async def gpt_key(request: Request,client=Depends(get_supabase_client)):
+async def gpt_key(response:Response,request: Request,client=Depends(get_supabase_client)):
     data = await request.json()
     key =data.get("key")
     chage_gpt(client=client,request=request,key=key)
     return "success"
 
 @router.post("/card/change")
-async def gpt_card(request: Request,client=Depends(get_supabase_client)):
+async def gpt_card(response:Response,request: Request,client=Depends(get_supabase_client)):
     data = await request.json()
     key =data.get("card")
     chage_card(client=client,request=request,key=key)
     return "success"
+
