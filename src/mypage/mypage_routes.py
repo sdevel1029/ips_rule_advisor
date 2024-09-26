@@ -31,7 +31,7 @@ async def past(response:Response,request: Request,client=Depends(get_supabase_cl
 @router.get("/ruleshow", response_class=HTMLResponse)
 async def past(request: Request,testid,client=Depends(get_supabase_client)):
     test_result = client.table("test_result").select("*").eq("id", testid).execute()
-    return templates.TemplateResponse("my_ruletest_show.html", {"test_result": test_result,"request": request})
+    return templates.TemplateResponse("past_test.html", {"test_result": test_result.data[0],"request": request})
 
 @router.get("/info", response_class=HTMLResponse)
 async def past(response:Response,request: Request,client=Depends(get_supabase_client)):

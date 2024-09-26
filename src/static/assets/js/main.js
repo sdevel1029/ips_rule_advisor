@@ -366,7 +366,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         // 테스트 결과 목록 표시
         pastTestList.forEach(test => {
           const listItem = document.createElement('li');
-          listItem.innerHTML = `<a href="/getinfo?test_code=${test.cve}">
+          listItem.innerHTML = `<a href="/ruleshow?testid=${test.id}">
                                 <i class="bi bi-circle"></i><span>${test.cve}</span>
                               </a>`;
           listContainer2.appendChild(listItem);
