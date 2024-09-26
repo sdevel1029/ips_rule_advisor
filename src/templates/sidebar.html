@@ -54,7 +54,35 @@
                 </ul>
             </li>
             {% endif %}
+
+            <li class="nav-item">
+                <a class="nav-link" href="/finalreport">
+                    <i class="bi bi-file-earmark-bar-graph"></i>
+                    <span>최종보고서</span>
+                </a>
+            </li><!-- End 최종보고서 Nav -->
     
+            {% if request.cookies.get('user') %}
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#final-report-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-menu-button-wide"></i><span>최종보고서 목록</span><i
+                        class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="final-report-nav" class="nav-content collapse" data-bs-parent="#final-report-parent">
+                    <li>
+                        <a href="#">
+                            <i class="bi bi-circle"></i><span>CVE-2024-5045</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="bi bi-circle"></i><span>CVE-2024-5042</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            {% endif %}
+
             <li class="nav-heading">내 정보</li>
     
             {% if request.cookies.get('user') %}
