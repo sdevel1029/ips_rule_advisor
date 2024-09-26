@@ -66,7 +66,7 @@
                   <div class="table__cell text-cell">버전</div>
                 </div>
               </div>
-              {% if cpe in info.cpe.CPE_List %}
+              {% if info.cpe %}
               {% for cpe in info.cpe.CPE_List %}
               <div class="table-row">
                 <div class="table-grid">
@@ -155,7 +155,9 @@
     <div class="card-poc">
       <div class="card__title">POC (Proof of Concept)</div>
       <div class="line-seperate"></div>
+      {% if info.reference%}
       <div class="card__text">POC 총 링크 수 : {{info.reference.references|length}}</div>
+      {% endif %}
       <div class="accordion-container">
         <div class="accordion-title">
           <div class="text-accordion-title">POC 링크 목록</div>
@@ -168,8 +170,8 @@
                 <div class="table__cell text-cell">링크</div>
               </div>
             </div>
-            {% if info.reference.reference %}
-            {% for poc in info.reference.reference %}
+            {% if info.reference%}
+            {% for poc in info.reference.references %}
             <div class="table-row">
               <div class="table-grid">
                 <a class="table__cell text-link" href="{{ poc.url }}">{{ poc.url | default('정보 없음') }}</a>
