@@ -10,6 +10,7 @@ from fastapi import Form, Query
 from fastapi.responses import RedirectResponse
 from fastapi.responses import JSONResponse
 from fastapi.responses import FileResponse
+from src.auth.auth_service import *
 router = APIRouter()
 templates = Jinja2Templates(directory="src/templates")
 
@@ -24,10 +25,9 @@ class cve(BaseModel):
 
 
 @router.post("/uploadfile/normal")
-async def upload_file(request: Request,cve: str = Form(...), file: UploadFile = File(...), client=Depends(get_supabase_client)):
-    user = request.cookies.get("user")
-    user_info = client.auth.get_user(user)
-    user_id = user_info.user.id
+async def upload_file(response:Response,request: Request,cve: str = Form(...), file: UploadFile = File(...), client=Depends(get_supabase_client)):
+    user_info = getuserinfo(client=client,response=response,request=request)
+    user_id = user_info["user"].user.id
     folder_path = f"normal_pcap/{user_id}"
     os.makedirs(folder_path, exist_ok=True)
     file_location = f"{folder_path}/{cve}.pcap"
@@ -45,10 +45,9 @@ async def download_file(file_location: str = Query(..., description="The name of
 
 
 @router.post("/uploadfile/attack")
-async def upload_file(request: Request,cve: str = Form(...), file: UploadFile = File(...), client=Depends(get_supabase_client)):
-    user = request.cookies.get("user")
-    user_info = client.auth.get_user(user)
-    user_id = user_info.user.id
+async def upload_file(response:Response,request: Request,cve: str = Form(...), file: UploadFile = File(...), client=Depends(get_supabase_client)):
+    user_info = getuserinfo(client=client,response=response,request=request)
+    user_id = user_info["user"].user.id
     folder_path = "attack_pcap/"+user_id
     os.makedirs(folder_path, exist_ok=True)
     file_location = folder_path+"/"+cve+".pcap"
@@ -58,15 +57,14 @@ async def upload_file(request: Request,cve: str = Form(...), file: UploadFile = 
 
 
 @router.post("/test/input")
-async def test(request:Request,client=Depends(get_supabase_client)):
+async def test(response:Response,request:Request,client=Depends(get_supabase_client)):
     data = await request.json()
-    user = request.cookies.get("user")
-    user_info = client.auth.get_user(user)
-    user_id = str(user_info.user.id)
+    user_info = getuserinfo(client=client,response=response,request=request)
+    user_id = user_info["user"].user.id
     accuracy_test = data.get("accuracy_test", "")
     performance_test = data.get("performance_test", "")
     cve = str(data.get("cve", ""))
-    envi = int(data.get("envi", ""))
+    envi = data.get("envi", "")[0]
     rule = str(data.get("rule", ""))
 
     if accuracy_test and performance_test:
