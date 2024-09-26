@@ -9,7 +9,6 @@ from src.openai.openai_service import (
     classify_attack,
     summarize_vector,
     translate_bulk_to_korean
-
 )
 from starlette.responses import RedirectResponse
 from src.getinfo.strsearch import get_cve_details
@@ -24,18 +23,17 @@ with open('src/openai/attack_types.json', 'r')as file:
     attack_types = json.load(file)
 
 @router.get("/getinfo", response_class=HTMLResponse)
-async def get_info_page(request: Request, cve_code: str = None):
+async def get_info_page(request: Request, cve_code: str = None, filter_type: str = "CVE"):
     if not cve_code:
         return templates.TemplateResponse(
             "error.html",
-            {"request": request, "error": "cve_code parameter is required"},
+            {"request": request, "error": "CVE 코드를 입력해주세요"},
         )
 
     try:
-        if cve_code.startswith("CVE-")or cve_code.startswith("cve-"):
+        # CVE 코드 검색시
+        if filter_type == "CVE" and (cve_code.startswith("CVE-") or cve_code.startswith("cve-")):
             info_result = await get_info(cve_code)
-
-            #취약점 정보의 게시일과 현재 보고서의 생성시간 추가
             info_result['nvd']['수정시간'] = info_result['nvd']['수정시간'].split('T')[0]
             current_date = date.today()
 
@@ -45,39 +43,46 @@ async def get_info_page(request: Request, cve_code: str = None):
             if "메트릭" in info_result.get("nvd", {}):
                 metrics_summary = await summarize_vector(info_result["nvd"]["메트릭"])
        
-
             attack_type = await classify_attack(info_result["nvd"]["설명"])
             attack_description = attack_types.get(attack_type, "정보없음")
 
-
             snort_community_rules = info_result.get("snort_community_rule", {}).get("rules", [])
             emerging_rules = info_result.get("emerging_rule", {}).get("rules", [])
-            
 
             return templates.TemplateResponse("info.html",{
                 "request": request,
                 "info": info_result,
                 "type": attack_type,
-                "type_description" : attack_description,
+                "type_description": attack_description,
                 "metrics_summary": metrics_summary,
                 "current_date": current_date,
                 "snort_community_rule": snort_community_rules,
                 "emerging_rule": emerging_rules
-                })
+            })
 
-        # CVE가 아닌 다른 코드를 입력한 경우
-        # ex)log4j, dirty cow 등등...
-        search_results = get_cve_details(cve_code)
-        if not search_results:
-            return JSONResponse(content={"error": "No results found"}, status_code=404)
-        
-        # 번역된 결과 받기
-        translated_results = await translate_bulk_to_korean(search_results)
-        
-        return templates.TemplateResponse("getinfo.html", {
-            "request" : request,
-            "search_results" : translated_results
-        })
+         # 키워드로 검색시
+        elif filter_type == "Keyword":
+            search_results = get_cve_details(cve_code)
+            if not search_results:
+                return JSONResponse(content={"error": "No results found"}, status_code=404)
+
+            translated_results = await translate_bulk_to_korean(search_results)
+            return templates.TemplateResponse("getinfo.html", {
+                "request": request,
+                "search_results": translated_results
+            })
+
+        # 뉴스 기사, 칼럼 으로 검색시
+        elif filter_type == "News":
+            None
+
+         # 필터 타입이 올바르지 않을 경우
+        else:
+            return templates.TemplateResponse(
+                "error.html", {"request": request, "error": "Invalid filter type."}
+            )
+           
+
     except InfoServiceError as e:
         return templates.TemplateResponse(
             "error.html", {"request": request, "error": str(e)}
@@ -88,8 +93,6 @@ async def get_info_page(request: Request, cve_code: str = None):
 async def redirect_to_ruletest():
     return RedirectResponse(url="/ruletest")
 
-
-#메인페이지의 cve정보검색 div 밑에서 아코디언으로 get_cve_details(문자열로 검색한 결과) 보여주기(동건)
 
 @router.post("/saveinfo")
 async def create_vulnerability(request: Request, vulnerability: VulnerabilityCreate):
