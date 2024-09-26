@@ -12,20 +12,16 @@
             {% if request.cookies.get('user') %}
             <li class="nav-item">
                 <a class="nav-link collapsed" data-bs-target="#info-collection-nav" data-bs-toggle="collapse" href="#">
-                    <i class="bi bi-menu-button-wide"></i><span>정보 수집 목록</span><i
-                        class="bi bi-chevron-down ms-auto"></i>
+                    <i class="bi bi-menu-button-wide"></i><span>정보 수집 목록</span><i class="bi bi-chevron-down ms-auto"></i>
                 </a>
                 <ul id="info-collection-nav" class="nav-content collapse" data-bs-parent="#info-collection-parent">
-                    {% for cve in past_cve_list %}
-                    <li>
-                        <a href="/getinfo?cve_code={{ cve.cve }}">
-                            <i class="bi bi-circle"></i><span>{{ cve.cve }}</span>
-                        </a>
-                    </li>
-                    {% endfor %}
+                    <!-- 동적으로 추가될 과거 CVE 리스트 -->
+                    <div id="past-cve-list">
+                        <!-- 여기에 리스트 항목이 추가될 예정 -->
+                    </div>
                 </ul>
             </li>
-            {% endif %}
+        {% endif %}
     
             <li class="nav-item">
                 <a class="nav-link" href="/ruletest">
