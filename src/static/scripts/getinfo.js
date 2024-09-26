@@ -128,3 +128,22 @@ document.querySelectorAll('input[name="filter_type_option"]').forEach(option => 
         document.getElementById('filter_type').value = this.value;
     });
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("cve-form");
+    const spinnerContainer = document.querySelector(".spinner-container");
+    const section = document.querySelector(".section");
+
+    form.addEventListener("submit", function (event) {
+        event.preventDefault(); // 기본 폼 제출 막기
+
+        // 섹션 영역 숨기기
+        section.style.display = "none";
+
+        // 스피너와 메시지 표시
+        spinnerContainer.classList.remove("d-none");
+
+        // 서버로 데이터 전송 후 실제 폼 제출
+        setTimeout(() => form.submit(), 100); // 시간 지연 후 폼 제출
+    });
+});
