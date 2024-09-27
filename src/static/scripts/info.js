@@ -54,6 +54,20 @@ async function saveInfo() {
     const postingDateText = postingDateElement.textContent.trim();
     const lastModifiedDateText = lastModifiedDateElement.textContent.trim();
 
+    // Snort Community Rule 데이터를 객체 배열로 변환하여 저장
+    const snortRuleElements = document.querySelectorAll('#flush-snortRules .list-group-item');
+    const snortDataArray = Array.from(snortRuleElements).map(ruleElement => {
+        return {Rule: ruleElement.innerText.trim() }; 
+    });
+    const snortData = snortDataArray.length > 0 ? { snortCommunityRules: snortDataArray } : {};
+
+    // Emerging Rule 데이터를 객체 배열로 변환하여 저장
+    const emergingRuleElements = document.querySelectorAll('#flush-emergingRule .list-group-item');
+    const emergingDataArray = Array.from(emergingRuleElements).map(ruleElement => {
+        return { Rule: ruleElement.innerText.trim() }; 
+    });
+    const emergingData = emergingDataArray.length > 0 ? { emergingRules: emergingDataArray } : {};
+
     const vulnerabilityData = {
       vuln_type: vulnType,
       description: description,
@@ -63,8 +77,8 @@ async function saveInfo() {
       influence_score: influenceScore,
       exploit_score: exploitScore,
       metrics_summary: metricsSummary,
-      related_rules_type: { "example": "data" },
-      related_rules_product: { "example": "data" },
+      snort_community_rule: snortData,
+      emerging_rule: emergingData,
       poc: pocData,
       reference: referenceData,
       cve: cveId,
