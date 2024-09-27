@@ -131,7 +131,95 @@ async def translate_bulk_to_korean(search_results):
 
     return translated_results
 
+async def generate_report(info_result, test_results) -> str:
+    async with httpx.AsyncClient() as client:
+        # CVE 정보, 테스트 결과 문자열로 정리
+        cve_info_str = "\n".join([
+            (
+                f"CVE 코드: {info['cve']}\n"
+                f"설명: {info.get('description', '설명 없음')}\n"
+                # f"취약점 유형: {info.get('vuln_type', '정보 없음')}\n"
+                # f"CPE: {info.get('cpe', '정보 없음')}\n"
+                # f"공격 벡터: {info.get('attack_vector', '정보 없음')}\n"
+                # f"공격 복잡성: {info.get('attack_complexity', '정보 없음')}\n"
+                # f"권한 요구: {info.get('privileges_required', '정보 없음')}\n"
+                # f"사용자 상호작용 필요 여부: {info.get('user_interaction', '정보 없음')}\n"
+                # f"범위: {info.get('scope', '정보 없음')}\n"
+                # f"기밀성 영향: {info.get('confidentiality_impact', '정보 없음')}\n"
+                # f"무결성 영향: {info.get('integrity_impact', '정보 없음')}\n"
+                # f"가용성 영향: {info.get('availability_impact', '정보 없음')}\n"
+                # f"CVSS 점수: {info.get('score', '정보 없음')}\n"
+                # f"영향 점수: {info.get('influence_score', '정보 없음')}\n"
+                # f"Exploit 가능성 점수: {info.get('exploit_score', '정보 없음')}\n"
+                # f"메트릭 요약: {info.get('metrics_summary', '정보 없음')}\n"
+                # f"Snort 규칙: {info.get('snort_community_rule', '정보 없음')}\n"
+                # f"Emerging 규칙: {info.get('emerging_rule', '정보 없음')}\n"
+                # f"PoC: {info.get('poc', '정보 없음')}\n"
+                # f"참조 자료: {info.get('reference', '정보 없음')}\n"
+            )
+            for info in info_result
+        ])
 
+        # 테스트 결과 문자열로 정리
+        test_results_str = "\n".join([
+            (
+                f"테스트 ID: {result['id']}\n"
+                f"설정: {result['setting']}\n"
+                f"규칙: {result['rule']}\n"
+                f"전체 패킷 수: {result['total']}\n"
+                f"공격 패킷 수: {result['attacknum']}\n"
+                f"정상 패킷 수: {result['normalnum']}\n"
+                f"정확도: {result['accuracyrate']}\n"
+                f"공격 탐지율: {result['attackrate']}\n"
+                f"정상 탐지율: {result['normalrate']}\n"
+                f"공격 탐지 성공: {result['attacktrue']}\n"
+                f"정상 탐지 성공: {result['normaltrue']}\n"
+                f"정상 지연 시간: {result['normallatency']}\n"
+                f"정상 CPU 사용률: {result['normalcpu_usage']}\n"
+                f"정상 메모리 사용률: {result['normalmemory_usage']}\n"
+                f"공격 지연 시간: {result['attacklatency']}\n"
+                f"공격 CPU 사용률: {result['attackcpu_usage']}\n"
+                f"공격 메모리 사용률: {result['attackmemory_usage']}\n"
+                f"공격 패킷 수: {result['attackpacket_num']}\n"
+                f"정상 패킷 수: {result['normalpacket_num']}\n"
+                f"공격 패킷 샘플: {result['attackpacket']}\n"
+                f"정상 패킷 샘플: {result['normalpacket']}\n"
+            )
+            for result in test_results
+        ])
 
+        # GPT에 요청할 내용 생성
+        report_request = (
+            "다음 정보를 바탕으로 보안 보고서를 작성해 주세요:\n\n"
+            f"CVE 정보:\n{cve_info_str}\n\n"
+            f"테스트 결과:\n{test_results_str}\n\n"
+            "보고서에는 취약점의 개요, 테스트 결과 요약, 그리고 중요성과 권장 사항을 포함해 주세요."
+        )
 
+        response = await client.post(
+            'https://api.openai.com/v1/chat/completions',
+            headers={
+                'Authorization': f'Bearer {OPENAI_API_KEY}',
+                'Content-Type': 'application/json'
+            },
+            json={
+                'model': 'gpt-4',
+                'messages': [
+                    {"role": "system", "content": "You are a helpful assistant for generating security reports."},
+                    {"role": "user", "content": report_request}
+                ],
+                'max_tokens': 3000,
+                'temperature': 0.5
+            },
+            timeout=60.0  # 60초로 타임아웃 설정
+        )
 
+        # 응답 처리
+        response_data = response.json()
+
+        # 'choices' 키가 없는 경우 예외 처리
+        if 'choices' not in response_data:
+            raise ValueError(f"API 응답에서 'choices' 키를 찾을 수 없습니다: {response_data}")
+
+        report_content = response_data['choices'][0]['message']['content'].strip()
+        return report_content
