@@ -31,9 +31,11 @@ async function saveInfo() {
     // cpe 데이터를 딕셔너리로 변환
     const cpeData = { CPE_List: cpeList };
 
-    const pocElements = document.querySelectorAll('.card-poc .table-row .table__cell.text-link');
-    const pocLinks = Array.from(pocElements).map(pocElement => pocElement.href.trim());
-    const pocData = pocLinks.length > 0 ? { urls: pocLinks } : {};
+    const pocElements = document.querySelectorAll('#flush-poc_list a'); 
+    const pocLinks = Array.from(pocElements).map(pocElement => {
+        return { url: pocElement.href.trim() }; 
+    });
+    const pocData = pocLinks.length > 0 ? { pocs: pocLinks } : {};
 
     const refElements = document.querySelectorAll('.reference-row');
     const refDataArray = Array.from(refElements).map(row => {
