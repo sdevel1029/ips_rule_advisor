@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Final Report</title>
+    <link rel="stylesheet" href="/static/css/style.css"> <!-- Optional: 추가적인 CSS 경로 -->
+</head>
+<body>
+    <header>
+        <h1>최종 보고서</h1>
+    </header>
+
+    <main>
+        <section>
+            <h2>보고서 내용</h2>
+            <!-- report_content가 비어있지 않은 경우 내용을 표시 -->
+            {% if report_content %}
+                <div class="report">
+                    {{ report_content | safe }}  <!-- 텍스트를 그대로 출력 -->
+                </div>
+            {% else %}
+                <p>보고서 데이터를 불러오지 못했습니다. 다시 시도해주세요.</p>
+            {% endif %}
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Report Service</p>
+    </footer>
+</body>
+</html>
