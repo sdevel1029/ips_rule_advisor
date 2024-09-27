@@ -347,11 +347,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         const data = await response.json();
 
         // 정보 수집 목록 데이터
-        const pastInfoList = data.past_info_list;
+        pastInfoList = data.past_info_list; 
         const listContainer = document.getElementById('past-cve-list');
 
         // 테스트 결과 목록 데이터 
-        const pastTestList = data.past_test_list;
+         pastTestList = data.past_test_list;
         const listContainer2 = document.getElementById('past-test-list');
 
         // 정보 수집 목록 표시
@@ -372,8 +372,6 @@ document.addEventListener("DOMContentLoaded", async () => {
           listContainer2.appendChild(listItem);
         });
 
-        // CustomEvent로 정보 수집 목록과 테스트 결과 목록을 전송
-        document.dispatchEvent(new CustomEvent('pastCveListLoaded', { detail: { pastCveList, pastTestList } }));
     } else {
         console.error("Failed to fetch past data");
     }
