@@ -46,7 +46,6 @@ async function saveInfo() {
         return { url: url, type: type };
     });
     const referenceData = refDataArray.length > 0 ? { references: refDataArray } : {};
-    console.log(referenceData)
 
     const postingDateElement = document.getElementById('posting-date');
     const lastModifiedDateElement = document.getElementById('last-modified-date');
@@ -68,6 +67,37 @@ async function saveInfo() {
     });
     const emergingData = emergingDataArray.length > 0 ? { emergingRules: emergingDataArray } : {};
 
+    //메트릭 세부 관련 데이터 저장 함수
+    function getNextActiveTd(thText) {
+      const thElements = document.querySelectorAll('th');
+      for (const th of thElements) {
+          if (th.innerText.includes(thText)) {
+              // th 다음에 나오는 모든 td를 찾음
+              const tdElements = th.parentElement.querySelectorAll('td');
+              for (const td of tdElements) {
+                  // table-active 클래스가 있는지 확인
+                  if (td.classList.contains('table-active')) {
+                      return td.innerText.trim(); // 활성화된 td 태그 반환
+                  }
+              }
+          }
+      }
+      return '정보 없음'; // 활성화된 td가 없으면 '정보 없음' 반환
+    }
+  
+
+    //메트릭 세부와 관련된 데이터들
+
+    // 각 메트릭 데이터를 가져옴 (활성화된 td 값을 찾아서 저장)
+    const attackVector = getNextActiveTd('Attack Vector');
+    const attackComplexity = getNextActiveTd('Attack Complexity');
+    const privilegesRequired = getNextActiveTd('Privileges Required');
+    const userInteraction = getNextActiveTd('User Interaction');
+    const scope = getNextActiveTd('Scope');
+    const confidentialityImpact = getNextActiveTd('Confidentiality Impact');
+    const integrityImpact = getNextActiveTd('Integrity Impact');
+    const availabilityImpact = getNextActiveTd('Availability Impact');
+
     const vulnerabilityData = {
       vuln_type: vulnType,
       description: description,
@@ -83,7 +113,17 @@ async function saveInfo() {
       reference: referenceData,
       cve: cveId,
       cve_posting_date: postingDateText,
-      last_modified_date: lastModifiedDateText
+      last_modified_date: lastModifiedDateText,
+
+      // 메트릭세부 데이터 추가
+      attack_vector: attackVector,
+      attack_complexity: attackComplexity,
+      privileges_required: privilegesRequired,
+      user_interaction: userInteraction,
+      scope: scope,
+      confidentiality_impact: confidentialityImpact,
+      integrity_impact: integrityImpact,
+      availability_impact: availabilityImpact
     };
 
     try {

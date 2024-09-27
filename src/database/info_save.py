@@ -32,3 +32,11 @@ class VulnerabilityCreate(BaseModel):
     last_modified_date: str = None  
     cve_posting_date: str = None 
     user_id: str = None
+    attack_vector: str = None
+    attack_complexity: str = None
+    privileges_required: str = None
+    user_interaction: str = None
+    scope: str = None
+    confidentiality_impact: str = None
+    integrity_impact: str = None
+    availability_impact: str = None
