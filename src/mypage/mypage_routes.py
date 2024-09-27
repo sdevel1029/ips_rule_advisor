@@ -41,7 +41,39 @@ async def past(response:Response,request: Request,client=Depends(get_supabase_cl
 @router.get("/infoshow", response_class=HTMLResponse)
 async def past(request: Request,uuid,client=Depends(get_supabase_client)):
     info_result = client.table("info").select("*").eq("id", uuid).execute()
-    return templates.TemplateResponse("my_info_show.html", {"info" : info_result.data[0],"request": request})
+    tmp_cve = info_result.data[0]["cve"]
+
+    tmp_vector = info_result.data[0]["metric"]
+    tmp_vec_list = []
+    tmp_vector =  tmp_vector.split("/")
+    tmp_vec_list.append(tmp_vector[1][3:])
+    tmp_vec_list.append(tmp_vector[2][3:])
+    tmp_vec_list.append(tmp_vector[3][3:])
+    tmp_vec_list.append(tmp_vector[4][3:])
+    tmp_vec_list.append(tmp_vector[5][2:])
+
+    tmp_vec_list.append(tmp_vector[6][2:])
+    tmp_vec_list.append(tmp_vector[7][2:])
+    tmp_vec_list.append(tmp_vector[8][2:])
+
+    try:
+        get_snort_rules = info_result.data[0]["snort_community_rule"]["snortCommunityRules"]
+    except:
+        get_snort_rules = {}
+
+    try:
+        get_emerging_rules = info_result.data[0]["emerging_rule"]["emergingRules"]
+    except:
+        get_emerging_rules = {}
+    
+    return templates.TemplateResponse("my_info_show.html", {
+        "info" : info_result.data[0],
+        "request": request, 
+        "snort_community_rule": get_snort_rules,
+        "emerging_rule": get_emerging_rules,
+        "vector_list": tmp_vec_list
+        })
+    # return templates.TemplateResponse("my_info_show_2.html", {"info" : info_result.data[0],"request": request})
 
 @router.post("/gptkey/change")
 async def gpt_key(response:Response,request: Request,client=Depends(get_supabase_client)):
