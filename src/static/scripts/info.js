@@ -10,23 +10,26 @@ async function saveInfo() {
     const metricsSummary = document.getElementById('metrics_summary').innerText.trim();
 
     let cpeList = [];
-    let index = 1;
-    let cpeElement = document.getElementById(`cpe-${index}`);
+    
+    // tbody 요소를 선택
+    const cpeTree = document.getElementById('cpe-tree');
 
-    while (cpeElement) {
-      const cpeValue = cpeElement.innerText.trim();
-      const includedValue = document.getElementById(`included-${index}`).innerText.trim();
-      const excludedValue = document.getElementById(`excluded-${index}`).innerText.trim();
+    // tbody 안의 모든 tr 요소를 선택
+    const rows = cpeTree.querySelectorAll('tr');
 
+    // 각 tr 요소에서 값을 가져와서 처리
+    rows.forEach(row => {
+      const number = row.querySelector('th').innerText.trim(); // 첫 번째 열 (번호)
+      const cpeValue = row.querySelector('td[id^="cpe-"]').innerText.trim(); // CPE 열 (id가 "cpe-"로 시작하는 td)
+      const includedValue = row.querySelector('td[id^="included-"]').innerText.trim(); // 포함 열 (id가 "included-"로 시작하는 td)
+      const excludedValue = row.querySelector('td[id^="excluded-"]').innerText.trim(); // 비포함 열 (id가 "excluded-"로 시작하는 td)
       cpeList.push({
-        CPE: cpeValue,
-        포함: includedValue,
-        비포함: excludedValue
+          cpe_num: number,
+          CPE: cpeValue,
+          포함: includedValue,
+          비포함: excludedValue
       });
-
-      index++;
-      cpeElement = document.getElementById(`cpe-${index}`);
-    }
+    });
 
     // cpe 데이터를 딕셔너리로 변환
     const cpeData = { CPE_List: cpeList };
