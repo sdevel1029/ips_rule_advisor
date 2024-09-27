@@ -2,208 +2,512 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="../static/vars/vars.css">
-  <link rel="stylesheet" href="../static/styles/styles.css">
-  <link rel="stylesheet" href="../static/styles/chatbot.css">
-  <title>IPS Rule Advisor</title>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>S-aide - 최신 보안 정보 제공 사이트</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="../static/assets/img/favicon.png" rel="icon">
+    <link href="../static/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link
+        href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+        rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="../static/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../static/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="../static/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="../static/assets/vendor/quill/quill.snow.css" rel="stylesheet">
+    <link href="../static/assets/vendor/quill/quill.bubble.css" rel="stylesheet">
+    <link href="../static/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+    <link href="../static/assets/vendor/simple-datatables/style.css" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="../static/assets/css/style.css" rel="stylesheet">
+
+    <!-- Custom CSS File-->
+    <link rel="stylesheet" href="../static/styles/chatbot.css">
+    <link rel="stylesheet" href="../static/styles/test.css">
+    <link rel="stylesheet" href="../static/styles/info.css">
+
+    <!-- =======================================================
+  * Template Name: NiceAdmin
+  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
+  * Updated: Apr 20 2024 with Bootstrap v5.3.3
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
 </head>
 
 <body>
-  <div class="layout-wrapper">
-    <header class="header">
-      <div class="header-logo">
-        <button class="logo" onclick="window.location.href='/';">
-          <img class="hdd-fill" src="../static/vectors/logo-hdd-fill0.svg" alt="hdd-icon" />
-          <img class="shield-plus" src="../static/vectors/logo-shield-plus0.svg" alt="shield-icon" />
-        </button>
-      </div>
-      <div class="header-nav">
-        <a class="nav-item--active item-text" href="/">정보수집</a>
-        <a class="nav-item item-text" href="/ruletest">룰 테스트</a>
-        <!-- <a class="nav-item item-text" href="">마이페이지</a> -->
-      </div>
-      <div class="header-auth">
-        <div class="auth-profile">
-          <div class="avatar-img">
-            <img class="shape" src="../static/images/avatar-0.png" />
-          </div>
-          <div class="profile-name">
-            <div class="text-name">YSD 님</div>
-          </div>
-        </div>
-      </div>
-    </header>
-    <div class="main-container">
-      <div class="card-cve">
-        <div class="card__title" id="cve-id">{{info.cve}}</div>
-        <div class="line-seperate"></div>
-        <div class="card__text" id="dates">
-          게시일 : <span id="posting-date">{{info.cve_posting_date}}</span> |
-          최종 수정일 : <span id="last-modified-date">{{info.last_modified_date}}</span>
-        </div>
-        <div class="card__text" id="vuln-type">취약점 유형 : {{info.vuln_type}}
-          <div class="tooltip-text">{{info.description}}</div>
-        </div>
-        <div class="card__text" id="description">{{info.description}}</div>
-      </div>
+    <!-- ======= Header ======= -->
+    <header id="header" class="header fixed-top d-flex align-items-center">
 
-      <div class="card-cpe">
-        <div class="card__title">영향받는 제품</div>
-        <div class="accordion-container">
-          <div class="accordion-title">
-            <div class="text-accordion-title">CPE 목록</div>
-            <img class="btn-accordion" src="../static/vectors/btn-accordion-down.svg" />
-          </div>
-          <div class="accordion-content">
-            <div class="table">
-              <div class="table-header">
-                <div class="table-grid">
-                  <div class="table__cell text-cell">공급업체</div>
-                  <div class="table__cell text-cell">제품</div>
-                  <div class="table__cell text-cell">버전</div>
+        <div class="d-flex align-items-center justify-content-between">
+            <a href="/" class="logo d-flex align-items-center">
+                <img src="../static/assets/img/logo.png" alt="">
+                <span class="d-none d-lg-block">S-aide</span>
+            </a>
+            <i class="bi bi-list toggle-sidebar-btn"></i>
+        </div><!-- End Logo -->
+
+    </header><!-- End Header -->
+
+   <!-- 사이드바 임포트 -->
+   {% include 'sidebar.html' %}
+
+   <main id="main" class="main">
+    <section class="section">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title" id="cve-id">{{ info.cve | default('정보 없음') }}</h5>
+                                    <div id="dates">
+                                        게시일 : <span id="posting-date">{{ info.last_modified_date | default('정보 없음') }}</span> |
+                                        최종 수정일 : <span id="last-modified-date">{{ info.cve_posting_date }}</span>
+                                    </div>
+                                    <p id="vuln-type" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                        data-bs-original-title="{{ type_description | default('정보없음') }}">
+                                        취약점 유형 : {{ info.vuln_type | default('정보 없음') }}</p>
+                                    <p id="description">{{ info.description | default('정보 없음') }}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">CVSS</h5>
+                                    <p id="metrics">메트릭 : {{ info.metric | default('정보 없음') }}</p>
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">기본 점수</th>
+                                                <th scope="col">악용 가능성 점수</th>
+                                                <th scope="col">영향 점수</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td id="score">{{ info.score | default('정보 없음') }}</td>
+                                                <td id="exploit_score">{{ info.exploit_score | default('정보 없음')
+                                                    }}</td>
+                                                <td id="influence_score">{{ info.influence_score | default('정보 없음') }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <h5>매트릭 요약</h5>
+                                    <p id="metrics_summary">{{ info.metrics_summary | default('정보 없음') }}</p>
+
+                                    <!-- Accordion without outline borders -->
+                                    <div class="accordion accordion-flush" id="accordion_metrics">
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="flush-heading_exploitability">
+                                                <button class="accordion-button collapsed" type="button"
+                                                    data-bs-toggle="collapse"
+                                                    data-bs-target="#flush-exploitability_metrics" aria-expanded="false"
+                                                    aria-controls="flush-exploitability_metrics">
+                                                    악용 가능성 매트릭
+                                                </button>
+                                            </h2>
+                                            <div id="flush-exploitability_metrics" class="accordion-collapse collapse"
+                                                aria-labelledby="flush-heading_exploitability"
+                                                data-bs-parent="#accordion_metrics">
+                                                <div class="accordion-body">
+                                                    <table class="table">
+                                                        <tbody data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                                            data-bs-original-title="이 취약점은  {{ vector_list[0] | default('정보 없음') }}를 통해 원격으로 악용될 수 있습니다.">
+                                                            <tr>
+                                                                <th scope="row">Attack Vector (AV)</th>
+                                                                <td
+                                                                    class="{% if vector_list[0] == 'N' %}table-active{% endif %}">
+                                                                    Network (AV:N)</td>
+                                                                <td
+                                                                    class="{% if vector_list[0] == 'A' %}table-active{% endif %}">
+                                                                    Adjacent Network (AV:A)</td>
+                                                                <td
+                                                                    class="{% if vector_list[0] == 'L' %}table-active{% endif %}">
+                                                                    Local (AV:L)</td>
+                                                                <td
+                                                                    class="{% if vector_list[0] == 'P' %}table-active{% endif %}">
+                                                                    Physical (AV:P)</td>
+                                                            </tr>
+                                                        </tbody>
+                                                        <tbody data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                                            data-bs-original-title="이 공격은 {{ vector_list[1]  | default('정보 없음') }}단계로 수행할 수 있습니다.">
+                                                            <tr>
+                                                                <th scope="row">Attack Complexity (AC)</th>
+                                                                <td
+                                                                    class="{% if vector_list[1] == 'L' %}table-active{% endif %}">
+                                                                    Low (AC:L)</td>
+                                                                <td
+                                                                    class="{% if vector_list[1] == 'H' %}table-active{% endif %}">
+                                                                    High (AC:H)</td>
+                                                            </tr>
+                                                        </tbody>
+                                                        <tbody data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                                            data-bs-original-title="이 취약점을 악용하려면 {{ vector_list[2] | default('정보 없음') }}이(가) 필요합니다.">
+                                                            <tr>
+                                                                <th scope="row">Privileges Required (PR)</th>
+                                                                <td
+                                                                    class="{% if vector_list[2] == 'N' %}table-active{% endif %}">
+                                                                    None (PR:N)</td>
+                                                                <td
+                                                                    class="{% if vector_list[2] == 'L' %}table-active{% endif %}">
+                                                                    Low (PR:L)</td>
+                                                                <td
+                                                                    class="{% if vector_list[2] == 'H' %}table-active{% endif %}">
+                                                                    High (PR:H)</td>
+                                                            </tr>
+                                                        </tbody>
+                                                        <tbody data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                                            data-bs-original-title="이 취약점은 {{ vector_list[3] | default('정보 없음') }}이(가) 필요합니다.">
+                                                            <tr>
+                                                                <th scope="row">User Interaction (UI)</th>
+                                                                <td
+                                                                    class="{% if vector_list[3] == 'N' %}table-active{% endif %}">
+                                                                    None (UI:N)</td>
+                                                                <td
+                                                                    class="{% if vector_list[3] == 'R' %}table-active{% endif %}">
+                                                                    Required (UI:R)</td>
+                                                            </tr>
+                                                        </tbody>
+                                                        <tbody data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                                            data-bs-original-title="이 취약점은 {{ vector_list[4]  | default('정보 없음') }} 범위에서 악용될 수 있습니다.">
+                                                            <tr>
+                                                                <th scope="row">Scope (S)</th>
+                                                                <td
+                                                                    class="{% if vector_list[4] == 'U' %}table-active{% endif %}">
+                                                                    Unchanged (S:U)</td>
+                                                                <td
+                                                                    class="{% if vector_list[4] == 'C' %}table-active{% endif %}">
+                                                                    Changed (S:C)</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="flush-heading_impact">
+                                                <button class="accordion-button collapsed" type="button"
+                                                    data-bs-toggle="collapse" data-bs-target="#flush-impact_mectrics"
+                                                    aria-expanded="false" aria-controls="flush-impact_mectrics">
+                                                    영향 매트릭
+                                                </button>
+                                            </h2>
+                                            <div id="flush-impact_mectrics" class="accordion-collapse collapse"
+                                                aria-labelledby="flush-heading_impact"
+                                                data-bs-parent="#accordion_metrics">
+                                                <div class="accordion-body">
+                                                    <table class="table">
+                                                        <tbody data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                                            data-bs-original-title="이 취약점은 기밀성에 {{ vector_list[5] | default('정보 없음') }} 영향을 미칩니다.">
+                                                            <tr>
+                                                                <th scope="row">Confidentiality Impact (C)</th>
+                                                                <td
+                                                                    class="{% if vector_list[5] == 'N' %}table-active{% endif %}">
+                                                                    None (C:N)</td>
+                                                                <td
+                                                                    class="{% if vector_list[5] == 'L' %}table-active{% endif %}">
+                                                                    Low (C:L)</td>
+                                                                <td
+                                                                    class="{% if vector_list[5] == 'H' %}table-active{% endif %}">
+                                                                    High (C:H)</td>
+                                                            </tr>
+                                                        </tbody>
+                                                        <tbody data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                                            data-bs-original-title="이 취약점은 무결성에 {{ vector_list[6] | default('정보 없음') }} 영향을 미칩니다.">
+                                                            <tr>
+                                                                <th scope="row">Integrity Impact (I)</th>
+                                                                <td
+                                                                    class="{% if vector_list[6] == 'N' %}table-active{% endif %}">
+                                                                    None (I:N)</td>
+                                                                <td
+                                                                    class="{% if vector_list[6] == 'L' %}table-active{% endif %}">
+                                                                    Low (I:L)</td>
+                                                                <td
+                                                                    class="{% if vector_list[6] == 'H' %}table-active{% endif %}">
+                                                                    High (I:H)</td>
+                                                            </tr>
+                                                        </tbody>
+                                                        <tbody data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                                            data-bs-original-title="이 취약점은 가용성에 {{ vector_list[7]| default('정보 없음') }} 영향을 미칩니다.">
+                                                            <tr>
+                                                                <th scope="row">Availability Impact (A)</th>
+                                                                <td
+                                                                    class="{% if vector_list[7] == 'N' %}table-active{% endif %}">
+                                                                    None (A:N)</td>
+                                                                <td
+                                                                    class="{% if vector_list[7] == 'L' %}table-active{% endif %}">
+                                                                    Low (A:L)</td>
+                                                                <td
+                                                                    class="{% if vector_list[7] == 'H' %}table-active{% endif %}">
+                                                                    High (A:H)</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div><!-- End Accordion without outline borders -->
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">cpe</h5>
+                            <!-- Accordion without outline borders -->
+                            <div class="accordion accordion-flush" id="accordion_cpe">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="flush-heading_cpe">
+                                        <button class="accordion-button collapsed" type="button"
+                                            data-bs-toggle="collapse" data-bs-target="#flush-cpe_list"
+                                            aria-expanded="false" aria-controls="flush-cpe_list">
+                                            CPE 리스트
+                                        </button>
+                                    </h2>
+                                    <div id="flush-cpe_list" class="accordion-collapse collapse"
+                                        aria-labelledby="flush-heading_cpe" data-bs-parent="#accordion_cpe">
+                                        <div class="accordion-body">
+                                            <table class="table table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">#</th>
+                                                        <th scope="col">공급업체</th>
+                                                        <th scope="col">제품</th>
+                                                        <th scope="col">버전</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% if info.cpe %}
+                                                    <!-- {% for CPE_List in info.cpe %} -->
+                                                    {% for cpes in info.cpe.CPE_List %}
+                                                    <tr>
+                                                        <th scope="row">{{ cpes.cpe_num }}</th>
+                                                        <td id="cpe-{{ loop.index }}">{{ cpes.CPE | default('정보 없음') }}
+                                                        </td>
+                                                        <td id="included-{{ loop.index }}">{{ cpes.포함 if cpes.포함 is not
+                                                            none else '-' }}</td>
+                                                        <td id="excluded-{{ loop.index }}">{{ cpes.비포함 if cpes.비포함 is not
+                                                            none else '-' }}</td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                    <!-- {% endfor %} -->
+                                                    {% else %}
+                                                    <p>정보가 없습니다.</p>
+                                                    {% endif %}
+                                                </tbody>
+                                            </table>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div><!-- End Accordion without outline borders -->
+
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">연관 IPS/IDS 룰</h5>
+
+                            <!-- Accordion without outline borders -->
+                            <div class="accordion accordion-flush" id="accordion_rules">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="flush-heading_snortRules">
+                                        <button class="accordion-button collapsed" type="button"
+                                            data-bs-toggle="collapse" data-bs-target="#flush-snortRules"
+                                            aria-expanded="false" aria-controls="flush-snortRules">
+                                            SNORT COMMUNITY RULE
+                                        </button>
+                                    </h2>
+                                    <div id="flush-snortRules" class="accordion-collapse collapse"
+                                        aria-labelledby="flush-heading_snortRules" data-bs-parent="#accordion_rules">
+                                        <div class="accordion-body">
+                                            <ul class="list-group">
+                                                {% if snort_community_rule %}
+                                                {% for rule in snort_community_rule %}
+                                                <li class="list-group-item">{{ rule.Rule }}</li>
+                                                {% endfor %}
+                                                {% else %}
+                                                <p>정보 없음</p>
+                                                {% endif %}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="flush-heading_emergingRule">
+                                        <button class="accordion-button collapsed" type="button"
+                                            data-bs-toggle="collapse" data-bs-target="#flush-emergingRule"
+                                            aria-expanded="false" aria-controls="flush-emergingRule">
+                                            EMERGING RULE
+                                        </button>
+                                    </h2>
+                                    <div id="flush-emergingRule" class="accordion-collapse collapse"
+                                        aria-labelledby="flush-heading_emergingRule" data-bs-parent="#accordion_rules">
+                                        <div class="accordion-body">
+                                            <ul class="list-group">
+                                                {% if emerging_rule %}
+                                                {% for rule in emerging_rule %}
+                                                <li class="list-group-item">{{ rule.Rule }}</li>
+                                                {% endfor %}
+                                                {% else %}
+                                                <p>정보 없음</p>
+                                                {% endif %}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div><!-- End Accordion without outline borders -->
+
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">POC (Proof of Concept)</h5>
+                                    <p>POC 총 링크 수 : {{ info.poc.pocs|length }}</p>
+                                    <!-- Accordion without outline borders -->
+                                    <div class="accordion accordion-flush" id="accordion_poc">
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="flush-heading_poc">
+                                                <button class="accordion-button collapsed" type="button"
+                                                    data-bs-toggle="collapse" data-bs-target="#flush-poc_list"
+                                                    aria-expanded="false" aria-controls="flush-poc_list">
+                                                    POC 링크 리스트
+                                                </button>
+                                            </h2>
+                                            <div id="flush-poc_list" class="accordion-collapse collapse"
+                                                aria-labelledby="flush-heading_poc" data-bs-parent="#accordion_poc">
+                                                <div class="accordion-body">
+                                                    <table class="table table-striped">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col">#</th>
+                                                                <th scope="col">링크</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% if info.poc %}
+                                                            {% for poc in info.poc.pocs %}
+                                                            <tr>
+                                                                <th scope="row">{{ loop.index }}</th>
+                                                                <td><a href="{{ poc.url }}">{{ poc.url | default('정보
+                                                                        없음') }}</a>
+                                                                </td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                            {% else %}
+                                                            <p>정보 없음</p>
+                                                            {% endif %}
+                                                        </tbody>
+                                                    </table>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div><!-- End Accordion without outline borders -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">참고자료</h5>
+                                    <!-- Accordion without outline borders -->
+                                    <div class="accordion accordion-flush" id="accordion_reference">
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="flush-heading_reference">
+                                                <button class="accordion-button collapsed" type="button"
+                                                    data-bs-toggle="collapse" data-bs-target="#flush-reference_list"
+                                                    aria-expanded="false" aria-controls="flush-reference_list">
+                                                    참고자료 링크 리스트
+                                                </button>
+                                            </h2>
+                                            <div id="flush-reference_list" class="accordion-collapse collapse"
+                                                aria-labelledby="flush-heading_reference"
+                                                data-bs-parent="#accordion_reference">
+                                                <div class="accordion-body">
+                                                    <table class="table table-striped">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col">#</th>
+                                                                <th scope="col">링크</th>
+                                                                <th scope="col">유형</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% if info.reference.references %}
+                                                            {% for ref in info.reference.references %}
+                                                            <tr class="reference-row">
+                                                                <th scope="row">{{ loop.index }}</th>
+                                                                <td><a href="{{ ref.url }}" class="reference-url">{{ ref.url | default('정보 없음') }}</a></td>
+                                                                <td class="reference-type">
+                                                                    {{ ref.type | default('정보 없음') }}
+                                                                </td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                            {% else %}
+                                                            <tr>
+                                                                <td colspan="3">정보 없음</td>
+                                                            </tr>
+                                                            {% endif %}
+                                                        </tbody>                                                        
+                                                    </table>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div><!-- End Accordion without outline borders -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                  
+
                 </div>
-              </div>
-              {% if info.cpe %}
-              {% for cpe in info.cpe.CPE_List %}
-              <div class="table-row">
-                <div class="table-grid">
-                  <div class="table__cell text-cell" id="cpe-{{ loop.index }}">{{ cpe.CPE | default('정보 없음') }}</div>
-                  <div class="table__cell text-cell" id="included-{{ loop.index }}">{{ cpe.포함 if cpe.포함 is not none else '-' }}</div>
-                  <div class="table__cell text-cell" id="excluded-{{ loop.index }}">{{ cpe.비포함 if cpe.비포함 is not none else '-' }}</div>
-                </div>
-              </div>
-              {% endfor %}
-              {% else %}
-              <p>정보가 없습니다.</p>
-              {% endif %}
             </div>
-          </div>
-        </div>
-      </div>
+        </section>
 
-      <div class="card-cvss">
-        <div class="card__title">CVSS</div>
-        <div class="line-seperate"></div>
-        <div class="tab-container">
-          <div class="tab-item--unselected text-tab--unselected">CVSS 2.0</div>
-          <div class="tab-item--selected text-tab--selected">CVSS 3.x</div>
-        </div>
-        <div class="card__text" id="metrics">
-          메트릭 : {{info.metric}}
-        </div>
-        <div class="table">
-          <div class="table-header">
-            <div class="table-grid">
-              <div class="table__cell text-cell">기본 점수</div>
-              <div class="table__cell text-cell">악용 가능성 점수</div>
-              <div class="table__cell text-cell">영향 점수</div>
-            </div>
-          </div>
-          <div class="table-row">
-            <div class="table-grid">
-              <div class="table__cell text-cell" id="score">{{info.score}}</div>
-              <div class="table__cell text-cell" id="exploit_score">{{info.exploit_score}}
-              </div>
-              <div class="table__cell text-cell" id="influence_score">{{info.influence_score}}</div>
-            </div>
-          </div>
-        </div>
-        <div class="card__subtitle">메트릭 요약</div>
-        <div class="card__text" id="metrics_summary">{{info.metrics_summary}}</div>
-      </div>
-    </div>
+    </main><!-- End #main -->
 
-    <div class="card-rule">
-      <div class="card__title">연관 IPS Rule</div>
-      <div class="line-seperate"></div>
-      
-      <div class="card__row">
-        <div class="card__subtitle">SNORT COMMUNITY RULE</div>
-      </div>
-      <div class="card__rulebox">
-        <div class="text-rulebox">
-          {% if info.related_rules_type %}
-            {% for rule in info.related_rules_type %}
-              <p>{{ rule }}</p>
-            {% endfor %}
-          {% else %}
-            <p>정보 없음</p>
-          {% endif %}
-        </div>
-      </div>
-    
-       <!-- EMERGING RULE  -->
-      <div class="card__row">
-        <div class="card__subtitle">EMERGING RULE</div>
-      </div>
-      <div class="card__rulebox">
-        <div class="text-rulebox">
-          {% if info.related_rules_product %}
-            {% for rule in info.related_rules_product %}
-              <p>{{ rule }}</p>
-            {% endfor %}
-          {% else %}
-            <p>정보 없음</p>
-          {% endif %}
-        </div>
-      </div>
-    </div>
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+            class="bi bi-arrow-up-short"></i></a>
 
-    <div class="card-poc">
-      <div class="card__title">POC (Proof of Concept)</div>
-      <div class="line-seperate"></div>
-      {% if info.reference%}
-      <div class="card__text">POC 총 링크 수 : {{info.reference.references|length}}</div>
-      {% endif %}
-      <div class="accordion-container">
-        <div class="accordion-title">
-          <div class="text-accordion-title">POC 링크 목록</div>
-          <img class="btn-accordion" src="../static/vectors/btn-accordion-down.svg" />
-        </div>
-        <div class="accordion-content">
-          <div class="table">
-            <div class="table-header">
-              <div class="table-grid">
-                <div class="table__cell text-cell">링크</div>
-              </div>
-            </div>
-            {% if info.reference%}
-            {% for poc in info.reference.references %}
-            <div class="table-row">
-              <div class="table-grid">
-                <a class="table__cell text-link" href="{{ poc.url }}">{{ poc.url | default('정보 없음') }}</a>
-              </div>
-            </div>
-            {% endfor %}
-            {% endif %}
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  </div>
-  
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-      // 아코디언 기능
-      const accordionTitles = document.querySelectorAll('.accordion-title');
-      accordionTitles.forEach(title => {
-        title.addEventListener('click', function () {
-          const accordionContainer = this.parentElement;
-          const accordionContent = accordionContainer.querySelector('.accordion-content');
-          const accordionButton = this.querySelector('.btn-accordion');
 
-          accordionContainer.classList.toggle('active');
-          accordionContent.style.display = accordionContainer.classList.contains('active') ? 'flex' : 'none';
-          accordionButton.src = accordionContainer.classList.contains('active')
-            ? '../static/vectors/btn-accordion-up.svg'
-            : '../static/vectors/btn-accordion-down.svg';
-        });
-      });
-    });
-</script>
+<!-- Vendor JS Files -->
+<script src="../static/assets/vendor/apexcharts/apexcharts.min.js"></script>
+<script src="../static/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="../static/assets/vendor/chart.js/chart.umd.js"></script>
+<script src="../static/assets/vendor/echarts/echarts.min.js"></script>
+<script src="../static/assets/vendor/quill/quill.js"></script>
+<script src="../static/assets/vendor/simple-datatables/simple-datatables.js"></script>
+<script src="../static/assets/vendor/tinymce/tinymce.min.js"></script>
+<script src="../static/assets/vendor/php-email-form/validate.js"></script>
+
+<!-- Template Main JS File -->
+<script src="../static/assets/js/main.js"></script>
+
+
 </body>
 </html>
