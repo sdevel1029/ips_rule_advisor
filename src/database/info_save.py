@@ -24,8 +24,8 @@ class VulnerabilityCreate(BaseModel):
     influence_score: float = None
     exploit_score: float = None
     metrics_summary: str
-    related_rules_type: dict = None
-    related_rules_product: dict = None
+    snort_community_rule: dict = None
+    emerging_rule: dict = None
     poc: dict = None
     reference: dict = None
     cve: str = None
