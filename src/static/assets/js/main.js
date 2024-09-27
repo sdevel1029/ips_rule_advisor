@@ -347,11 +347,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         const data = await response.json();
 
         // 정보 수집 목록 데이터
-        pastInfoList = data.past_info_list; 
+        const pastInfoList = data.past_info_list; 
         const listContainer = document.getElementById('past-cve-list');
 
         // 테스트 결과 목록 데이터 
-         pastTestList = data.past_test_list;
+        const pastTestList = data.past_test_list;
         const listContainer2 = document.getElementById('past-test-list');
 
         // 정보 수집 목록 표시
