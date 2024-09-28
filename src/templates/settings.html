@@ -89,17 +89,11 @@
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">E-mail</div>
-                    <div class="col-lg-9 col-md-8">k.anderson@example.com</div>
+                    <div class="col-lg-9 col-md-8">{{data.email}}</div>
                   </div>
-
                   <div class="row">
-                    <div class="col-lg-3 col-md-4 label">가입일</div>
-                    <div class="col-lg-9 col-md-8">2024.09.19</div>
-                  </div>
-
-                  <div class="row">
-                    <div class="col-lg-3 col-md-4 label">구글 연동 여부</div>
-                    <div class="col-lg-9 col-md-8">X</div>
+                    <div class="col-lg-3 col-md-4 label">닉네임</div>
+                    <div class="col-lg-9 col-md-8">{{ data.username }}</div>
                   </div>
 
                 </div>
@@ -107,16 +101,16 @@
                 <div class="tab-pane fade profile-edit pt-3" id="setting-profile_edit">
 
                   <!-- Profile Edit Form -->
-                  <form>
+                  <form id="profileForm">
                     <div class="row mb-3">
                       <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">프로필 이미지</label>
                       <div class="col-md-8 col-lg-9">
-                        <img src="../static/assets/img/profile-img.jpg" alt="Profile">
+                        <img src="{{ data.image_url }}" alt="Profile">
                         <div class="pt-2">
-                          <a href="#" class="btn btn-primary btn-sm" title="Upload new profile image"><i
-                              class="bi bi-upload"></i></a>
-                          <a href="#" class="btn btn-danger btn-sm" title="Remove my profile image"><i
-                              class="bi bi-trash"></i></a>
+                          <input type="file" id="profileImageUpload" name="profileImage" style="display: none;" accept="image/*">
+                          <a href="#" id="uploadButton" class="btn btn-primary btn-sm" title="새 프로필 이미지 업로드"><i class="bi bi-upload"></i></a>
+                          <a href="#" id="deleteButton" class="btn btn-danger btn-sm" title="프로필 이미지 삭제"><i class="bi bi-trash"></i></a>
+     
                         </div>
                       </div>
                     </div>
@@ -124,7 +118,7 @@
                     <div class="row mb-3">
                       <label for="nickname" class="col-md-4 col-lg-3 col-form-label">닉네임</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="nickname" type="text" class="form-control" id="nickname" value="Kevin Anderson">
+                        <input name="nickname" type="text" class="form-control" id="nickname" value="{{ data.username }}">
                       </div>
                     </div>
 
@@ -150,7 +144,7 @@
                     </div>
 
                     <div class="text-center">
-                      <button type="submit" class="btn btn-primary">변경사항 저장</button>
+                      <button type="submit" class="btn btn-primary" id="submit">변경사항 저장</button>
                     </div>
                   </form><!-- End Profile Edit Form -->
 
@@ -209,6 +203,106 @@
 
   <!-- Template Main JS File -->
   <script src="../static/assets/js/main.js"></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Add event listener to the form submit
+    document.getElementById('profileForm').addEventListener('submit', function(event) {
+      event.preventDefault(); // Prevent the default form submission
+      // Get the values from the input fields
+      const nickname = document.getElementById('nickname').value;
+      const curpass = document.getElementById('currentPassword').value;
+      const newpass = document.getElementById('newPassword').value;
+      const renewpass = document.getElementById('renewPassword').value;
+      alert(1)
+
+      // Send the form data to the server using fetch
+      fetch('/auth/changeprofile', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+              username: nickname,
+              curpass: curpass,
+              newpass: newpass
+          })
+      })
+      .then(response => response.json())
+      .then(data => {
+          if (data) {
+              alert("성공");
+              window.location.href = "/settings";
+          } else {
+              alert("실패" );
+              window.location.href = "/settings"
+          }
+      })
+      .catch((error) => {
+          alert("에러 발생: " + error);
+      });
+    });
+  });
+
+
+  
+  document.getElementById('uploadButton').addEventListener('click', function(event) {
+    event.preventDefault();
+    document.getElementById('profileImageUpload').click();
+});
+
+
+  document.getElementById('profileImageUpload').addEventListener('change', function() {
+    const fileInput = document.getElementById('profileImageUpload');
+    if (fileInput.files && fileInput.files[0]) {
+        const formData = new FormData();
+        formData.append('file', fileInput.files[0]);
+
+        fetch('/uploadfile/profile', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data) {
+                // 업로드 성공 시 이미지 미리보기 업데이트
+                alert('이미지 업로드에 성공했습니다.');
+                const imgElement = document.querySelector('img[alt="Profile"]');
+                imgElement.src = `${data.image_url}?t=${new Date().getTime()}`;
+            } else {
+                alert('이미지 업로드에 실패했습니다.');
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+});
+
+
+document.getElementById('deleteButton').addEventListener('click', function(event) {
+    event.preventDefault();
+    if (confirm('정말로 프로필 이미지를 삭제하시겠습니까?')) {
+        fetch('/delete/profile', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ delete: true }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data) {
+                // 삭제 성공 시 이미지 미리보기 제거 또는 기본 이미지로 변경
+                alert('이미지 삭제에 성공했습니다.')
+                const imgElement = document.querySelector('img[alt="Profile"]');
+                imgElement.src = `${data.image_url}?t=${new Date().getTime()}`;
+            } else {
+                alert('이미지 삭제에 실패했습니다.');
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+});
+  </script>
 
 </body>
 

@@ -28,8 +28,8 @@ def sign_in(client: Client, email: str, password: str, response: Response):
     try:
         res = client.auth.sign_in_with_password({"email": email, "password": password})
         if res.user:
-            response.set_cookie(key="user", value=res.session.access_token)
-            response.set_cookie(key="userrefresh", value=res.session.refresh_token)
+            response.set_cookie(key="user", value=res.session.access_token,path="/")
+            response.set_cookie(key="userrefresh", value=res.session.refresh_token,path="/")
             return {"status": "success"}
         else:
             raise HTTPException(status_code=400, detail="Invalid credentials")
@@ -39,8 +39,8 @@ def sign_in(client: Client, email: str, password: str, response: Response):
 
 def sign_out(client: Client, response: Response):
     try:
-        response.delete_cookie(key="user")
-        response.delete_cookie(key="userrefresh")
+        response.delete_cookie(key="user",path="/")
+        response.delete_cookie(key="userrefresh",path="/")
         client.auth.sign_out()
         return {"status": "success"}
     except Exception as e:
@@ -60,10 +60,9 @@ def callback(client: Client, request: Request, response: Response):
         code = request.query_params.get("access_token")
         rcode = request.query_params.get("refresh_token")
         response = RedirectResponse(url="/")
-        response.set_cookie(key="user", value=code)
-        response.set_cookie(key="userrefresh", value=rcode)
+        response.set_cookie(key="user", value=code,path="/")
+        response.set_cookie(key="userrefresh", value=rcode,path="/")
         res = client.auth.set_session(code, rcode)
-        print(res.session.access_token)
         return response  # 어디로 보낼지는 체크필요
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
@@ -85,15 +84,16 @@ def getuserinfo(client: Client, request: Request, response: Response):
                 return {"status":True, "user": user_info}
         except Exception as e:
             res = client.auth.refresh_session(refresh_token=refresh_token_from_cookie)
-            response.set_cookie(key="user", value=res.session.access_token)
-            response.set_cookie(key="userrefresh", value=res.session.refresh_token)
+            sign_out(client=client,response=response)
+            response.set_cookie(key="user", value=res.session.access_token,path="/")
+            response.set_cookie(key="userrefresh", value=res.session.refresh_token,path="/")
             user_info = client.auth.get_user(res.session.access_token)
             if user_info:
                 return {"status":True, "user": user_info}
     except Exception as e:
-        response.delete_cookie(key="user")
-        response.delete_cookie(key="userrefresh")
-        return {"status":False}
+        response = RedirectResponse(url="/login")
+        sign_out(client=client,response=response)
+        return response
 
 
 def profile(client: Client, request: Request):
