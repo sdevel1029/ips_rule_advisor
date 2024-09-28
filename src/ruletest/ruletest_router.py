@@ -27,6 +27,8 @@ class cve(BaseModel):
 @router.post("/uploadfile/normal")
 async def upload_file(response:Response,request: Request,cve: str = Form(...), file: UploadFile = File(...), client=Depends(get_supabase_client)):
     user_info = getuserinfo(client=client,response=response,request=request)
+    if isinstance(user_info, RedirectResponse):
+        return user_info
     user_id = user_info["user"].user.id
     folder_path = f"normal_pcap/{user_id}"
     os.makedirs(folder_path, exist_ok=True)
@@ -38,7 +40,6 @@ async def upload_file(response:Response,request: Request,cve: str = Form(...), f
 @router.get("/download")
 async def download_file(file_location: str = Query(..., description="The name of the file to download")):
     file_location = file_location
-    print(file_location)
     if not os.path.exists(file_location):
         raise HTTPException(status_code=404, detail="File not found")
     return FileResponse(file_location, media_type='application/octet-stream', filename=file_location)
@@ -47,6 +48,8 @@ async def download_file(file_location: str = Query(..., description="The name of
 @router.post("/uploadfile/attack")
 async def upload_file(response:Response,request: Request,cve: str = Form(...), file: UploadFile = File(...), client=Depends(get_supabase_client)):
     user_info = getuserinfo(client=client,response=response,request=request)
+    if isinstance(user_info, RedirectResponse):
+        return user_info
     user_id = user_info["user"].user.id
     folder_path = "attack_pcap/"+user_id
     os.makedirs(folder_path, exist_ok=True)
@@ -60,6 +63,9 @@ async def upload_file(response:Response,request: Request,cve: str = Form(...), f
 async def test(response:Response,request:Request,client=Depends(get_supabase_client)):
     data = await request.json()
     user_info = getuserinfo(client=client,response=response,request=request)
+    if isinstance(user_info, RedirectResponse):
+        return user_info
+    print(user_info)
     user_id = user_info["user"].user.id
     accuracy_test = data.get("accuracy_test", "")
     performance_test = data.get("performance_test", "")
