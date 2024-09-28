@@ -11,6 +11,10 @@ templates = Jinja2Templates(directory="src/templates")
 async def login_page(request: Request):
     return templates.TemplateResponse("login.html", {"request": request})
 
+@router.post("/login", response_class=HTMLResponse)
+async def login_page(request: Request):
+    return templates.TemplateResponse("login.html", {"request": request})
+
 
 @router.get("/register", response_class=HTMLResponse)
 async def register_page(request: Request):
