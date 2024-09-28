@@ -66,3 +66,29 @@ def callback_route(
 @router.get("/profile")
 def profile_route(request: Request, client=Depends(get_supabase_client)):
     return profile(request=request, client=client)
+
+@router.post("/changeprofile")
+async def change_profile(request: Request, response: Response, client=Depends(get_supabase_client)):
+    try:
+        data = await request.json()
+        nickname = data.get("username", "")
+
+        curpass = data.get("curpass", "")
+        newpass = data.get("newpass", "")
+
+
+        user_info = getuserinfo(client=client,response=response,request=request)
+        if isinstance(user_info, RedirectResponse):
+            return user_info
+    
+        email = user_info["user"].user.email
+        user_id = user_info["user"].user.id
+        sign_in(client=client,email=email,password=curpass)
+
+
+        client.auth.update_user({"id": email, "password": newpass })
+        
+        user = client.table("userinfo").update({"username": nickname}).eq("id", user_id).execute()
+        return {"status":"Good"}
+    except:
+        HTTPException(status_code=400, detail="Invalid credentials")
