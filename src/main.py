@@ -27,6 +27,7 @@ app = FastAPI()
 
 # Static files setup
 app.mount("/static", StaticFiles(directory="./src/static"), name="static")
+app.mount("/profile", StaticFiles(directory="profile"), name="profile")
 
 # Include routers
 app.include_router(auth_router, prefix="/auth")
