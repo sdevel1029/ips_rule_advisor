@@ -65,7 +65,7 @@
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">
-                <a href="/infoshow?uuid={{ data.info.id }}">{{ data.info.cve }}</a>
+                <a href="/infoshow?uuid={{ data.info.id }}">정보수집 결과</a>
             </h5>
 
             <!-- Default Accordion -->
@@ -73,19 +73,24 @@
               <div class="accordion-item">
                 <h2 class="accordion-header" id="headingOneLeft">
                   <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOneLeft" aria-expanded="true" aria-controls="collapseOneLeft">
-                    {{ data.info.cve }}
+                    CVE
                   </button>
                 </h2>
                 <div id="collapseOneLeft" class="accordion-collapse collapse show" aria-labelledby="headingOneLeft" data-bs-parent="#accordionLeft">
                   
-                  <div id="dates">
-                    게시일 : <span id="posting-date">{{ data.info.last_modified_date | default('정보 없음') }}</span> |
-                    최종 수정일 : <span id="last-modified-date">{{ data.info.cve_posting_date }}</span>
+                  <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title" id="cve-id">{{ data.info.cve | default('정보 없음') }}</h5>
+                        <div id="dates">
+                            게시일 : <span id="posting-date">{{ data.info.last_modified_date | default('정보 없음') }}</span> |
+                            최종 수정일 : <span id="last-modified-date">{{ data.info.cve_posting_date }}</span>
+                        </div>
+                        <p id="vuln-type" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                            data-bs-original-title="{{ type_description | default('정보없음') }}">
+                            취약점 유형 : {{ data.info.vuln_type | default('정보 없음') }}</p>
+                        <p id="description">{{ data.info.description | default('정보 없음') }}</p>
+                    </div>
                   </div>
-                  <p id="vuln-type" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                    data-bs-original-title="{{ type_description | default('정보없음') }}">
-                    취약점 유형 : {{ data.info.vuln_type | default('정보 없음') }}</p>
-                  <p id="description">{{ data.info.description | default('정보 없음') }}</p>
 
                 </div>
               </div>
@@ -131,112 +136,161 @@
 
       <!-- 우측 카드 -->
       <div class="col-md-6">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">
-                <a href="/ruleshow?testid={{data.test.id}}">테스트 결과</a>
-            </h5>
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">
+            <a href="/ruleshow?testid={{data.test.id}}">테스트 결과</a>
+          </h5>
 
-            <!-- Default Accordion -->
-            <div class="accordion" id="accordionRight">
-              <div class="accordion-item">
-                <h2 class="accordion-header" id="headingOneRight">
-                  <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOneRight" aria-expanded="true" aria-controls="collapseOneRight">
-                    테스트 환경
-                  </button>
-                </h2>
-                <div id="collapseOneRight" class="accordion-collapse collapse show" aria-labelledby="headingOneRight" data-bs-parent="#accordionRight">
-                  <div class="accordion-body">
-                    <div class="table">
-                      <div class="table-row">
-                        <div class="table-grid">
-                          <div class="table__cell text-cell" id="test-environment">테스트 환경 : {{ data.test.setting }}</div>
-                          <div class="table__cell text-cell" id="total-packets">총 테스트 패킷 : {{ data.test.total }}</div>
-                          <div class="table__cell text-cell" id="attack-packets">공격 패킷 : {{ data.test.attacknum }}</div>
-                          <div class="table__cell text-cell" id="normal-packets">정상 패킷 : {{ data.test.normalnum }}</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="accordion-item">
-                <h2 class="accordion-header" id="headingTwoRight">
-                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwoRight" aria-expanded="false" aria-controls="collapseTwoRight">
-                    정확도 테스트 결과
-                  </button>
-                </h2>
-                <div id="collapseTwoRight" class="accordion-collapse collapse" aria-labelledby="headingTwoRight" data-bs-parent="#accordionRight">
-                  <div class="accordion-body">
-                    <div class="table">
-                      <div class="table-row">
-                        <div class="table-grid">
-                          <div class="table__cell text-cell" id="accuracy-rate">정확도 비율 : {{ data.test.accuracyrate }}</div>
-                          <div class="table__cell text-cell" id="false-positive">오탐 패킷(률) : {{ data.test.attackrate }}</div>
-                          <div class="table__cell text-cell" id="false-negative">미탐 패킷(률) : {{ data.test.normalrate }}</div>
-                          <div class="table__cell text-cell" id="true-positive">정탐 패킷(률) : {{ data.test.attacktrue }}</div>
-                          <div class="table__cell text-cell" id="true-negative">정탐 패킷(률) : {{ data.test.normaltrue }}</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="accordion-item">
-                <h2 class="accordion-header" id="headingThreeRight">
-                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThreeRight" aria-expanded="false" aria-controls="collapseThreeRight">
-                    성능 테스트 결과
-                  </button>
-                </h2>
-                <div id="collapseThreeRight" class="accordion-collapse collapse" aria-labelledby="headingThreeRight" data-bs-parent="#accordionRight">
-                  <div class="accordion-body">
-                    <table class="table">
-                      <thead>
-                        <tr>
-                          <th>패킷 유형</th>
-                          <th>지연 시간</th>
-                          <th>CPU 사용량</th>
-                          <th>메모리 사용량</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>정상 패킷</td>
-                          <td>{{ data.test.normallatency }}</td>
-                          <td>{{ data.test.normalcpu_usage }}</td>
-                          <td>{{ data.test.normalmemory_usage }}</td>
-                        </tr>
-                        <tr>
-                          <td>공격 패킷</td>
-                          <td>{{ data.test.attacklatency }}</td>
-                          <td>{{ data.test.attackcpu_usage }}</td>
-                          <td>{{ data.test.attackmemory_usage }}</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-              
-            </div><!-- End Default Accordion Right -->
+          <!-- Default Accordion -->
+          <div class="accordion" id="accordionRight">
 
+            <!-- 테스트 환경 섹션 -->
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingOneRight">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOneRight" aria-expanded="true" aria-controls="collapseOneRight">
+                  테스트 환경
+                </button>
+              </h2>
+              <div id="collapseOneRight" class="accordion-collapse collapse show" aria-labelledby="headingOneRight" data-bs-parent="#accordionRight">
+                <div class="accordion-body">
+                  <table class="table">
+                    <tbody>
+                      <tr>
+                        <td>테스트 환경</td>
+                        <td>{{ data.test.setting }}</td>
+                      </tr>
+                      <tr>
+                        <td>총 테스트 패킷</td>
+                        <td>{{ data.test.total }}</td>
+                      </tr>
+                      <tr>
+                        <td>공격 패킷</td>
+                        <td>{{ data.test.attacknum }}</td>
+                      </tr>
+                      <tr>
+                        <td>정상 패킷</td>
+                        <td>{{ data.test.normalnum }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- 정확도 테스트 결과 섹션 -->
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingTwoRight">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwoRight" aria-expanded="false" aria-controls="collapseTwoRight">
+                  정확도 테스트 결과
+                </button>
+              </h2>
+              <div id="collapseTwoRight" class="accordion-collapse collapse" aria-labelledby="headingTwoRight" data-bs-parent="#accordionRight">
+                <div class="accordion-body">
+                  <table class="table">
+                    <tbody>
+                      <tr>
+                        <td>정확도 비율</td>
+                        <td>{{ data.test.accuracyrate }}</td>
+                      </tr>
+                      <tr>
+                        <td>오탐 패킷(률)</td>
+                        <td>{{ data.test.attackrate }}</td>
+                      </tr>
+                      <tr>
+                        <td>미탐 패킷(률)</td>
+                        <td>{{ data.test.normalrate }}</td>
+                      </tr>
+                      <tr>
+                        <td>정탐 패킷(률)</td>
+                        <td>{{ data.test.attacktrue }}</td>
+                      </tr>
+                      <tr>
+                        <td>정탐 패킷(률)</td>
+                        <td>{{ data.test.normaltrue }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- 성능 테스트 결과 섹션 -->
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingThreeRight">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThreeRight" aria-expanded="false" aria-controls="collapseThreeRight">
+                  성능 테스트 결과
+                </button>
+              </h2>
+              <div id="collapseThreeRight" class="accordion-collapse collapse" aria-labelledby="headingThreeRight" data-bs-parent="#accordionRight">
+                <div class="accordion-body">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>패킷 유형</th>
+                        <th>지연 시간</th>
+                        <th>CPU 사용량</th>
+                        <th>메모리 사용량</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>정상 패킷</td>
+                        <td>{{ data.test.normallatency }}</td>
+                        <td>{{ data.test.normalcpu_usage }}</td>
+                        <td>{{ data.test.normalmemory_usage }}</td>
+                      </tr>
+                      <tr>
+                        <td>공격 패킷</td>
+                        <td>{{ data.test.attacklatency }}</td>
+                        <td>{{ data.test.attackcpu_usage }}</td>
+                        <td>{{ data.test.attackmemory_usage }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+          </div><!-- End Default Accordion Right -->
           </div>
         </div>
       </div>
 
       <!-- Card with header and footer -->
       <div class="card">
-      <div class="card-body">
-        <h5 class="card-title">최종보고서</h5>
-        {% if report_content %}
-        <div class="report">
-            {{ report_content | safe }}  <!-- 텍스트를 그대로 출력 -->
+        <div class="card-header">
+          <h5 class="card-title">Chat GPT 요약 보고서</h5>
         </div>
-        {% else %}
-            <p>보고서 데이터를 불러오지 못했습니다. 다시 시도해주세요.</p>
-        {% endif %}
+        <div class="card-body">
+          {% if report_content %}
+          <div class="report">
+            <!-- 보고서 내용 -->
+            <div class="summary-content">
+              <p>{{ report_content | safe }}</p> <!-- 텍스트를 그대로 출력 -->
+            </div>
+          </div>
+          {% else %}
+          <div class="alert alert-warning" role="alert">
+            보고서 데이터를 불러오지 못했습니다. 다시 시도해주세요.
+          </div>
+          {% endif %}
+        </div>
+      </div><!-- End Card with header and footer -->
+
+      <!-- 사용자 의견 카드 -->
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">사용자 의견</h5>
+          <form id="feedbackForm">
+            <div class="mb-3">
+              <textarea class="form-control" id="userFeedback" rows="3" placeholder="의견을 입력하세요" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">추가</button>
+          </form>
+        </div>
       </div>
-    </div><!-- End Card with header and footer -->
+
 
     </section>
   </main><!-- End Main -->
