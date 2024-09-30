@@ -30,6 +30,7 @@ def sign_in(client: Client, email: str, password: str, response: Response):
         if res.user:
             response.set_cookie(key="user", value=res.session.access_token,path="/")
             response.set_cookie(key="userrefresh", value=res.session.refresh_token,path="/")
+
             return {"status": "success"}
         else:
             raise HTTPException(status_code=400, detail="Invalid credentials")
