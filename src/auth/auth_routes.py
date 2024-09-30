@@ -77,17 +77,22 @@ async def change_profile(request: Request, response: Response,client=Depends(get
 
         curpass = data.get("curpass", "")
         newpass = data.get("newpass", "")
-
-
-        user_info = getuserinfo(client=client,response=response,request=request)
-        if isinstance(user_info, RedirectResponse):
-            return user_info
-        email = user_info["user"].user.identities[0].identity_data["email"]
-        user_id = user_info["user"].user.id
-        sign_out(client=client,response=response)
-        sign_in(client=client,email=email,password=curpass,response=response)   
-        client.auth.update_user({"id": email, "password": newpass })
-        user = client.table("userinfo").update({"username": nickname}).eq("id", user_id).execute()
+        if newpass =="":
+            user_info = getuserinfo(client=client,response=response,request=request)
+            if isinstance(user_info, RedirectResponse):
+                return user_info
+            user_id = user_info["user"].user.id
+            user = client.table("userinfo").update({"username": nickname}).eq("id", user_id).execute()
+        else:
+            user_info = getuserinfo(client=client,response=response,request=request)
+            if isinstance(user_info, RedirectResponse):
+                return user_info
+            email = user_info["user"].user.identities[0].identity_data["email"]
+            user_id = user_info["user"].user.id
+            sign_out(client=client,response=response)
+            sign_in(client=client,email=email,password=curpass,response=response)   
+            client.auth.update_user({"id": email, "password": newpass })
+            user = client.table("userinfo").update({"username": nickname}).eq("id", user_id).execute()
         return {"status":"good"}
     except Exception as e:
         # Log the exception and raise it properly so the client receives it
