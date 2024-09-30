@@ -1,33 +1,264 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Final Report</title>
-    <link rel="stylesheet" href="/static/css/style.css"> <!-- Optional: 추가적인 CSS 경로 -->
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>S-aide - 최신 보안 정보 제공 사이트</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="../static/assets/img/favicon.png" rel="icon">
+    <link href="../static/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link
+        href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+        rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="../static/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../static/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="../static/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="../static/assets/vendor/quill/quill.snow.css" rel="stylesheet">
+    <link href="../static/assets/vendor/quill/quill.bubble.css" rel="stylesheet">
+    <link href="../static/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+    <link href="../static/assets/vendor/simple-datatables/style.css" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="../static/assets/css/style.css" rel="stylesheet">
+
+    <!-- Custom CSS File-->
+    <link href="../static/styles/final_show.css" rel="stylesheet">
+
+    <!-- =======================================================
+  * Template Name: NiceAdmin
+  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
+  * Updated: Apr 20 2024 with Bootstrap v5.3.3
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
 </head>
+
 <body>
-    <header>
-        <h1>최종 보고서</h1>
-    </header>
+    <!-- ======= Header ======= -->
+    <header id="header" class="header fixed-top d-flex align-items-center">
+      <div class="d-flex align-items-center justify-content-between">
+          <a href="/" class="logo d-flex align-items-center">
+              <img src="../static/assets/img/logo.png" alt="">
+              <span class="d-none d-lg-block">S-aide</span>
+          </a>
+          <i class="bi bi-list toggle-sidebar-btn"></i>
+      </div><!-- End Logo -->
+  </header><!-- End Header -->
 
-    <main>
-        <section>
-            <h2>보고서 내용</h2>
-            <!-- report_content가 비어있지 않은 경우 내용을 표시 -->
-            {% if report_content %}
-                <div class="report">
-                    {{ report_content | safe }}  <!-- 텍스트를 그대로 출력 -->
+  <!-- 사이드바 임포트 -->
+  {% include 'sidebar.html' %}
+
+  <main id="main" class="main">
+    <section class="row">
+      <!-- 좌측 카드 -->
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">
+                <a href="/infoshow?uuid={{ data.info.id }}">{{ data.info.cve }}</a>
+            </h5>
+
+            <!-- Default Accordion -->
+            <div class="accordion" id="accordionLeft">
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOneLeft">
+                  <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOneLeft" aria-expanded="true" aria-controls="collapseOneLeft">
+                    {{ data.info.cve }}
+                  </button>
+                </h2>
+                <div id="collapseOneLeft" class="accordion-collapse collapse show" aria-labelledby="headingOneLeft" data-bs-parent="#accordionLeft">
+                  
+                  <div id="dates">
+                    게시일 : <span id="posting-date">{{ data.info.last_modified_date | default('정보 없음') }}</span> |
+                    최종 수정일 : <span id="last-modified-date">{{ data.info.cve_posting_date }}</span>
+                  </div>
+                  <p id="vuln-type" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                    data-bs-original-title="{{ type_description | default('정보없음') }}">
+                    취약점 유형 : {{ data.info.vuln_type | default('정보 없음') }}</p>
+                  <p id="description">{{ data.info.description | default('정보 없음') }}</p>
+
                 </div>
-            {% else %}
-                <p>보고서 데이터를 불러오지 못했습니다. 다시 시도해주세요.</p>
-            {% endif %}
-        </section>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingTwoLeft">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwoLeft" aria-expanded="false" aria-controls="collapseTwoLeft">
+                    CVSS
+                  </button>
+                </h2>
+                <div id="collapseTwoLeft" class="accordion-collapse collapse" aria-labelledby="headingTwoLeft" data-bs-parent="#accordionLeft">
+                  <div class="accordion-body">
 
-    </main>
+                    <p id="metrics">메트릭 : {{ data.info.metric | default('정보 없음') }}</p>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th scope="col">기본 점수</th>
+                                <th scope="col">악용 가능성 점수</th>
+                                <th scope="col">영향 점수</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td id="score">{{ data.info.score | default('정보 없음') }}</td>
+                                <td id="exploit_score">{{ data.info.exploit_score | default('정보 없음')
+                                    }}</td>
+                                <td id="influence_score">{{ data.info.influence_score | default('정보 없음') }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <h5>매트릭 요약</h5>
+                    <p id="metrics_summary">{{ data.info.metrics_summary | default('정보 없음') }}</p>
+                 
+                  </div>
+                </div>
+              </div>
+   
+            </div><!-- End Default Accordion Left -->
 
-    <footer>
-        <p>&copy; 2024 Report Service</p>
-    </footer>
+          </div>
+        </div>
+      </div>
+
+      <!-- 우측 카드 -->
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">
+                <a href="/ruleshow?testid={{data.test.id}}">테스트 결과</a>
+            </h5>
+
+            <!-- Default Accordion -->
+            <div class="accordion" id="accordionRight">
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOneRight">
+                  <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOneRight" aria-expanded="true" aria-controls="collapseOneRight">
+                    테스트 환경
+                  </button>
+                </h2>
+                <div id="collapseOneRight" class="accordion-collapse collapse show" aria-labelledby="headingOneRight" data-bs-parent="#accordionRight">
+                  <div class="accordion-body">
+                    <div class="table">
+                      <div class="table-row">
+                        <div class="table-grid">
+                          <div class="table__cell text-cell" id="test-environment">테스트 환경 : {{ data.test.setting }}</div>
+                          <div class="table__cell text-cell" id="total-packets">총 테스트 패킷 : {{ data.test.total }}</div>
+                          <div class="table__cell text-cell" id="attack-packets">공격 패킷 : {{ data.test.attacknum }}</div>
+                          <div class="table__cell text-cell" id="normal-packets">정상 패킷 : {{ data.test.normalnum }}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingTwoRight">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwoRight" aria-expanded="false" aria-controls="collapseTwoRight">
+                    정확도 테스트 결과
+                  </button>
+                </h2>
+                <div id="collapseTwoRight" class="accordion-collapse collapse" aria-labelledby="headingTwoRight" data-bs-parent="#accordionRight">
+                  <div class="accordion-body">
+                    <div class="table">
+                      <div class="table-row">
+                        <div class="table-grid">
+                          <div class="table__cell text-cell" id="accuracy-rate">정확도 비율 : {{ data.test.accuracyrate }}</div>
+                          <div class="table__cell text-cell" id="false-positive">오탐 패킷(률) : {{ data.test.attackrate }}</div>
+                          <div class="table__cell text-cell" id="false-negative">미탐 패킷(률) : {{ data.test.normalrate }}</div>
+                          <div class="table__cell text-cell" id="true-positive">정탐 패킷(률) : {{ data.test.attacktrue }}</div>
+                          <div class="table__cell text-cell" id="true-negative">정탐 패킷(률) : {{ data.test.normaltrue }}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingThreeRight">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThreeRight" aria-expanded="false" aria-controls="collapseThreeRight">
+                    성능 테스트 결과
+                  </button>
+                </h2>
+                <div id="collapseThreeRight" class="accordion-collapse collapse" aria-labelledby="headingThreeRight" data-bs-parent="#accordionRight">
+                  <div class="accordion-body">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>패킷 유형</th>
+                          <th>지연 시간</th>
+                          <th>CPU 사용량</th>
+                          <th>메모리 사용량</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>정상 패킷</td>
+                          <td>{{ data.test.normallatency }}</td>
+                          <td>{{ data.test.normalcpu_usage }}</td>
+                          <td>{{ data.test.normalmemory_usage }}</td>
+                        </tr>
+                        <tr>
+                          <td>공격 패킷</td>
+                          <td>{{ data.test.attacklatency }}</td>
+                          <td>{{ data.test.attackcpu_usage }}</td>
+                          <td>{{ data.test.attackmemory_usage }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              
+            </div><!-- End Default Accordion Right -->
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Card with header and footer -->
+      <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">최종보고서</h5>
+        {% if report_content %}
+        <div class="report">
+            {{ report_content | safe }}  <!-- 텍스트를 그대로 출력 -->
+        </div>
+        {% else %}
+            <p>보고서 데이터를 불러오지 못했습니다. 다시 시도해주세요.</p>
+        {% endif %}
+      </div>
+    </div><!-- End Card with header and footer -->
+
+    </section>
+  </main><!-- End Main -->
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center">
+      <i class="bi bi-arrow-up-short"></i>
+  </a>
+
+<!-- Vendor JS Files -->
+<script src="../static/assets/vendor/apexcharts/apexcharts.min.js"></script>
+<script src="../static/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="../static/assets/vendor/chart.js/chart.umd.js"></script>
+<script src="../static/assets/vendor/echarts/echarts.min.js"></script>
+<script src="../static/assets/vendor/quill/quill.js"></script>
+<script src="../static/assets/vendor/simple-datatables/simple-datatables.js"></script>
+<script src="../static/assets/vendor/tinymce/tinymce.min.js"></script>
+<script src="../static/assets/vendor/php-email-form/validate.js"></script>
+
+<!-- Template Main JS File -->
+<script src="../static/assets/js/main.js"></script>
+<!-- finalreport Js File -->
+<script src="../static/scripts/finalreport.js"></script>
+
 </body>
 </html>
