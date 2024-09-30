@@ -65,26 +65,26 @@
               <div class="card">
                   <div class="card-body">
                       <h5 class="card-title">최종 보고서 생성</h5>
-                      <form class="row g-3" id="reportForm">
-                          <div class="col-md-6">
-                              <label for="info_selection" class="col-sm-12 col-form-label">정보 수집 목록</label>
-                              <select id="info_selection" class="form-select">
-                                  <option value="" disabled selected>정보 결과를 선택하세요</option>
-                                  <!-- AJAX로 가져온 옵션들이 여기에 추가됩니다 -->
-                              </select>
-                          </div>
-                          <div class="col-md-6">
-                              <label for="test_results" class="col-sm-12 col-form-label">테스트 결과 목록</label>
-                              <select id="test_results" class="form-select">
-                                  <option value="" disabled selected>테스트 결과를 선택하세요</option>
-                                  <!-- AJAX로 가져온 옵션들이 여기에 추가됩니다 -->
-                              </select>
-                          </div>
-                          <div class="text-center">
-                              <button type="submit" class="btn btn-primary">보고서 생성</button>
-                              <button type="reset" class="btn btn-secondary">초기화</button>
-                          </div>
-                      </form><!-- End Multi Columns Form -->
+                      
+                      <form class="row g-3" id="reportForm" method="GET" action="/finalshow">
+                        <div class="col-md-6">
+                            <label for="info_selection" class="col-sm-12 col-form-label">정보 수집 목록</label>
+                            <select id="info_selection" name="infoid" class="form-select" required>
+                                <option value="" disabled selected>정보 결과를 선택하세요</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="test_results" class="col-sm-12 col-form-label">테스트 결과 목록</label>
+                            <select id="test_results" name="testid" class="form-select" required>
+                                <option value="" disabled selected>테스트 결과를 선택하세요</option>
+                            </select>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">보고서 생성</button>
+                            <button type="reset" class="btn btn-secondary">초기화</button>
+                        </div>
+                    </form>
+                    
                   </div>
               </div>
           </div>

@@ -18,6 +18,7 @@ async def final_report_page(request: Request):
 @router.get("/finalshow", response_class=HTMLResponse)
 async def final_report_show(request: Request, response: Response, infoid, testid, client=Depends(get_supabase_client)):
     report_content = await get_final_report(request, response, infoid, testid, client)
-    return templates.TemplateResponse("final_show.html", {"request": request, "report_content": report_content})
+    result = await get_final_info(request, response, infoid, testid, client)
+    return templates.TemplateResponse("final_show.html", {"request": request, "report_content": report_content, "data":result})
 
 
