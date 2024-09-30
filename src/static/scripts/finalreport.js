@@ -33,4 +33,22 @@ document.addEventListener("DOMContentLoaded", async () => {
   } catch (error) {
     console.error("Error fetching past data:", error);
   }
+
+  const form = document.getElementById('reportForm');
+  const spinnerContainer = document.querySelector('.spinner-container');
+  const section = document.querySelector('.section');
+
+  form.addEventListener('submit', function(event) {
+      event.preventDefault(); // 기본 폼 제출 막기
+
+      // 섹션 영역 숨기기 (옵션)
+      section.style.display = "none";
+
+      // 스피너와 메시지 표시
+      spinnerContainer.classList.remove('d-none');
+
+      // 실제 폼 제출을 지연하여 스피너 표시
+      setTimeout(() => form.submit(), 100); // 시간 지연 후 폼 제출
+  });
 });
+
