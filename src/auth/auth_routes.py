@@ -6,6 +6,8 @@ from src.auth.auth_service import *
 from fastapi.templating import Jinja2Templates
 from json import JSONDecodeError
 
+from supabase import create_client
+
 
 router = APIRouter()
 templates = Jinja2Templates(directory="src/templates/")
@@ -68,27 +70,31 @@ def profile_route(request: Request, client=Depends(get_supabase_client)):
     return profile(request=request, client=client)
 
 @router.post("/changeprofile")
-async def change_profile(request: Request, response: Response, client=Depends(get_supabase_client)):
+async def change_profile(request: Request, response: Response,client=Depends(get_supabase_client)):
     try:
         data = await request.json()
         nickname = data.get("username", "")
 
         curpass = data.get("curpass", "")
         newpass = data.get("newpass", "")
-
-
-        user_info = getuserinfo(client=client,response=response,request=request)
-        if isinstance(user_info, RedirectResponse):
-            return user_info
-    
-        email = user_info["user"].user.email
-        user_id = user_info["user"].user.id
-        sign_in(client=client,email=email,password=curpass)
-
-
-        client.auth.update_user({"id": email, "password": newpass })
-        
-        user = client.table("userinfo").update({"username": nickname}).eq("id", user_id).execute()
-        return {"status":"Good"}
-    except:
-        HTTPException(status_code=400, detail="Invalid credentials")
+        if newpass =="":
+            user_info = getuserinfo(client=client,response=response,request=request)
+            if isinstance(user_info, RedirectResponse):
+                return user_info
+            user_id = user_info["user"].user.id
+            user = client.table("userinfo").update({"username": nickname}).eq("id", user_id).execute()
+        else:
+            user_info = getuserinfo(client=client,response=response,request=request)
+            if isinstance(user_info, RedirectResponse):
+                return user_info
+            email = user_info["user"].user.identities[0].identity_data["email"]
+            user_id = user_info["user"].user.id
+            sign_out(client=client,response=response)
+            sign_in(client=client,email=email,password=curpass,response=response)   
+            client.auth.update_user({"id": email, "password": newpass })
+            user = client.table("userinfo").update({"username": nickname}).eq("id", user_id).execute()
+        return {"status":"good"}
+    except Exception as e:
+        # Log the exception and raise it properly so the client receives it
+        print(f"Error occurred: {str(e)}")
+        raise HTTPException(status_code=400, detail="Invalid credentials")
