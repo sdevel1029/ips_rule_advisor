@@ -354,6 +354,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         const pastTestList = data.past_test_list;
         const listContainer2 = document.getElementById('past-test-list');
 
+        // 최종 보고서 결과 목록 데이터
+        const pastFinalList = data.past_final_list;
+        const listContainer3 = document.getElementById('past-final-list')
+
         // 정보 수집 목록 표시
         pastInfoList.forEach(info => {
             const listItem = document.createElement('li');
@@ -371,6 +375,15 @@ document.addEventListener("DOMContentLoaded", async () => {
                               </a>`;
           listContainer2.appendChild(listItem);
         });
+
+        // 최종보고서 목록 표시
+        pastFinalList.forEach(final => {
+          const listItem = document.createElement('li');
+          listItem.innerHTML = `<a href="/finalshow?report_id=${final.id}">
+                                <i class="bi bi-circle"></i><span>${final.cve}</span>
+                              </a>`;
+          listContainer3.appendChild(listItem);
+      });
 
     } else {
         console.error("Failed to fetch past data");
