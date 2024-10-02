@@ -65,6 +65,8 @@
                         <div class="card-body">
                             <h5 class="card-title">룰 테스트 결과</h5>
                             <p id="publish-date">테스트일: {{ test_result.created_at }}</p>
+                            <p id="publish-date">CVE: {{ test_result.cve }}</p>
+                            <p id="publish-date">룰: {{ test_result.rule }}</p>
                             <!-- Bordered Table -->
                             <h5>테스트 환경</h5>
                             <table class="table table-bordered">
@@ -141,9 +143,9 @@
                                 <thead>
                                     <tr>
                                         <th scope="col">패킷 유형</th>
-                                        <th scope="col">지연 시간</th>
-                                        <th scope="col">CPU 사용량</th>
-                                        <th scope="col">메모리 사용량</th>
+                                        <th scope="col">실행 시간 증가량 (초)</th>
+                                        <th scope="col">CPU 사용 증가량 (%)</th>
+                                        <th scope="col">메모리 사용 증가량 (MB)</th>
                                     </tr>
                                 </thead>
                                 <tbody>
