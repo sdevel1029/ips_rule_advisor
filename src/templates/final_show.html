@@ -154,6 +154,8 @@
               </h2>
               <div id="collapseOneRight" class="accordion-collapse collapse show" aria-labelledby="headingOneRight" data-bs-parent="#accordionRight">
                 <div class="accordion-body">
+                  <p>테스트 한 룰 :</p>
+                  <p>{{ data.test.rule }}</p>
                   <table class="table">
                     <tbody>
                       <tr>
@@ -161,15 +163,15 @@
                         <td>{{ data.test.setting }}</td>
                       </tr>
                       <tr>
-                        <td>총 테스트 패킷</td>
+                        <td>총 테스트 패킷 수</td>
                         <td>{{ data.test.total }}</td>
                       </tr>
                       <tr>
-                        <td>공격 패킷</td>
+                        <td>공격 패킷 수</td>
                         <td>{{ data.test.attacknum }}</td>
                       </tr>
                       <tr>
-                        <td>정상 패킷</td>
+                        <td>정상 패킷 수</td>
                         <td>{{ data.test.normalnum }}</td>
                       </tr>
                     </tbody>
@@ -228,9 +230,9 @@
                     <thead>
                       <tr>
                         <th>패킷 유형</th>
-                        <th>지연 시간</th>
-                        <th>CPU 사용량</th>
-                        <th>메모리 사용량</th>
+                        <th>실행 시간 증가량 (초)</th>
+                        <th>CPU 사용 증가량 (%)</th>
+                        <th>메모리 사용 증가량 (MB)</th>
                       </tr>
                     </thead>
                     <tbody>
