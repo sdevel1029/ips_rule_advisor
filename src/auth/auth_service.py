@@ -85,7 +85,8 @@ def getuserinfo(client: Client, request: Request, response: Response):
                 return {"status":True, "user": user_info}
         except Exception as e:
             res = client.auth.refresh_session(refresh_token=refresh_token_from_cookie)
-            sign_out(client=client,response=response)
+            response.delete_cookie(key="user",path="/")
+            response.delete_cookie(key="userrefresh",path="/")
             response.set_cookie(key="user", value=res.session.access_token,path="/")
             response.set_cookie(key="userrefresh", value=res.session.refresh_token,path="/")
             user_info = client.auth.get_user(res.session.access_token)
