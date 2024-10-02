@@ -89,4 +89,4 @@ async def ruletest(request: Request,testid:str, client=Depends(get_supabase_clie
     else:
         ans["type"] = "이 cve에 대한 정보 수집을 아직 하지 않았습니다"
         ans["description"] = "이 cve에 대한 정보 수집을 아직 하지 않았습니다"
-    return templates.TemplateResponse("rultest_result.html", {"request": request, "test_result": ans})
+    return templates.TemplateResponse("past_test.html", {"request": request, "test_result": ans})
