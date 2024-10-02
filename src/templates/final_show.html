@@ -281,15 +281,32 @@
       <!-- 사용자 의견 카드 -->
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">사용자 의견</h5>
-          <form id="feedbackForm">
-            <div class="mb-3">
-              <textarea class="form-control" id="userFeedback" rows="3" placeholder="의견을 입력하세요" required></textarea>
+            <h5 class="card-title">사용자 의견</h5>
+
+            <div id="commentsSection">
+                {% if comments %}
+                    {% for comment in comments %}
+                        <div class="comment">
+                            <p>{{ comment.content }}</p>
+                            <!-- <small>작성자: {{ comment.user_id }}</small> -->
+                        </div>
+                        <hr>
+                    {% endfor %}
+                {% else %}
+                    <p>의견이 없습니다.</p>
+                {% endif %}
             </div>
-            <button type="submit" class="btn btn-primary">추가</button>
-          </form>
+
+            <form id="feedbackForm">
+                <div class="mb-3">
+                    <textarea class="form-control" id="userFeedback" rows="3" placeholder="의견을 입력하세요" required></textarea>
+                </div>
+                <input type="hidden" id="reportId" value="{{ report_id }}">
+                <button type="submit" class="btn btn-primary">추가</button>
+            </form>
         </div>
       </div>
+
 
 
     </section>
@@ -311,8 +328,8 @@
 
 <!-- Template Main JS File -->
 <script src="../static/assets/js/main.js"></script>
-<!-- finalreport Js File -->
-<script src="../static/scripts/finalreport.js"></script>
+<!-- finalshow Js File -->
+<script src="../static/scripts/final_show.js"></script>
 
 </body>
 </html>
