@@ -12,6 +12,7 @@ from src.openai.openai_service import (
 )
 from starlette.responses import RedirectResponse
 from src.getinfo.strsearch import get_cve_details
+from src.getinfo.newssearch import news_search
 from src.database.info_save import *
 from datetime import date
 from src.auth.auth_service import profile 
@@ -74,7 +75,14 @@ async def get_info_page(request: Request, cve_code: str = None, filter_type: str
 
         # 뉴스 기사, 칼럼 으로 검색시
         elif filter_type == "News":
-            None
+            search_results = await news_search(keyword=cve_code)
+            if not search_results:
+                return JSONResponse(content={"error": "No results found"}, status_code=404)
+
+            return templates.TemplateResponse("getinfo.html", {
+                "request": request,
+                "news_search_results": search_results
+            })
 
          # 필터 타입이 올바르지 않을 경우
         else:
