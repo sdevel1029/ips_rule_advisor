@@ -156,6 +156,52 @@
                         {% else %}
                         <!-- <p>정보가 없습니다.</p> -->
                         {% endif %}
+
+
+                        <!-- 검색 결과 -->
+                        {% if news_search_results %}
+                        <div class="datatable-container">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" style="width: 5%;">#</th>
+                                        <th scope="col" style="width: 15%;">타이틀</th>
+                                        <th scope="col" style="width: 80%;">요약</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for result in news_search_results %}
+                                    <tr>
+                                        <th scope="row">{{ loop.index }}</th>
+                                        <td><a href="{{ result.link }}">{{ result.title }}</a></td>
+                                        <td>{{ result.description }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="datatable-bottom">
+                            <div class="datatable-info">#n ~ #m / 총 {{ news_search_results|length }}개의 검색 결과</div>
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination">
+                                    <li class="page-item">
+                                        <a class="page-link disabled" href="#" aria-label="Previous">
+                                            <span aria-hidden="true">«</span>
+                                        </a>
+                                    </li>
+                                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#" aria-label="Next">
+                                            <span aria-hidden="true">»</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                        {% else %}
+                        <!-- <p>정보가 없습니다.</p> -->
+                        {% endif %}
                     </div>
                 </div>
             </div>
