@@ -48,40 +48,72 @@ async def read_api(code, site_name):
 
 # nvd 정보수집
 async def nvd(code):
-    # 결과값 받기
-    result = {}
     result = await read_api(code, "nvd")
 
     # 예외 1 : 결과 없음
-    if result["totalResults"] == 0:
+    if result.get("totalResults", 0) == 0:
         return {}
 
     # 최종 output
     output = {}
-    output["id"] = result["vulnerabilities"][0]["cve"]["id"]
-    output["수정시간"] = result["vulnerabilities"][0]["cve"]["lastModified"]
-    output["설명"] = result["vulnerabilities"][0]["cve"]["descriptions"][0]["value"]
-    output["점수"] = result["vulnerabilities"][0]["cve"]["metrics"]["cvssMetricV31"][0]["cvssData"]["baseScore"]
-    output["메트릭"] = result["vulnerabilities"][0]["cve"]["metrics"]["cvssMetricV31"][0]["cvssData"]["vectorString"]
-    # 메트릭 세부 만들기 시작
-    tmp_for_detail = {}
-    tmp_for_detail["공격벡터"] = result["vulnerabilities"][0]["cve"]["metrics"]["cvssMetricV31"][0]["cvssData"]["attackVector"]
-    tmp_for_detail["공격복잡성"] = result["vulnerabilities"][0]["cve"]["metrics"]["cvssMetricV31"][0]["cvssData"]["attackComplexity"]
-    tmp_for_detail["필요한권한"] = result["vulnerabilities"][0]["cve"]["metrics"]["cvssMetricV31"][0]["cvssData"]["privilegesRequired"]
-    tmp_for_detail["사용자상호작용"] = result["vulnerabilities"][0]["cve"]["metrics"]["cvssMetricV31"][0]["cvssData"]["userInteraction"]
-    tmp_for_detail["범위"] = result["vulnerabilities"][0]["cve"]["metrics"]["cvssMetricV31"][0]["cvssData"]["scope"]
-    tmp_for_detail["기밀성"] = result["vulnerabilities"][0]["cve"]["metrics"]["cvssMetricV31"][0]["cvssData"]["confidentialityImpact"]
-    tmp_for_detail["무결성"] = result["vulnerabilities"][0]["cve"]["metrics"]["cvssMetricV31"][0]["cvssData"]["integrityImpact"]
-    tmp_for_detail["가용성"] = result["vulnerabilities"][0]["cve"]["metrics"]["cvssMetricV31"][0]["cvssData"]["availabilityImpact"]
+    
+    try:
+        output["id"] = result["vulnerabilities"][0]["cve"]["id"]
+        output["수정시간"] = result["vulnerabilities"][0]["cve"]["lastModified"]
+        output["설명"] = result["vulnerabilities"][0]["cve"]["descriptions"][0]["value"]
+    except (IndexError, KeyError) as e:
+        return {"error": "필수 정보가 없습니다."}
 
-    # 끝
+    # 메트릭 처리 부분에서 예외 처리 추가
+    metrics = result["vulnerabilities"][0]["cve"].get("metrics", {})
+    if "cvssMetricV31" in metrics and metrics["cvssMetricV31"]:
+        output["점수"] = metrics["cvssMetricV31"][0]["cvssData"]["baseScore"]
+        output["메트릭"] = metrics["cvssMetricV31"][0]["cvssData"]["vectorString"]
+
+        # 메트릭 세부 만들기 시작
+        tmp_for_detail = {}
+        try:
+            tmp_for_detail["공격벡터"] = metrics["cvssMetricV31"][0]["cvssData"].get("attackVector", "정보 없음")
+            tmp_for_detail["공격복잡성"] = metrics["cvssMetricV31"][0]["cvssData"].get("attackComplexity", "정보 없음")
+            tmp_for_detail["필요한권한"] = metrics["cvssMetricV31"][0]["cvssData"].get("privilegesRequired", "정보 없음")
+            tmp_for_detail["사용자상호작용"] = metrics["cvssMetricV31"][0]["cvssData"].get("userInteraction", "정보 없음")
+            tmp_for_detail["범위"] = metrics["cvssMetricV31"][0]["cvssData"].get("scope", "정보 없음")
+            tmp_for_detail["기밀성"] = metrics["cvssMetricV31"][0]["cvssData"].get("confidentialityImpact", "정보 없음")
+            tmp_for_detail["무결성"] = metrics["cvssMetricV31"][0]["cvssData"].get("integrityImpact", "정보 없음")
+            tmp_for_detail["가용성"] = metrics["cvssMetricV31"][0]["cvssData"].get("availabilityImpact", "정보 없음")
+        except KeyError:
+            tmp_for_detail = {
+                "공격벡터": "정보 없음",
+                "공격복잡성": "정보 없음",
+                "필요한권한": "정보 없음",
+                "사용자상호작용": "정보 없음",
+                "범위": "정보 없음",
+                "기밀성": "정보 없음",
+                "무결성": "정보 없음",
+                "가용성": "정보 없음"
+            }
+
+    else:
+        output["점수"] = "정보 없음"
+        output["메트릭"] = "정보 없음"
+        tmp_for_detail = {
+            "공격벡터": "정보 없음",
+            "공격복잡성": "정보 없음",
+            "필요한권한": "정보 없음",
+            "사용자상호작용": "정보 없음",
+            "범위": "정보 없음",
+            "기밀성": "정보 없음",
+            "무결성": "정보 없음",
+            "가용성": "정보 없음"
+        }
+
     output["메트릭세부"] = tmp_for_detail
-    output["exploitability점수"] = result["vulnerabilities"][0]["cve"]["metrics"]["cvssMetricV31"][0]["exploitabilityScore"]
-    output["impact점수"] = result["vulnerabilities"][0]["cve"]["metrics"]["cvssMetricV31"][0]["impactScore"]
 
-    ###############################################################
-    # 메트릭 v3.1 - 동건
-    cvssMetric_v31 = result["vulnerabilities"][0]["cve"]["metrics"]["cvssMetricV31"][0]["cvssData"]
+    output["exploitability점수"] = metrics.get("cvssMetricV31", [{}])[0].get("exploitabilityScore", "정보 없음")
+    output["impact점수"] = metrics.get("cvssMetricV31", [{}])[0].get("impactScore", "정보 없음")
+
+    # metrics v3.1 - 동건
+    cvssMetric_v31 = metrics.get("cvssMetricV31", [{}])[0].get("cvssData", {})
 
     # metrics_exploitability: 'attackVector'부터 'scope'까지
     keys_exploitability = [
@@ -91,65 +123,69 @@ async def nvd(code):
         "userInteraction",
         "scope",
     ]
-    metrics_exploitability = {key: cvssMetric_v31[key] for key in keys_exploitability}
+    metrics_exploitability = {key: cvssMetric_v31.get(key, "정보 없음") for key in keys_exploitability}
 
     # metrics_impact: 'confidentialityImpact'부터 'availabilityImpact'까지
     keys_impact = ["confidentialityImpact", "integrityImpact", "availabilityImpact"]
-    metrics_impact = {key: cvssMetric_v31[key] for key in keys_impact}
+    metrics_impact = {key: cvssMetric_v31.get(key, "정보 없음") for key in keys_impact}
 
     output["악용가능성메트릭"] = metrics_exploitability
     output["영향메트릭"] = metrics_impact
-    ###############################################################
+
     # 제품, cpe
     cpe_list = []
+    try:
+        cpe_raw_data = result["vulnerabilities"][0]["cve"]["configurations"]
+        for nodes in cpe_raw_data:
+            tmp_list = []
+            for node in nodes["nodes"]:
+                for match in node.get("cpeMatch", []):
+                    cpe_info = match["criteria"]
 
-    cpe_raw_data = result["vulnerabilities"][0]["cve"]["configurations"]
+                    # 소프트웨어 정보 추출 (vendor, product, version)
+                    parts = cpe_info.split(":")
+                    if len(parts) >= 5:
+                        vendor = parts[3]
+                        product = parts[4]
+                        version = parts[5]
 
-    for nodes in cpe_raw_data:
-        tmp_list = []
-        for node in nodes["nodes"]:
-            for match in node.get("cpeMatch", []):
-                cpe_info = match["criteria"]
+                        # 버전 범위가 존재하면 추출
+                        version_start = match.get("versionStartIncluding", None)
+                        version_end = match.get("versionEndExcluding", None)
 
-                # 소프트웨어 정보 추출 (vendor, product, version)
-                # 예: 'cpe:2.3:a:vendor:product:version:*:*:*:*:*:*:*'
-                parts = cpe_info.split(":")
-                if len(parts) >= 5:
-                    vendor = parts[3]
-                    product = parts[4]
-                    version = parts[5]
-
-                    # 버전 범위가 존재하면 추출
-                    version_start = match.get("versionStartIncluding", None)
-                    version_end = match.get("versionEndExcluding", None)
-
-                    # 리스트에 추가
-                    tmp_list.append(
-                        {"CPE": cpe_info, "포함": version_start, "비포함": version_end}
-                    )
-        cpe_list.append(tmp_list)
-
-    output["제품들"] = cpe_list
+                        # 리스트에 추가
+                        tmp_list.append(
+                            {"CPE": cpe_info, "포함": version_start, "비포함": version_end}
+                        )
+            cpe_list.append(tmp_list)
+    except KeyError:
+        output["제품들"] = "정보 없음"
+    else:
+        output["제품들"] = cpe_list
 
     # poc, 참고자료
-    # 참고자료 중에서 tag 에 Exploit 있는것들을 poc에 넣음
     ref = []
     poc = []
-    for i in range(0, len(result["vulnerabilities"][0]["cve"]["references"])):
-        tmp_ref = {}
-        tmp_ref["url"] = result["vulnerabilities"][0]["cve"]["references"][i]["url"]
-        tmp_ref["tags"] = result["vulnerabilities"][0]["cve"]["references"][i]["tags"]
+    try:
+        for i in range(0, len(result["vulnerabilities"][0]["cve"]["references"])):
+            tmp_ref = {}
+            tmp_ref["url"] = result["vulnerabilities"][0]["cve"]["references"][i]["url"]
+            tmp_ref["tags"] = result["vulnerabilities"][0]["cve"]["references"][i]["tags"]
 
-        if "Exploit" in tmp_ref["tags"]:
-            poc.append(tmp_ref)
-            continue
-        else:
-            ref.append(tmp_ref)
-
-    output["poc"] = poc
-    output["참고자료"] = ref
+            if "Exploit" in tmp_ref["tags"]:
+                poc.append(tmp_ref)
+                continue
+            else:
+                ref.append(tmp_ref)
+    except KeyError:
+        output["poc"] = []
+        output["참고자료"] = []
+    else:
+        output["poc"] = poc
+        output["참고자료"] = ref
 
     return output
+
 
 
 # github_poc 정보수집

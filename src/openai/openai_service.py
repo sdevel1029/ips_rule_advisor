@@ -46,7 +46,7 @@ async def classify_attack(description: str) -> str:
         return response_data['choices'][0]['message']['content'].strip()
     
 async def translate_to_korean(text: str) -> str:
-    async with httpx.AsyncClient() as client:
+    async with httpx.AsyncClient(timeout=30.0) as client:
         response = await client.post(
             'https://api.openai.com/v1/chat/completions',
             headers={
@@ -67,7 +67,7 @@ async def translate_to_korean(text: str) -> str:
         return response_data['choices'][0]['message']['content'].strip()
 
 async def summarize_vector(vector: str) -> str:
-    async with httpx.AsyncClient() as client:
+    async with httpx.AsyncClient(timeout=30.0) as client:
         response = await client.post(
             'https://api.openai.com/v1/chat/completions',
             headers={
