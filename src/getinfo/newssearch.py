@@ -29,7 +29,8 @@ async def news_search(keyword):
                     title = article.get_text()
                     link = article['href']
                     description = descript.get_text()
-
+                    res = await client.get(link, headers=headers)
+                    res.raise_for_status()
                     a.append({"title": title, "description": description, "link": link})
                 except:
                     pass
@@ -41,5 +42,6 @@ async def news_search(keyword):
         # 기타 예외 처리
         print(f"An error occurred: {str(e)}")
 
+    return a
 
 
