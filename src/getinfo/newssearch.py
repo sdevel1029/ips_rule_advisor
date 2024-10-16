@@ -28,8 +28,6 @@ async def news_search(keyword):
                 try:
                     title = article.get_text()
                     link = article['href']
-                    res = await client.get(link, headers=headers)
-                    res.raise_for_status()
                     description = descript.get_text()
 
                     a.append({"title": title, "description": description, "link": link})
