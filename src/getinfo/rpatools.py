@@ -350,6 +350,7 @@ async def test_func1():
 
                 # 정상 수행 됐으면 test 결과 넣기
                 if test_res.status_code == 200:
+                    print("=== 200 ===")
                     data["result_normal"] = output["정상 패킷 결과"]
                     data["result_attack"] = output["공격 패킷 결과"]
 
@@ -412,16 +413,20 @@ async def test_func1():
                         ans["attackmemory_usage"] = format(data['result_attack']['평균 memory_룰 적용 후']-data['result_attack']['평균 memory_룰 적용 전'] ,".2f")
                     
                     try:
+                        print("=== 5 ===")
                         supabase.table("test_result").update(ans).eq("id", data_origin["id"]).execute()
                     except:
+                        print("=== 4 ===")
                         test_wait_list.insert(0, data_origin)
                         return_output["server"] = 4 # 마지막 저장에서 에러
 
                 else:  # 비정상이면 다시 대기열 맨 앞에 넣기
+                    print("=== 3 ===")
                     test_wait_list.insert(0, data_origin)
                     return_output["server"] = 3
 
             except :
+                print("=== 2 ===")
                 test_wait_list.insert(0, data_origin)
                 return_output["server"] = 2 # 서버와 통신 중 에러
 
