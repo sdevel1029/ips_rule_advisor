@@ -342,11 +342,13 @@ async def test_func1():
                 data_to_server["envi"] = data_origin["envi"]
                 data_to_server["what_test"] = data_origin["what_test"]
 
+                print("=== right befor send to test server ===")
                 test_res = await send_post_request(
                     url=test_server_url, data=data_to_server, files=files
                 )
                 output = test_res.json()
                 return_output["server"] = 1
+                print("=== 100 ===")
 
                 # 정상 수행 됐으면 test 결과 넣기
                 if test_res.status_code == 200:
