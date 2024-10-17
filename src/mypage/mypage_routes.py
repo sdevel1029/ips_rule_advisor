@@ -3,6 +3,7 @@ from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from src.mypage.mypage_service import *
 from src.database.supabase_client import get_supabase_client
+from src.getinfo.global_var import test_wait_list
 
 router = APIRouter()
 
@@ -88,4 +89,16 @@ async def gpt_card(response:Response,request: Request,client=Depends(get_supabas
     key =data.get("card")
     chage_card(client=client,request=request,key=key)
     return "success"
+
+@router.get("/check_wait_list")
+async def check_wait_list(id): # 받은 변수 (여기선 id) 는 int 가 아니라 str 인듯?
+    wait_num = 0
+    result = {"done" : 1}
+    for i in test_wait_list:
+        wait_num += 1
+        if i["id"] == int(id):
+            result = {"done" : 0, "wait_num" : wait_num}
+            break
+
+    return result
 

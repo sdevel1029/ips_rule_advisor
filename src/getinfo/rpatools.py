@@ -2,6 +2,8 @@
 import httpx
 import asyncio
 import os
+import copy
+from datetime import datetime
 from ..database import supabase_client
 from src.getinfo.global_var import test_wait_list
 
@@ -296,7 +298,7 @@ async def do_remainning_test():
     #     test_wait_list.append(i["id"])
 
     while True:
-        # await test_func1()
+        await test_func1()
         await asyncio.sleep(1)
 
 
@@ -315,57 +317,121 @@ async def test_func1():
         # 사용 가능한 서버 있으면
         if tmp_flag:
             # 대기열 리스트, 서버 able 수정
-            test_id = test_wait_list.pop(0)
+            data_origin = test_wait_list.pop(0)
+            data = copy.deepcopy(data_origin)
+            del data["id"]
             server_id = tmp_flag[0]["id"]
             supabase.table("test_server_status").update({"able": False}).eq(
                 "id", server_id
             ).execute()
             test_server_url = tmp_flag[0]["server_url"]
 
-            # db에서 정보 들고오기
-            first_test_info = (
-                supabase.table("test_all")
-                .select("rule, envi, what_test, file_path_1, file_path_2")
-                .eq("id", test_id)
-                .execute()
-            )
-            data = first_test_info.data[0]
-
-            file_paths = [data["file_path_1"], data["file_path_2"]]
-
-            del data["file_path_1"]
-            del data["file_path_2"]
+            # 파일 경로 처리?
+            file_paths = [data["normalpacket"], data["attackpacket"]]
 
             # server 에 요청하기
-            files = [
-                ("files", (file_path, open(file_path, "rb")))
-                for file_path in file_paths
-            ]
-            test_res = await send_post_request(
-                url=test_server_url, data=data, files=files
-            )
-            output = test_res.json()
+            try :
+                files = [
+                    ("files", (file_path, open(file_path, "rb")))
+                    for file_path in file_paths
+                ]
+
+                data_to_server = {}
+                data_to_server["rule"] = data_origin["rule"]
+                data_to_server["envi"] = data_origin["envi"]
+                data_to_server["what_test"] = data_origin["what_test"]
+
+                test_res = await send_post_request(
+                    url=test_server_url, data=data_to_server, files=files
+                )
+                output = test_res.json()
+                return_output = {}
+                return_output["server"] = 1
+
+                # 정상 수행 됐으면 test 결과 넣기
+                if test_res.status_code == 200:
+                    data["result_normal"] = output["정상 패킷 결과"]
+                    data["result_attack"] = output["공격 패킷 결과"]
+
+                    ans = {}
+
+                    if data['envi'] == 0:
+                        ans["setting"] = "snort2"
+                    if data['envi'] == 1:
+                        ans["setting"] = "snort3"
+                    if data['envi'] == 2:
+                        ans["setting"] = "suricata"
+                    
+                    ans["total"] = data['result_attack']['총 패킷 수'] + data['result_normal']['총 패킷 수']
+                    ans["attacknum"] = data['result_attack']['총 패킷 수']
+                    ans["normalnum"] = data['result_normal']['총 패킷 수']
+
+                    if data["what_test"] == 0:
+                        ans["accuracyrate"] =format(((data['result_normal']['오탐된 패킷 수'] +data['result_attack']['미탐된 패킷 수'])/ ans["total"]) *100,".2f")
+                        ans["attackrate"] = format((data['result_normal']['오탐된 패킷 수']/ans["normalnum"])*100,".2f")
+                        ans["normalrate"] = format((data['result_attack']['미탐된 패킷 수']/ans["attacknum"])*100,".2f")
+                        ans["attacktrue"] = format(((ans["attacknum"]-data['result_attack']['미탐된 패킷 수'])/ans["attacknum"])*100,".2f")
+                        ans["normaltrue"] = format(((ans["normalnum"]-data['result_normal']['오탐된 패킷 수'])/ans["normalnum"])*100,".2f")
+                        ans["normalpacket_num"] = data['result_normal']["오탐된 패킷"]
+                        ans["attackpacket_num"] = data['result_attack']["미탐된 패킷"]
+                        ans["normallatency"] = "정오탐 테스트만 하였습니다"
+                        ans["normalcpu_usage"] = "정오탐 테스트만 하였습니다"
+                        ans["normalmemory_usage"] = "정오탐 테스트만 하였습니다"
+                        ans["attacklatency"] = "정오탐 테스트만 하였습니다"
+                        ans["attackcpu_usage"] = "정오탐 테스트만 하였습니다"
+                        ans["attackmemory_usage"] = "정오탐 테스트만 하였습니다"
+
+                    if data["what_test"] == 1:
+                        ans["accuracyrate"] = "성능 테스트만 하였습니다"
+                        ans["attackrate"] = "성능 테스트만 하였습니다"
+                        ans["normalrate"] = "성능 테스트만 하였습니다"
+                        ans["attacktrue"] = "성능 테스트만 하였습니다"
+                        ans["normaltrue"] = "성능 테스트만 하였습니다"
+                        ans["normalpacket_num"] = "성능 테스트만 하였습니다"
+                        ans["attackpacket_num"] = "성능 테스트만 하였습니다"
+                        ans["normallatency"] = format(data['result_normal']['평균 시간_룰 적용 후']-data['result_normal']['평균 시간_룰 적용 전'],".2f")
+                        ans["normalcpu_usage"] = format(data['result_normal']['평균 cpu_룰 적용 후']-data['result_normal']['평균 cpu_룰 적용 전'],".2f")
+                        ans["normalmemory_usage"] = format(data['result_normal']['평균 memory_룰 적용 후']-data['result_normal']['평균 memory_룰 적용 전'],".2f")
+                        ans["attacklatency"] = format(data['result_attack']['평균 시간_룰 적용 후']-data['result_attack']['평균 시간_룰 적용 전'],".2f")
+                        ans["attackcpu_usage"] = format(data['result_attack']['평균 cpu_룰 적용 후']-data['result_attack']['평균 cpu_룰 적용 전'],".2f")
+                        ans["attackmemory_usage"] = format(data['result_attack']['평균 memory_룰 적용 후']-data['result_attack']['평균 memory_룰 적용 전'] ,".2f")
+
+                    if data["what_test"] == 2:
+                        ans["accuracyrate"] =format(((data['result_normal']['오탐된 패킷 수'] +data['result_attack']['미탐된 패킷 수'])/ ans["total"]) *100,".2f")
+                        ans["attackrate"] = format((data['result_normal']['오탐된 패킷 수']/ans["normalnum"])*100,".2f")
+                        ans["normalrate"] = format((data['result_attack']['미탐된 패킷 수']/ans["attacknum"])*100,".2f")
+                        ans["attacktrue"] = format(((ans["attacknum"]-data['result_attack']['미탐된 패킷 수'])/ans["attacknum"])*100,".2f")
+                        ans["normaltrue"] = format(((ans["normalnum"]-data['result_normal']['오탐된 패킷 수'])/ans["normalnum"])*100,".2f")
+                        ans["normalpacket_num"] = data['result_normal']["오탐된 패킷"]
+                        ans["attackpacket_num"] = data['result_attack']["미탐된 패킷"]
+                        ans["normallatency"] = format(data['result_normal']['평균 시간_룰 적용 후']-data['result_normal']['평균 시간_룰 적용 전'],".2f")
+                        ans["normalcpu_usage"] = format(data['result_normal']['평균 cpu_룰 적용 후']-data['result_normal']['평균 cpu_룰 적용 전'],".2f")
+                        ans["normalmemory_usage"] = format(data['result_normal']['평균 memory_룰 적용 후']-data['result_normal']['평균 memory_룰 적용 전'],".2f")
+                        ans["attacklatency"] = format(data['result_attack']['평균 시간_룰 적용 후']-data['result_attack']['평균 시간_룰 적용 전'],".2f")
+                        ans["attackcpu_usage"] = format(data['result_attack']['평균 cpu_룰 적용 후']-data['result_attack']['평균 cpu_룰 적용 전'],".2f")
+                        ans["attackmemory_usage"] = format(data['result_attack']['평균 memory_룰 적용 후']-data['result_attack']['평균 memory_룰 적용 전'] ,".2f")
+                    
+                    try:
+                        supabase.table("test_result").update(ans).eq("id", data_origin["id"]).execute()
+                    except:
+                        test_wait_list.insert(0, data_origin)
+                        return_output["server"] = 4 # 마지막 저장에서 에러
+
+                else:  # 비정상이면 다시 대기열 맨 앞에 넣기
+                    test_wait_list.insert(0, data_origin)
+                    return_output["server"] = 3
+
+            except :
+                test_wait_list.insert(0, data_origin)
+                return_output["server"] = 2 # 서버와 통신 중 에러
 
             # 서버 다시 사용 가능으로 수정
             supabase.table("test_server_status").update({"able": True}).eq(
                 "id", server_id
             ).execute()
 
-            # 정상 수행 됐으면 test 결과 넣기
-            if test_res.status_code == 200:
-                supabase.table("test_all").update(
-                    {
-                        "done": True,
-                        "result_normal": output["정상 패킷 결과"],
-                        "result_attack": output["공격 패킷 결과"],
-                    }
-                ).eq("id", test_id).execute()
-                ### 여기 추가해야됨
-            else:  # 비정상이면 다시 대기열 맨 앞에 넣기
-                test_wait_list.insert(0, test_id)
-
-            return output
-        return {"server": "is full"}
+            return return_output
+        return {"server": 0}
     return {"wait_list": "is empty"}
 
 
@@ -379,27 +445,39 @@ async def test(
     file_path_1: str,
     file_path_2: str,
 ):
+    now = datetime.now()
+    now = datetime.fromisoformat(str(now)).date().isoformat()
     tmp_dict_1 = {
         "user_id": user_id,
+        "created_at": now,
         "cve": cve,
         "rule": rule,
         "envi": envi,
         "what_test": what_test,
+        "normalpacket" : file_path_1,
+        "attackpacket" : file_path_2
     }
-    tmp_dict_2 = {"file_path_1": file_path_1, "file_path_2": file_path_2}
-    tmp_dict = {**tmp_dict_1, **tmp_dict_2}
 
     # test 정보 테이블에 저장
-    tmp_data = supabase.table("test_all").insert(tmp_dict).execute()
+    tmp_data = supabase.table("test_result").insert(tmp_dict_1).execute()
     id = tmp_data.data[0]["id"]
-    created_time = tmp_data.data[0]["created_at"]
 
     # 대기열 리스트에 넣기
-    test_wait_list.append(id)
+    tmp_dict_1["id"] = id
+    test_wait_list.append(tmp_dict_1)
 
     # 수행하기
     output = await test_func1()
     output["test_id"] = id
-    output["created_time"] = created_time
+    
+    # 서버 부족 등 문제 있었으면, 대기열 추가해주기
+    if output["server"] != 1 : 
+        wait_num = 0
+        id = int(id)
+        for i in test_wait_list:
+            wait_num += 1
+            if i["id"] == id:
+                break
+        output["wait_num"] = wait_num
 
     return output

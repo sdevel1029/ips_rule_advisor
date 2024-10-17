@@ -340,6 +340,26 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
+async function checkAndNavigate(test_id) {
+  try {
+    const response = await fetch(`/check_wait_list?id=${test_id}`)
+    const data = await response.json();
+
+    const done = data.done;
+
+    if (done === 1) { // 이미 수행됐으면
+      window.location.href = `/ruleshow?testid=${test_id}`;
+    }
+    else { // 대기열에 있으면
+      const wait_num = data.wait_num;
+      alert(`대기번호 : ${wait_num}`)
+    }
+
+  } catch (error) {
+    alert(`에러 : 다시 눌러주세요`)
+  }
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
   try {
     const response = await fetch('/past_info');
@@ -370,7 +390,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         // 테스트 결과 목록 표시
         pastTestList.forEach(test => {
           const listItem = document.createElement('li');
-          listItem.innerHTML = `<a href="/ruleshow?testid=${test.id}">
+          listItem.innerHTML = `<a href="javascript:void(0);" onclick="checkAndNavigate(${test.id})">
                                 <i class="bi bi-circle"></i><span>${test.cve}</span>
                               </a>`;
           listContainer2.appendChild(listItem);
