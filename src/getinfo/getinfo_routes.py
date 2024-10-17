@@ -63,7 +63,7 @@ async def get_info_page(request: Request, cve_code: str = None, filter_type: str
 
          # 키워드로 검색시
         elif filter_type == "Keyword":
-            search_results = get_cve_details(cve_code)
+            search_results =  await get_cve_details(keyword=cve_code)
             if not search_results:
                 return JSONResponse(content={"error": "No results found"}, status_code=404)
 
