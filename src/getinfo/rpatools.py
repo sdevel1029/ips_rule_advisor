@@ -330,7 +330,7 @@ async def test_func1():
             file_paths = [data["normalpacket"], data["attackpacket"]]
 
             # server 에 요청하기
-                        try :
+            try :
                 files = [
                     ("files", (file_path, open(file_path, "rb")))
                     for file_path in file_paths
