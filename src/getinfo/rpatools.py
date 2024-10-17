@@ -330,6 +330,7 @@ async def test_func1():
             file_paths = [data["normalpacket"], data["attackpacket"]]
 
             # server 에 요청하기
+            return_output = {}
             try :
                 files = [
                     ("files", (file_path, open(file_path, "rb")))
@@ -345,7 +346,6 @@ async def test_func1():
                     url=test_server_url, data=data_to_server, files=files
                 )
                 output = test_res.json()
-                return_output = {}
                 return_output["server"] = 1
 
                 # 정상 수행 됐으면 test 결과 넣기
