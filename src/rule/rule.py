@@ -17,4 +17,4 @@ async def ruletest(request: Request):
 async def ruletest(request: Request,testid:str, client=Depends(get_supabase_client)):
     restest = client.table("test_result").select("*").eq("id", int(testid)).execute()
     
-    return templates.TemplateResponse("past_test.html", {"request": request, "test_result": restart.data[0]})
+    return templates.TemplateResponse("past_test.html", {"request": request, "test_result": restest.data[0]})
