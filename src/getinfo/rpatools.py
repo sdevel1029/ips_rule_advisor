@@ -459,7 +459,7 @@ async def test(
         "created_at": now,
         "cve": cve,
         "rule": rule,
-        "envi": envi,
+        "envi": int(envi),
         "what_test": what_test,
         "normalpacket" : file_path_1,
         "attackpacket" : file_path_2
