@@ -305,7 +305,7 @@
                                         <button class="accordion-button collapsed" type="button"
                                             data-bs-toggle="collapse" data-bs-target="#flush-cpe_list"
                                             aria-expanded="false" aria-controls="flush-cpe_list">
-                                            CPE 리스트
+                                            CPE 리스트 갯수 : {{ info.nvd.제품들|length }}
                                         </button>
                                     </h2>
                                     <div id="flush-cpe_list" class="accordion-collapse collapse"
@@ -360,7 +360,7 @@
                                         <button class="accordion-button collapsed" type="button"
                                             data-bs-toggle="collapse" data-bs-target="#flush-snortRules"
                                             aria-expanded="false" aria-controls="flush-snortRules">
-                                            SNORT COMMUNITY RULE
+                                            SNORT COMMUNITY RULE 갯수 : {{ snort_community_rule|length }}
                                         </button>
                                     </h2>
                                     <div id="flush-snortRules" class="accordion-collapse collapse"
@@ -383,7 +383,7 @@
                                         <button class="accordion-button collapsed" type="button"
                                             data-bs-toggle="collapse" data-bs-target="#flush-emergingRule"
                                             aria-expanded="false" aria-controls="flush-emergingRule">
-                                            EMERGING RULE
+                                            EMERGING RULE 갯수: {{ emerging_rule|length }}
                                         </button>
                                     </h2>
                                     <div id="flush-emergingRule" class="accordion-collapse collapse"
