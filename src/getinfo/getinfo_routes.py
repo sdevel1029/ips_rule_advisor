@@ -81,7 +81,9 @@ async def get_info_page(request: Request, cve_code: str = None, filter_type: str
         elif filter_type == "Keyword":
             search_results = await get_cve_details(keyword=cve_code)
             if not search_results:
-                return JSONResponse(content={"error": "No results found"}, status_code=404)
+                return templates.TemplateResponse(
+                "error.html", {"request": request, "error": "검색 결과가 없습니다."}
+            )
 
             translated_results = await translate_bulk_to_korean(search_results)
             return templates.TemplateResponse("getinfo.html", {
