@@ -1,4 +1,5 @@
 # src/getinfo/getinfo_routes.py
+import asyncio
 import json
 from fastapi import APIRouter, Request
 from src.getinfo.getinfo_service import get_info, InfoServiceError
@@ -32,25 +33,40 @@ async def get_info_page(request: Request, cve_code: str = None, filter_type: str
         )
 
     try:
-        # CVE 코드 검색시
+        # CVE 코드 검색
         if filter_type == "CVE" and (cve_code.startswith("CVE-") or cve_code.startswith("cve-")):
             info_result = await get_info(cve_code)
             info_result['nvd']['수정시간'] = info_result['nvd']['수정시간'].split('T')[0]
             current_date = date.today()
 
+            # 여러 비동기 작업을 병렬 처리
+            tasks = []
             if "설명" in info_result.get("nvd", {}):
-                info_result["nvd"]["설명"] = await translate_to_korean(info_result["nvd"]["설명"])
-            metrics_summary = None
+                tasks.append(translate_to_korean(info_result["nvd"]["설명"]))
             if "메트릭" in info_result.get("nvd", {}):
-                metrics_summary = await summarize_vector(info_result["nvd"]["메트릭"])
-       
-            attack_type = await classify_attack(info_result["nvd"]["설명"])
+                tasks.append(summarize_vector(info_result["nvd"]["메트릭"]))
+            
+            attack_type_task = classify_attack(info_result["nvd"]["설명"])
+            tasks.append(attack_type_task)
+
+            # 비동기 작업 결과를 처리
+            results = await asyncio.gather(*tasks)
+
+            # 번역 결과 적용
+            if "설명" in info_result.get("nvd", {}):
+                info_result["nvd"]["설명"] = results[0]
+            
+            # 메트릭 요약 결과 적용
+            metrics_summary = results[1] if len(results) > 1 else None
+
+            # 공격 유형 및 설명 처리
+            attack_type = results[-1]
             attack_description = attack_types.get(attack_type, "정보없음")
 
             snort_community_rules = info_result.get("snort_community_rule", {}).get("rules", [])
             emerging_rules = info_result.get("emerging_rule", {}).get("rules", [])
 
-            return templates.TemplateResponse("info.html",{
+            return templates.TemplateResponse("info.html", {
                 "request": request,
                 "info": info_result,
                 "type": attack_type,
@@ -61,9 +77,9 @@ async def get_info_page(request: Request, cve_code: str = None, filter_type: str
                 "emerging_rule": emerging_rules
             })
 
-         # 키워드로 검색시
+        # 키워드 검색
         elif filter_type == "Keyword":
-            search_results =  await get_cve_details(keyword=cve_code)
+            search_results = await get_cve_details(keyword=cve_code)
             if not search_results:
                 return JSONResponse(content={"error": "No results found"}, status_code=404)
 
@@ -73,7 +89,7 @@ async def get_info_page(request: Request, cve_code: str = None, filter_type: str
                 "search_results": translated_results
             })
 
-        # 뉴스 기사, 칼럼 으로 검색시
+        # 뉴스 기사 검색
         elif filter_type == "News":
             search_results = await news_search(keyword=cve_code)
             if not search_results:
@@ -84,17 +100,17 @@ async def get_info_page(request: Request, cve_code: str = None, filter_type: str
                 "news_search_results": search_results
             })
 
-         # 필터 타입이 올바르지 않을 경우
+        # 잘못된 필터 타입일 경우
         else:
             return templates.TemplateResponse(
                 "error.html", {"request": request, "error": "Invalid filter type."}
             )
-           
 
     except InfoServiceError as e:
         return templates.TemplateResponse(
             "error.html", {"request": request, "error": str(e)}
         )
+
 
 
 @router.get("/redirect-to-ruletest")
