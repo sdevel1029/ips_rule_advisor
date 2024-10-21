@@ -70,18 +70,18 @@
                             <form class="row g-3" id="ruleTestForm">
                                 <div class="col-12">
                                     <label for="cve" class="form-label">연관 CVE 코드</label>
-                                    <input type="text" class="form-control" id="cve" name="cve">
+                                    <input type="text" class="form-control" id="cve" name="cve" placeholder="CVE-0000-00000, 취약점1 등 이름을 입력해주세요">
                                     <label for="rule" class="col-form-label">Rule</label>
                                     <textarea class="form-control" style="height: 100px" id="rule"
-                                        name="rule"></textarea>
+                                        name="rule" placeholder="alert 를 이용한 rule을 입력해주세요"></textarea>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="normal_test_packet" class="col-sm-2 col-form-label">정상 패킷 업로드</label>
-                                    <input class="form-control" type="file" id="normal_test_packet">
+                                    <input class="form-control" type="file" id="normal_test_packet" disabled>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="attack_test_packet" class="col-sm-2 col-form-label">공격 패킷 업로드</label>
-                                    <input class="form-control" type="file" id="attack_test_packet">
+                                    <input class="form-control" type="file" id="attack_test_packet" disabled>
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="form-check">
@@ -159,6 +159,24 @@
     <script src="../static/assets/js/main.js"></script>
 
     <script>
+        // cve 이름 입력해야 파일 업로드 활성화되게 만들기
+        // 1) 입력 필드와 파일 업로드 필드 선택
+        const cveInput = document.getElementById('cve');
+        const fileInput = document.getElementById('normal_test_packet');
+        const fileInput_2 = document.getElementById('attack_test_packet');
+        
+        // 2) 입력 필드에 이벤트 리스너 추가
+        cveInput.addEventListener('input', function() {
+            // 입력값이 있을 경우 파일 입력 필드 활성화
+            if (this.value.trim() !== '') {
+                fileInput.disabled = false; // 활성화
+                fileInput_2.disabled = false;
+            } else {
+                fileInput.disabled = true; // 비활성화
+                fileInput_2.disabled = true;
+            }
+        });
+        
         function getCVEFromQuery() {
             const urlParams = new URLSearchParams(window.location.search);
             return urlParams.get('cve'); // 쿼리에서 'cve' 값 추출
@@ -225,6 +243,21 @@
             if (!cve) {
                 alert("CVE 코드를 입력하거나 쿼리 문자열에 포함시켜주세요.");
                 return;
+            }
+
+            // rule 값이 없을 때 경고 표시
+            if (!rule) {
+                alert("테스트할 rule을 입력해주세요.");
+                return;
+            }
+
+            // 파일 입력이 없을 때 경고 표시
+            if (!fileInput.files.length) {
+                alert("정상 패킷 파일을 업로드해 주세요."); // 경고 메시지
+                return; // 더 이상 진행하지 않음
+            } else if (!fileInput_2.files.length) {
+                alert("공격 패킷 파일을 업로드해 주세요."); // 경고 메시지
+                return; // 더 이상 진행하지 않음
             }
 
             // JSON 데이터로 서버에 요청
