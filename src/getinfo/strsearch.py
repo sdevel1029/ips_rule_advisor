@@ -25,7 +25,7 @@ async def get_cve_details(keyword):
 
     try:
         # 비동기 클라이언트를 사용하여 요청 처리 (세션 유지)
-        async with httpx.AsyncClient(timeout=20) as client:
+        async with httpx.AsyncClient(timeout=30) as client:
             # 첫 번째 요청 전에 딜레이 (사람이 사이트를 사용하는 것처럼 보이도록)
             time.sleep(random.uniform(1, 3))  # 1초에서 3초 사이의 랜덤한 딜레이 추가
 
