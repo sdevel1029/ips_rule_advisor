@@ -46,7 +46,7 @@ async def classify_attack(description: str) -> str:
         return response_data['choices'][0]['message']['content'].strip()
     
 async def translate_to_korean(text: str) -> str:
-    async with httpx.AsyncClient(timeout=30.0) as client:
+    async with httpx.AsyncClient(timeout=60.0) as client:
         response = await client.post(
             'https://api.openai.com/v1/chat/completions',
             headers={
@@ -98,7 +98,7 @@ async def translate_bulk_to_korean(search_results):
     # CVE 코드와 설명을 하나의 문자열로 만듦
     results_str = "\n".join([f"CVE 코드: {cve_code}\n설명: {description}" for cve_code, description in search_results])
 
-    async with httpx.AsyncClient(timeout=30.0) as client:  # 타임아웃을 30초로 설정
+    async with httpx.AsyncClient(timeout=60.0) as client:  # 타임아웃을 30초로 설정
         response = await client.post(
             'https://api.openai.com/v1/chat/completions',
             headers={
@@ -111,7 +111,7 @@ async def translate_bulk_to_korean(search_results):
                     {"role": "system", "content": "You are a helpful assistant for translating English to Korean and preserving structure."},
                     {"role": "user", "content": f"다음 CVE 코드와 설명을 한글로 번역해 주세요:\n\n{results_str}"}
                 ],
-                'max_tokens': 2000,
+                'max_tokens': 4000,
                 'temperature': 0.3
             }
         )
