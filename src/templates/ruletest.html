@@ -322,15 +322,7 @@
                     else{
                     if (response.ok) {
                         alert("정상 패킷 업로드 성공");
-                        const result = await response.json();
-                        const file_location = result.info
-                        alert(file_location)
-                        const container = document.getElementById("normal_packet_link_container");
-                        container.innerHTML = ""; // 이전 링크 제거
-                        const downloadLink = document.createElement('a');
-                        downloadLink.href = `/rule/download?file_location=${file_location}`;
-                        downloadLink.innerText = "정상 패킷 다운로드";
-                        container.appendChild(downloadLink);
+                        
                     } else {
                         alert("정상 패킷 업로드 실패");
                     }}
@@ -364,16 +356,6 @@
                     else{
                     if (response.ok) {
                         alert("공격 패킷 업로드 성공");
-                        // 다운로드 링크 생성
-                        const result = await response.json();
-                        const file_location = result.info
-                        alert(file_location)
-                        const container = document.getElementById("attack_packet_link_container");
-                        container.innerHTML = ""; // 이전 링크 제거
-                        const downloadLink = document.createElement('a');
-                        downloadLink.href = `/rule/download?file_location=${file_location}`;
-                        downloadLink.innerText = "공격 패킷 다운로드";
-                        container.appendChild(downloadLink);
 
                     } else {
                         alert("공격 패킷 업로드 실패");
